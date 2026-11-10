@@ -33,6 +33,9 @@ h1 { font-size: 1.6em; line-height: 1.25; margin: 0 0 12px; }
 .content table { border-collapse: collapse; width: 100%; font-size: 0.9em; }
 .content td, .content th { border: 1px solid var(--line); padding: 6px; }
 .content blockquote { margin: 16px 0; padding-left: 16px; border-left: 3px solid var(--line); color: var(--muted); }
+.content blockquote > b:first-child { display: block; color: var(--fg); margin-bottom: 4px; }
+.content blockquote > ul { margin: 0; padding-left: 20px; }
+.content blockquote li + li { margin-top: 4px; }
 .pages { color: var(--muted); font: 13px system-ui, sans-serif; margin-top: 32px; }
 .loading::before {
   content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 8px; vertical-align: -1px;

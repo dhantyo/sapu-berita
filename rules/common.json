@@ -13,6 +13,9 @@
     "^dapatkan update berita\\b",
     "^ikuti (kami|berita) (di|on)\\b"
   ],
+  "summaryHeadings": [
+    "^(ringkasan berita|poin penting|intisari berita|rangkuman berita)\\s*:?"
+  ],
   "remove": [
     "script",
     "style",

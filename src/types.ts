@@ -40,6 +40,8 @@ export interface CommonRules {
   version: number;
   dropParagraphs: string[];
   remove: string[];
+  /** Regexes for summary-box headings ("Ringkasan Berita:"); matching boxes are rebuilt as a clean list. */
+  summaryHeadings?: string[];
   quality: { minChars: number; maxLinkDensity: number };
 }
 
