@@ -1,26 +1,32 @@
-import type { Article, Context, RunResult } from './types.ts';
+import type { Article, ArticleMeta, Context, ResolvedRule, RunResult } from './types.ts';
 import { adblockSelectors, findRule } from './rules/match.ts';
 import { extractMetadata } from './extract/metadata.ts';
 import { extractByRule } from './extract/content.ts';
 import { extractWithReadability } from './extract/fallback.ts';
 import { assessQuality } from './extract/quality.ts';
-import { paginate, type Extractor } from './paginate/index.ts';
+import { needsNetwork, paginate, type Extractor } from './paginate/index.ts';
 import { clean } from './clean/index.ts';
 import { sanitize } from './clean/sanitize.ts';
 
 export type { Article, Context, RunResult, RuleSet } from './types.ts';
-export { renderOverlay } from './render/overlay.ts';
+export { renderOverlay, type OverlayHandle } from './render/overlay.ts';
 export { loadRules } from './rules/load.ts';
 export { fetchSameOriginDocument, parseHtml } from './dom.ts';
+
+/** Called with the first (page 1) result right away, then again once extra pages are merged in. */
+export type ProgressCallback = (result: RunResult, morePagesLoading: boolean) => void;
 
 /**
  * The whole pipeline: match → metadata → extract (rule, else Readability) → paginate → clean → sanitize → quality gate.
  * Pure with respect to the page: it reads ctx.doc but never mutates it. Rendering is the caller's choice.
+ *
+ * With `onProgress`, page 1 is reported before pagination starts so the reader isn't kept waiting on
+ * extra network requests. The returned promise always resolves to the final (merged) result.
  */
-export async function run(ctx: Context): Promise<RunResult> {
+export async function run(ctx: Context, onProgress?: ProgressCallback): Promise<RunResult> {
   try {
     const rule = findRule(ctx.rules, ctx.url);
-    if (!rule) return { ok: false, reason: 'not-article' };
+    if (!rule) return report({ ok: false, reason: 'not-article' });
 
     const meta = extractMetadata(ctx.doc);
     const q = ctx.rules.common.quality;
@@ -35,19 +41,41 @@ export async function run(ctx: Context): Promise<RunResult> {
       extract = extractWithReadability;
       body = extract(ctx.doc);
     }
-    if (!body) return { ok: false, reason: 'no-content' };
+    if (!body) return report({ ok: false, reason: 'no-content' });
+
+    if (onProgress && needsNetwork(rule, ctx)) {
+      // Show page 1 now instead of waiting on the network. Use a copy: pagination may append to `body`.
+      onProgress(finish(body.cloneNode(true) as HTMLElement, 1), true);
+    }
 
     // Other pages are extracted the same way page 1 was.
     const { container, pages } = await paginate(body, rule, extract, ctx);
+    return report(finish(container, pages));
 
-    clean(container, rule, ctx.rules, adblockSelectors(ctx.rules, ctx.url.hostname), ctx.url);
-    const content = sanitize(container);
-
-    const quality = assessQuality(content, q);
-    if (!quality.ok) return { ok: false, reason: 'low-quality', detail: JSON.stringify(quality) };
-
-    return { ok: true, article: { meta, content, source, pages, ruleId: rule.id } };
+    function finish(container: HTMLElement, pages: number): RunResult {
+      return finishArticle(container, pages, rule!, meta, source, ctx);
+    }
   } catch (err) {
-    return { ok: false, reason: 'error', detail: String(err) };
+    return report({ ok: false, reason: 'error', detail: String(err) });
   }
+
+  function report(result: RunResult): RunResult {
+    onProgress?.(result, false);
+    return result;
+  }
+}
+
+function finishArticle(
+  container: HTMLElement,
+  pages: number,
+  rule: ResolvedRule,
+  meta: ArticleMeta,
+  source: Article['source'],
+  ctx: Context,
+): RunResult {
+  clean(container, rule, ctx.rules, adblockSelectors(ctx.rules, ctx.url.hostname), ctx.url);
+  const content = sanitize(container);
+  const quality = assessQuality(content, ctx.rules.common.quality);
+  if (!quality.ok) return { ok: false, reason: 'low-quality', detail: JSON.stringify(quality) };
+  return { ok: true, article: { meta, content, source, pages, ruleId: rule.id } };
 }

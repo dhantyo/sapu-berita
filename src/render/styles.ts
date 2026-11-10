@@ -34,4 +34,16 @@ h1 { font-size: 1.6em; line-height: 1.25; margin: 0 0 12px; }
 .content td, .content th { border: 1px solid var(--line); padding: 6px; }
 .content blockquote { margin: 16px 0; padding-left: 16px; border-left: 3px solid var(--line); color: var(--muted); }
 .pages { color: var(--muted); font: 13px system-ui, sans-serif; margin-top: 32px; }
+.loading::before {
+  content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 8px; vertical-align: -1px;
+  border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.reopen {
+  position: fixed; right: 16px; bottom: 16px; z-index: 2147483647;
+  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: rgb(255 255 255); background: rgb(0 102 204); border: 0; border-radius: 999px;
+  padding: 12px 16px; box-shadow: 0 4px 16px rgb(0 0 0 / 0.25); cursor: pointer;
+}
 `;

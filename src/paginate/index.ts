@@ -64,6 +64,20 @@ export async function paginate(
   }
 }
 
+/** Cheap check (no network): will paginate() need to fetch other pages? */
+export function needsNetwork(rule: ResolvedRule, ctx: Context): boolean {
+  const p = rule.pagination;
+  switch (p.method) {
+    case 'none':
+    case 'inline':
+      return false;
+    case 'param':
+      return !p.onlyIf || !!safeQuery(ctx.doc, p.onlyIf);
+    case 'fetch':
+      return pageUrls(ctx, p.pageLinks, p.maxPages ?? 15).length > 0;
+  }
+}
+
 /** Numbered page links (text "2", "3", …) on the same origin, in order, deduplicated. */
 function pageUrls(ctx: Context, selector: string, max: number): URL[] {
   const byNumber = new Map<number, URL>();
