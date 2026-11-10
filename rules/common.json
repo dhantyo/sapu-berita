@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "notes": "Applies to every site. Patterns are case-insensitive regexes matched against a block's trimmed text.",
+  "dropParagraphs": [
+    "^(baca|simak|lihat|tonton) (juga|selengkapnya|video)\\b",
+    "^baca\\s*:",
+    "^artikel terkait\\b",
+    "^berita terkait\\b",
+    "^advertisement$",
+    "^iklan$",
+    "^scroll to continue( with content)?$",
+    "^gulir untuk melanjutkan\\b",
+    "^dapatkan update berita\\b",
+    "^ikuti (kami|berita) (di|on)\\b"
+  ],
+  "remove": [
+    "script",
+    "style",
+    "noscript",
+    "iframe",
+    "ins",
+    "form",
+    "button",
+    "[class*=\"ads-\"]",
+    "[id^=\"div-gpt\"]",
+    "[data-ad]"
+  ],
+  "quality": {
+    "minChars": 300,
+    "maxLinkDensity": 0.5
+  }
+}

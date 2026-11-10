@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema.json",
+  "id": "cnnindonesia",
+  "name": "CNN Indonesia",
+  "domains": ["cnnindonesia.com"],
+  "articleUrl": "/\\d{14}-\\d+-\\d+/",
+  "body": ["#article-content-body", ".detail__body-text"],
+  "remove": [
+    "table.linksisip",
+    ".noncontent",
+    ".sisip_video_ds"
+  ],
+  "pagination": {
+    "method": "fetch",
+    "pageLinks": ".mb-8 > .gap-2.text-base a",
+    "maxPages": 10
+  },
+  "feed": "https://www.cnnindonesia.com/nasional/rss",
+  "samples": [
+    "https://www.cnnindonesia.com/nasional/20261110224830-12-1425651/kubu-silmy-karim-klaim-perkara-pemerasan-akan-sulit-dibuktikan"
+  ],
+  "verified": "2026-11-10",
+  "notes": "Same platform as Detik (detail__body-text, table.linksisip). Pagination selector taken from AutoAllPage (xhr method, pages at /N); not yet seen live by us."
+}

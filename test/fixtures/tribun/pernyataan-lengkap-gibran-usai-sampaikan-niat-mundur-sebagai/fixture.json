@@ -1,0 +1,14 @@
+{
+  "url": "https://m.tribunnews.com/nasional/7909546/pernyataan-lengkap-gibran-usai-sampaikan-niat-mundur-sebagai-wapres-singgung-wejangan-prabowo",
+  "capturedAt": "2026-11-10T21:36:39.933Z",
+  "pages": {
+    "https://m.tribunnews.com/nasional/7909546/pernyataan-lengkap-gibran-usai-sampaikan-niat-mundur-sebagai-wapres-singgung-wejangan-prabowo?page=all": "pages/p2.html"
+  },
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 3,
+    "chars": 7671,
+    "title": "Pernyataan Lengkap Gibran usai Sampaikan Niat Mundur sebagai Wapres, Singgung Wejangan Prabowo"
+  }
+}

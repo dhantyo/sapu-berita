@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Baca Bersih (dev)",
+  "version": "0.0.0",
+  "description": "Development build of the Baca Bersih overlay. Load unpacked in chrome://extensions after `npm run build`.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.detik.com/*",
+        "https://*.cnnindonesia.com/*",
+        "https://*.kompas.com/*",
+        "https://*.tribunnews.com/*",
+        "https://*.liputan6.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "url": "https://www.liputan6.com/news/read/8332591/bunyi-putusan-lengkap-ma-terkait-suket-penyetaraan-ijazah-sma-gibran",
+  "capturedAt": "2026-11-10T21:36:40.934Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 2,
+    "chars": 4965,
+    "title": "Bunyi Putusan Lengkap MA Terkait Suket Penyetaraan Ijazah SMA Gibran"
+  }
+}

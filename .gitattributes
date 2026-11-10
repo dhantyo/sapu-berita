@@ -1,0 +1,4 @@
+* text=auto eol=lf
+
+# Saved real-article HTML: needed by tests, never worth diffing.
+test/fixtures/** -diff linguist-generated

@@ -1,0 +1,36 @@
+{
+  "$schema": "../schema.json",
+  "id": "liputan6",
+  "name": "Liputan6",
+  "domains": ["liputan6.com"],
+  "articleUrl": "^/(?!photo/|video/|tv/)[a-z0-9-]+/read/\\d+/",
+  "body": [".article-content-body__item-content", ".article-content-body"],
+  "bodyAll": true,
+  "remove": [
+    ".baca-juga-collections",
+    "div[data-url][data-title][data-id]",
+    "iframe.vidio-embed",
+    ".nativescrollingKLY",
+    ".gateway__mobile-app"
+  ],
+  "pagination": { "method": "inline" },
+  "variants": [
+    {
+      "when": "^/bola/",
+      "bodyAll": false,
+      "pagination": {
+        "method": "fetch",
+        "pageLinks": ".article-paging-pagination a, .pagination a",
+        "maxPages": 15
+      }
+    }
+  ],
+  "feed": "https://feed.liputan6.com/rss/news",
+  "samples": [
+    "https://www.liputan6.com/news/read/8332591/bunyi-putusan-lengkap-ma-terkait-suket-penyetaraan-ijazah-sma-gibran",
+    "https://www.liputan6.com/bola/read/8332705/manchester-united-putuskan-nasib-michael-carrick-hari-ini"
+  ],
+  "verified": "2026-11-10",
+  "dropParagraphs": ["^baca berita terkini dan terpercaya\\b"],
+  "notes": "Desktop and mobile layouts differ. Desktop: pages inline as .article-content-body__item-page > .article-content-body__item-content. Mobile (Tailwind): .article-content-body > .article-content-body__item[data-page=N] > .article-raw-content; Baca Juga cards are div[data-url][data-title][data-id]. Bola: split into ?page=N, and the site's own 'Show All' (?page=all) returns 404, so pages are fetched and stitched."
+}

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+rules/generated/
+apps/extension/content.js
+apps/extension/content.js.map
+*.log
+.DS_Store

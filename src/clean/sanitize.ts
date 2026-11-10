@@ -1,0 +1,26 @@
+import createDOMPurify from 'dompurify';
+
+/**
+ * Strip everything that isn't reading content: scripts, handlers, inline styles, classes, ids.
+ * DOMPurify does the security part; the allow-list keeps the output looking like an article.
+ */
+export function sanitize(container: HTMLElement): HTMLElement {
+  const win = container.ownerDocument.defaultView;
+  if (!win) throw new Error('sanitize: container has no window');
+  const purify = createDOMPurify(win as unknown as Window & typeof globalThis);
+
+  const fragment = purify.sanitize(container.innerHTML, {
+    RETURN_DOM_FRAGMENT: true,
+    ALLOWED_TAGS: [
+      'a', 'b', 'blockquote', 'br', 'caption', 'cite', 'code', 'div', 'em', 'figcaption', 'figure',
+      'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p', 'picture', 'pre', 'q', 's',
+      'small', 'source', 'span', 'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'u', 'ul',
+    ],
+    ALLOWED_ATTR: ['href', 'src', 'srcset', 'sizes', 'alt', 'title', 'loading', 'colspan', 'rowspan'],
+    ALLOW_DATA_ATTR: false,
+  });
+
+  const clean = container.ownerDocument.createElement('div');
+  clean.append(container.ownerDocument.importNode(fragment, true));
+  return clean;
+}

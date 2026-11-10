@@ -1,0 +1,31 @@
+{
+  "$schema": "../schema.json",
+  "id": "kompas",
+  "name": "Kompas.com",
+  "domains": ["kompas.com"],
+  "articleUrl": "/read/\\d{4}/\\d{2}/\\d{2}/",
+  "body": [".read__content"],
+  "remove": [
+    ".kgnw-middle",
+    ".kgnw-main",
+    ".rVideo-middle",
+    ".video-box-wrap",
+    ".video-box-thumb",
+    ".aTerkait",
+    ".kgmModal-block"
+  ],
+  "dropParagraphs": [
+    "^gabung membership kompas\\.com\\+",
+    "^akses tanya langsung\\b"
+  ],
+  "pagination": {
+    "method": "param",
+    "fullpage": "page=all",
+    "onlyIf": "a[href*=\"page=2\"]"
+  },
+  "samples": [
+    "https://nasional.kompas.com/read/2026/11/10/08461411/isi-pertemuan-prabowo-dengan-10-eks-kapolri-bahas-penyadapan-hingga"
+  ],
+  "verified": "2026-11-10",
+  "notes": "page=all verified: 3,402 → 6,800 chars on the sample. 'Baca juga:' is an inline <p><strong> and is caught by common.json dropParagraphs."
+}

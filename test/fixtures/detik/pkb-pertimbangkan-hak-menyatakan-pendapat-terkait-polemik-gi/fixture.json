@@ -1,0 +1,12 @@
+{
+  "url": "https://news.detik.com/berita/d-8746131/pkb-pertimbangkan-hak-menyatakan-pendapat-terkait-polemik-gibran",
+  "capturedAt": "2026-11-10T21:36:33.665Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 3382,
+    "title": "PKB Pertimbangkan Hak Menyatakan Pendapat Terkait Polemik Gibran"
+  }
+}

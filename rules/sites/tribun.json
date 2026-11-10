@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema.json",
+  "id": "tribun",
+  "name": "Tribunnews",
+  "domains": ["tribunnews.com"],
+  "articleUrl": "/([a-z-]+/\\d{5,}|\\d{4}/\\d{2}/\\d{2})/",
+  "body": [".txt-article", "#article_con"],
+  "remove": [
+    "p.baca",
+    ".ads-placeholder",
+    ".ads-placeholder-inside"
+  ],
+  "pagination": {
+    "method": "param",
+    "fullpage": "page=all",
+    "onlyIf": "a[href*=\"page=2\"]"
+  },
+  "feed": "https://www.tribunnews.com/rss",
+  "samples": [
+    "https://www.tribunnews.com/nasional/7909546/pernyataan-lengkap-gibran-usai-sampaikan-niat-mundur-sebagai-wapres-singgung-wejangan-prabowo"
+  ],
+  "verified": "2026-11-10",
+  "notes": "Desktop body is .side-article.txt-article, mobile is .txt-article.multi-fontsize; .txt-article covers both. page=all verified: 3 pages, 3,619 → 8,652 chars. articleUrl regex from AutoAllPage (supports the 2026 /section/ID/slug format). The advertised /rss/<section> links 404; /rss works (summaries)."
+}

@@ -1,0 +1,12 @@
+{
+  "url": "https://www.cnnindonesia.com/nasional/20261110224830-12-1425651/kubu-silmy-karim-klaim-perkara-pemerasan-akan-sulit-dibuktikan",
+  "capturedAt": "2026-11-10T21:36:34.732Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 2816,
+    "title": "Kubu Silmy Karim Klaim Perkara Pemerasan Akan Sulit Dibuktikan"
+  }
+}
