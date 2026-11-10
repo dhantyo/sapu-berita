@@ -17,7 +17,6 @@
   "variants": [
     {
       "when": "^/bola/",
-      "bodyAll": false,
       "pagination": {
         "method": "fetch",
         "pageLinks": ".article-paging-pagination a, .pagination a",

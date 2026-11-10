@@ -26,7 +26,15 @@ const cases = existsSync(FIXTURES)
       )
   : [];
 
-const JUNK = [/^\s*baca juga\s*:/im, /\bADVERTISEMENT\b/, /SCROLL TO CONTINUE/i];
+// Leftovers seen in real use. Add to this list whenever a new kind of junk slips through.
+const JUNK = [
+  /^\s*baca juga\s*:/im,
+  /\bADVERTISEMENT\b/,
+  /SCROLL TO CONTINUE/i,
+  /Dukung KOMPAS\.com/i,
+  /Artikel Kompas\.id/i,
+  /Tautan telah disalin/i,
+];
 
 describe.skipIf(!cases.length)('fixtures', () => {
   it.each(cases)('%s', async (dir) => {
@@ -44,5 +52,7 @@ describe.skipIf(!cases.length)('fixtures', () => {
     // Allow small drift from rule tweaks, catch big regressions.
     expect(text.replace(/\s+/g, ' ').trim().length).toBeGreaterThan((fx.expect.chars ?? 0) * 0.9);
     for (const junk of JUNK) expect(text).not.toMatch(junk);
+    // Brave Shields hides <strong> on some news domains, even inside our Shadow DOM.
+    expect(result.article.content.querySelector('strong')).toBeNull();
   });
 });

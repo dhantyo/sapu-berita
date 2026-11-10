@@ -12,10 +12,12 @@
     ".video-box-wrap",
     ".video-box-thumb",
     ".aTerkait",
+    ".kompasidRec",
     ".kgmModal-block"
   ],
   "dropParagraphs": [
     "^gabung membership kompas\\.com\\+",
+    "^dukung kompas\\.com\\b",
     "^akses tanya langsung\\b"
   ],
   "pagination": {

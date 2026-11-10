@@ -22,6 +22,7 @@
     "form",
     "button",
     "[class*=\"ads-\"]",
+    "[class*=\"share\"]",
     "[id^=\"div-gpt\"]",
     "[data-ad]"
   ],

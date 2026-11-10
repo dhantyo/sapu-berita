@@ -30,7 +30,7 @@ export function renderOverlay(doc: Document, article: Article): OverlayHandle {
   art.append(el(doc, 'h1', {}, article.meta.title));
   const metaLine = [article.meta.byline, formatDate(article.meta.published)].filter(Boolean).join(' · ');
   if (metaLine) art.append(el(doc, 'div', { class: 'meta' }, metaLine));
-  if (article.meta.image && !article.content.querySelector('img')) {
+  if (article.meta.image && !startsWithImage(article.content)) {
     art.append(el(doc, 'img', { class: 'hero', src: article.meta.image, alt: '' }));
   }
   article.content.classList.add('content');
@@ -61,6 +61,21 @@ export function renderOverlay(doc: Document, article: Article): OverlayHandle {
       host.remove();
     },
   };
+}
+
+/**
+ * True if the body opens with its own photo (so the og:image hero would be a duplicate).
+ * An image buried later in the article doesn't count: the hero is still the main photo.
+ */
+export function startsWithImage(content: Element, textBudget = 200): boolean {
+  const walker = content.ownerDocument.createTreeWalker(content, 0x1 | 0x4); // elements + text
+  let text = 0;
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (node.nodeType === 3) text += (node.textContent ?? '').trim().length;
+    else if ((node as Element).tagName === 'IMG') return true;
+    if (text > textBudget) return false;
+  }
+  return false;
 }
 
 function el(doc: Document, tag: string, attrs: Record<string, string> = {}, text?: string): HTMLElement {

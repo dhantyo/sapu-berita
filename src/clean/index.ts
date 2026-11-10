@@ -11,10 +11,21 @@ const LAZY_SRC_ATTRS = ['data-src', 'data-original', 'data-lazy-src', 'data-srcs
  * Sanitizing for safety is a separate step (sanitize.ts).
  */
 export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet, adblock: string[], baseUrl: URL): void {
+  removeCustomElements(container);
   removeSelectors(container, [...rules.common.remove, ...rule.remove, ...adblock]);
   dropMatchingBlocks(container, rule.dropParagraphs.length ? rule.dropParagraphs : rules.common.dropParagraphs);
   fixMedia(container, baseUrl);
   removeEmpty(container);
+}
+
+/**
+ * Custom elements (<social-actions>, <amp-ad>, …) are always widgets, never article text.
+ * Sanitizing would unwrap them and leak their text ("…", share counts), so drop them whole first.
+ */
+function removeCustomElements(root: HTMLElement): void {
+  for (const el of [...root.querySelectorAll('*')]) {
+    if (el.tagName.includes('-') && root.contains(el)) el.remove();
+  }
 }
 
 function removeSelectors(root: HTMLElement, selectors: string[]): void {

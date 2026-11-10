@@ -1,0 +1,14 @@
+{
+  "url": "https://nasional.kompas.com/read/2026/11/10/20432761/hidayat-nur-wahid-mundur-dari-wakil-ketua-mpr",
+  "capturedAt": "2026-11-10T22:09:58.023Z",
+  "pages": {
+    "https://nasional.kompas.com/read/2026/11/10/20432761/hidayat-nur-wahid-mundur-dari-wakil-ketua-mpr?page=all": "pages/p2.html"
+  },
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 1016,
+    "title": "Hidayat Nur Wahid Mundur dari Wakil Ketua MPR"
+  }
+}

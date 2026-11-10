@@ -20,7 +20,16 @@ export function sanitize(container: HTMLElement): HTMLElement {
     ALLOW_DATA_ATTR: false,
   });
 
-  const clean = container.ownerDocument.createElement('div');
-  clean.append(container.ownerDocument.importNode(fragment, true));
+  const doc = container.ownerDocument;
+  const clean = doc.createElement('div');
+  clean.append(doc.importNode(fragment, true));
+
+  // Brave Shields injects user-level cosmetic CSS on some news domains that hides every <strong>,
+  // and user-level styles pierce Shadow DOM. <b> renders the same and isn't targeted.
+  for (const strong of [...clean.querySelectorAll('strong')]) {
+    const b = doc.createElement('b');
+    b.append(...strong.childNodes);
+    strong.replaceWith(b);
+  }
   return clean;
 }
