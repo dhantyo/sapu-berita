@@ -37,6 +37,11 @@ for (const site of rules.sites) {
       const chars = (result.article.content.textContent ?? '').replace(/\s+/g, ' ').trim().length;
       console.log(`✅ ${site.id} ${chars} chars, ${result.article.pages} page(s)  ${url}`);
     } catch (err) {
+      if (BLOCKED.test(String(err))) {
+        blocked++;
+        console.log(`::warning title=${site.id} blocked the canary::${String(err)}`);
+        continue;
+      }
       failures++;
       console.log(`❌ ${site.id}  ${url}\n   ${String(err)}`);
     }
