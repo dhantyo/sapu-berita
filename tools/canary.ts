@@ -6,6 +6,9 @@ import { documentFromHtml, fetchHtml, nodeContext } from './lib/dom.ts';
 
 const rules = assembleRuleSet();
 let failures = 0;
+let blocked = 0;
+// 401/403/429 from a site means it refused the CI runner's datacenter IP, not that the rule broke.
+const BLOCKED = /^Error: HTTP (401|403|429) /;
 
 async function newestFromFeed(feed: string): Promise<string | undefined> {
   try {
@@ -40,4 +43,5 @@ for (const site of rules.sites) {
   }
 }
 
+if (blocked) console.log(`${blocked} request(s) blocked by the site; check those in a browser.`);
 process.exit(failures ? 1 : 0);
