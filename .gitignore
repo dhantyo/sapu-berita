@@ -12,3 +12,7 @@ apps/android/build/
 apps/android/app/build/
 apps/android/local.properties
 *.apk
+
+# Saved news pages: copyrighted, kept in a private repo (npm run fixtures:pull / fixtures:push)
+test/fixtures/**/*.html
+.saved-pages/

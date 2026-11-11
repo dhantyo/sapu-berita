@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { findLogo } from '../src/extract/logo.ts';
 import { documentFromHtml } from '../tools/lib/dom.ts';
+import { savedPagesPresent } from './saved-pages.ts';
 
 const FIXTURES = join(import.meta.dirname, 'fixtures');
 
@@ -18,7 +19,7 @@ const EXPECTED: Array<[string, RegExp]> = [
 ];
 
 describe('masthead logo detection', () => {
-  it.each(EXPECTED)('%s', (fixture, expected) => {
+  it.skipIf(!savedPagesPresent()).each(EXPECTED)('%s', (fixture, expected) => {
     const dir = join(FIXTURES, fixture);
     const { url } = JSON.parse(readFileSync(join(dir, 'fixture.json'), 'utf8'));
     const doc = documentFromHtml(readFileSync(join(dir, 'page.html'), 'utf8'), url);

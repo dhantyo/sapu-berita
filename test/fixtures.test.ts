@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { run } from '../src/index.ts';
 import { assembleRuleSet } from '../tools/lib/rules.ts';
 import { documentFromHtml, nodeContext } from '../tools/lib/dom.ts';
+import { hasSavedPage } from './saved-pages.ts';
 
 interface Fixture {
   url: string;
@@ -22,7 +23,8 @@ const cases = existsSync(FIXTURES)
       .flatMap((site) =>
         readdirSync(join(FIXTURES, site.name), { withFileTypes: true })
           .filter((d) => d.isDirectory())
-          .map((d) => join(FIXTURES, site.name, d.name)),
+          .map((d) => join(FIXTURES, site.name, d.name))
+          .filter(hasSavedPage),
       )
   : [];
 

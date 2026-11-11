@@ -5,6 +5,7 @@ import { convertEmbeds } from '../src/clean/embeds.ts';
 import { run } from '../src/index.ts';
 import { assembleRuleSet } from '../tools/lib/rules.ts';
 import { documentFromHtml, nodeContext } from '../tools/lib/dom.ts';
+import { savedPagesPresent } from './saved-pages.ts';
 
 const convert = (html: string) => {
   const root = document.createElement('div');
@@ -50,7 +51,7 @@ describe('embed markup → static cards', () => {
   });
 });
 
-describe('real articles keep their quoted posts', () => {
+describe.skipIf(!savedPagesPresent())('real articles keep their quoted posts', () => {
   const rules = assembleRuleSet();
   const cases: Array<[string, string, RegExp]> = [
     ['kompas/3-kali-batal-manggung-dongker-bersyukur-bisa-bawakan-nirimaj', 'instagram', /instagram\.com\/reel\//],

@@ -18,6 +18,8 @@
     "preview": "node tools/preview.ts",
     "rebaseline": "node tools/rebaseline-fixtures.ts",
     "canary": "node tools/canary.ts",
+    "fixtures:pull": "node tools/saved-pages.ts pull",
+    "fixtures:push": "node tools/saved-pages.ts push",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check": "npm run typecheck && npm test"

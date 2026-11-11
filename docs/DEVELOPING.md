@@ -31,6 +31,7 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 | `npm run preview` | Local page (port 5178) that runs the real pipeline on saved fixtures. `?fx=<site>/<slug>&theme=dark` |
 | `npm run probe -- https://www.example.com` | Samples live articles from a new portal and drafts a rule: body, junk, pagination. |
 | `npm run capture -- <url>` | Saves a live article as a test fixture. |
+| `npm run fixtures:pull` / `fixtures:push` | Restore or back up the saved news pages. They're the outlets' copyrighted work, so they live in a private repository (`sapu-berita-fixtures`), not here; without them the tests that need a saved page are skipped. |
 | `npm run rebaseline` | Recomputes fixture expectations after a deliberate cleaning change. |
 | `npm run canary` | Checks every site live, like the daily CI job. |
 

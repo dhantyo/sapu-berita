@@ -5,11 +5,12 @@ import { describe, expect, it } from 'vitest';
 import { run, type RunResult } from '../src/index.ts';
 import { assembleRuleSet } from '../tools/lib/rules.ts';
 import { documentFromHtml, nodeContext } from '../tools/lib/dom.ts';
+import { savedPagesPresent } from './saved-pages.ts';
 
 const rules = assembleRuleSet();
 const FIXTURE = join(import.meta.dirname, 'fixtures', 'tribun', 'pernyataan-lengkap-gibran-usai-sampaikan-niat-mundur-sebagai');
 
-describe('progressive rendering', () => {
+describe.skipIf(!savedPagesPresent())('progressive rendering', () => {
   it('reports page 1 first, then the merged article', async () => {
     const fx = JSON.parse(readFileSync(join(FIXTURE, 'fixture.json'), 'utf8'));
     const pages = Object.fromEntries(Object.entries(fx.pages as Record<string, string>).map(([u, f]) => [u, join(FIXTURE, f)]));
