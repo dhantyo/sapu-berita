@@ -65,12 +65,21 @@ copyFileSync(join(ROOT, 'dist/webview.js'), join(assets, 'webview.js'));
 writeFileSync(
   join(assets, 'domains.json'),
   JSON.stringify({
-    // Registrable domains with hand-verified rules: host === d or host ends with "." + d.
-    domains: [...new Set(rules.sites.flatMap((s) => s.domains))].sort(),
-    // Hostname regexes from imported pagination-only rules (Java regex compatible: no lookbehind used here).
-    patterns: rules.paginationOnly.map((r) => r.hostname),
+    // Per site: its registrable domains (host === d or ends with "." + d) and its article-path regex.
+    // Article links open in the reader; any other page on these hosts goes to the user's browser.
+    sites: rules.sites.map((s) => ({ domains: s.domains, article: s.articleUrl })),
   }),
 );
+
+// Android manifest: the hosts whose links the app may open (user approves them under "Open by default").
+const manifestXml = join(ROOT, 'apps/android/app/src/main/AndroidManifest.xml');
+const hosts = domains.flatMap((d) => [d, `*.${d}`]);
+const xml = readFileSync(manifestXml, 'utf8').replace(
+  /(<!-- sapu:hosts:start[^>]*-->)[\s\S]*?(\s*<!-- sapu:hosts:end -->)/,
+  (_m, start: string, end: string) =>
+    `${start}\n${hosts.map((h) => `                <data android:host="${h}" />`).join('\n')}${end}`,
+);
+writeFileSync(manifestXml, xml);
 
 const kb = (s: string) => `${(Buffer.byteLength(s) / 1024).toFixed(1)} kB`;
 const hashes = (shortcut.match(/#/g) ?? []).length;

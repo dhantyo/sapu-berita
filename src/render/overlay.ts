@@ -177,7 +177,15 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
     const meta = h(doc, 'p', { class: 'meta' });
     if (m.section) meta.append(h(doc, 'span', { class: 'section' }, m.section));
-    if (m.byline) meta.append(h(doc, 'span', {}, `${t.by} ${m.byline}`));
+    if (m.byline) {
+      // Each reporter's name is unbreakable on its own; the row may wrap between names, never inside one.
+      const by = h(doc, 'span', { class: 'byline' }, `${t.by} `);
+      m.byline.split(/\s*,\s*/).forEach((name, i) => {
+        if (i) by.append(', ');
+        by.append(h(doc, 'span', { class: 'name' }, name));
+      });
+      meta.append(by);
+    }
     const date = formatDate(m.published, t);
     if (date) meta.append(h(doc, 'span', { class: 'date' }, date));
     if (meta.childNodes.length) head.append(meta);

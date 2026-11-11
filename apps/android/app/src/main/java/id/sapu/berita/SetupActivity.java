@@ -1,10 +1,9 @@
 package id.sapu.berita;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.role.RoleManager;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
+import android.content.pm.verify.domain.DomainVerificationManager;
+import android.content.pm.verify.domain.DomainVerificationUserState;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -21,19 +20,19 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * One screen, three steps: make Sapu Berita the default browser, pick the browser for every other link,
- * try it on a real article. Built in code (no layouts) to keep the app tiny.
+ * One screen, two steps: let Sapu Berita open the news sites' links (Android's "Open by default"),
+ * then try it on a real article. Your browser stays your browser; only news links change.
+ * Built in code (no layouts) to keep the app tiny.
  */
 public class SetupActivity extends Activity {
-    private static final int REQUEST_ROLE = 1;
     private static final String SAMPLE = "https://nasional.kompas.com/read/2026/11/10/20432761/hidayat-nur-wahid-mundur-dari-wakil-ketua-mpr";
     private static final int OCHRE = Color.rgb(176, 122, 18);
 
-    private TextView defaultStatus;
-    private Button forwardButton;
+    private TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +54,17 @@ public class SetupActivity extends Activity {
         lead.setPadding(0, dp(8), 0, dp(24));
         col.addView(lead);
 
-        col.addView(step("1", getString(R.string.setup_default_title), ink));
-        defaultStatus = text("", 14, muted, false);
-        col.addView(defaultStatus);
-        col.addView(button(getString(R.string.setup_default_button), true, v -> requestDefault()));
+        col.addView(step("1", getString(R.string.setup_links_title), ink));
+        status = text("", 14, muted, false);
+        col.addView(status);
+        boolean modern = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+        TextView how = text(getString(modern ? R.string.setup_links_how : R.string.setup_links_how_old), 14, muted, false);
+        how.setPadding(0, dp(6), 0, 0);
+        col.addView(how);
+        if (modern) col.addView(button(getString(R.string.setup_links_button), true, v -> openLinkSettings()));
 
-        col.addView(step("2", getString(R.string.setup_forward_title), ink));
-        col.addView(text(getString(R.string.setup_forward_hint), 14, muted, false));
-        forwardButton = button("", false, v -> pickForward());
-        col.addView(forwardButton);
-
-        col.addView(step("3", getString(R.string.setup_try_title), ink));
-        col.addView(button(getString(R.string.setup_try_button), false,
+        col.addView(step("2", getString(R.string.setup_try_title), ink));
+        col.addView(button(getString(R.string.setup_try_button), !modern,
             v -> startActivity(new Intent(this, ReaderActivity.class).setData(Uri.parse(SAMPLE)))));
 
         TextView privacy = text(getString(R.string.setup_privacy), 13, muted, false);
@@ -86,45 +84,49 @@ public class SetupActivity extends Activity {
     }
 
     private void refresh() {
-        defaultStatus.setText(isDefault() ? R.string.setup_default_on : R.string.setup_default_off);
-        String target = Browsers.target(this);
-        forwardButton.setText(getString(R.string.setup_forward_button,
-            target == null ? getString(R.string.setup_forward_none) : Browsers.label(this, target)));
-    }
-
-    private boolean isDefault() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            RoleManager rm = getSystemService(RoleManager.class);
-            return rm != null && rm.isRoleHeld(RoleManager.ROLE_BROWSER);
+        Set<String> domains = NewsSites.get(this).domains();
+        int total = domains.size();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            int active = activeDomains(domains);
+            status.setText(active == 0 ? getString(R.string.setup_links_none, total)
+                : getString(R.string.setup_links_some, active, total));
+        } else {
+            status.setText(getString(R.string.setup_links_old_status, total));
         }
-        ResolveInfo r = getPackageManager().resolveActivity(
-            new Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com/")), 0);
-        return r != null && getPackageName().equals(r.activityInfo.packageName);
     }
 
-    private void requestDefault() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            RoleManager rm = getSystemService(RoleManager.class);
-            if (rm != null && rm.isRoleAvailable(RoleManager.ROLE_BROWSER) && !rm.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                startActivityForResult(rm.createRequestRoleIntent(RoleManager.ROLE_BROWSER), REQUEST_ROLE);
-                return;
-            }
+    /** Android 12+: how many of our news domains the user has approved for this app. */
+    private int activeDomains(Set<String> domains) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return 0;
+        DomainVerificationManager dvm = getSystemService(DomainVerificationManager.class);
+        if (dvm == null) return 0;
+        DomainVerificationUserState state;
+        try {
+            state = dvm.getDomainVerificationUserState(getPackageName());
+        } catch (Exception e) {
+            return 0;
         }
-        startActivity(new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS));
+        if (state == null || !state.isLinkHandlingAllowed()) return 0;
+        Map<String, Integer> hosts = state.getHostToStateMap();
+        int active = 0;
+        for (String d : domains) {
+            if (on(hosts.get(d)) || on(hosts.get("*." + d))) active++;
+        }
+        return active;
     }
 
-    private void pickForward() {
-        List<ResolveInfo> browsers = Browsers.installed(this);
-        if (browsers.isEmpty()) return;
-        CharSequence[] names = new CharSequence[browsers.size()];
-        for (int i = 0; i < names.length; i++) names[i] = browsers.get(i).loadLabel(getPackageManager());
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.setup_forward_title)
-            .setItems(names, (d, which) -> {
-                Browsers.choose(this, browsers.get(which).activityInfo.packageName);
-                refresh();
-            })
-            .show();
+    private static boolean on(Integer s) {
+        return s != null && (s == DomainVerificationUserState.DOMAIN_STATE_SELECTED
+            || s == DomainVerificationUserState.DOMAIN_STATE_VERIFIED);
+    }
+
+    private void openLinkSettings() {
+        Intent i = new Intent(Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS, Uri.parse("package:" + getPackageName()));
+        try {
+            startActivity(i);
+        } catch (Exception e) {
+            startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName())));
+        }
     }
 
     // ── tiny view helpers ──────────────────────────────────────────────
@@ -162,7 +164,7 @@ public class SetupActivity extends Activity {
         }
         b.setBackground(bg);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(48));
-        lp.topMargin = dp(10);
+        lp.topMargin = dp(12);
         b.setLayoutParams(lp);
         b.setOnClickListener(onClick);
         return b;

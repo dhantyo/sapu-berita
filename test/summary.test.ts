@@ -42,3 +42,17 @@ describe('summary boxes', () => {
     expect(r.root.querySelector('blockquote')).toBeNull();
   });
 });
+
+describe('heading followed by a list (Suara "BACA 10 DETIK")', () => {
+  it('turns a standalone heading + sibling list into a summary box', () => {
+    const root = document.createElement('div');
+    root.innerHTML = '<p>Intro.</p><h2>BACA 10 DETIK</h2><ul><li>Satu poin.</li><li>Dua poin.</li></ul><p>Isi.</p>';
+    normalizeSummaries(root, ['^(ringkasan berita|baca 10 detik)\s*:?']);
+    const box = root.querySelector('blockquote');
+    expect(box?.querySelector('b')?.textContent).toBe('BACA 10 DETIK');
+    expect([...(box?.querySelectorAll('li') ?? [])].map((li) => li.textContent)).toEqual(['Satu poin.', 'Dua poin.']);
+    expect(root.querySelector('h2')).toBeNull();
+    // The only list left is the one inside the summary box.
+    expect([...root.querySelectorAll('ul')].every((ul) => ul.parentElement === box)).toBe(true);
+  });
+});

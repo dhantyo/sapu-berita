@@ -1,9 +1,11 @@
 # Android link router
 
-A small app the reader sets as their **default browser** once:
+The app claims **only the news sites' links**, the way the YouTube app claims youtube.com. The reader's browser is untouched; no default-browser role.
 
-- **News link** (a host from the same rules the cleaner uses): opens in the app's own WebView with the Sapu Berita script injected at document start. The overlay sits in the browser's top layer, so even full-screen interstitial ads can't cover it.
-- **Any other link:** handed straight to the reader's real browser (picked once on the setup screen; defaults to Chrome, Brave, Firefox, Edge or Samsung Internet, whichever is installed).
+- The manifest's link filter lists every news host (generated from the rules by `npm run build`, between the `sapu:hosts` markers). No `autoVerify`: we don't own these domains, so Android 12+ leaves them off until the reader turns them on once under **Open by default → Add link** (the setup screen opens that page and shows "Active on N of M" from `DomainVerificationManager`). Android 11 and older show the usual chooser on first tap; the reader picks **Always**.
+- **Article link:** opens in the app's own WebView with the Sapu Berita script injected at document start. The overlay sits in the browser's top layer, so even full-screen interstitial ads can't cover it.
+- **Homepage / section link of a news site, or any link tapped inside the reader that isn't an article:** handed to the reader's default browser.
+- If a site's official app is installed and verified for its domain, Android sends that site's links to it; we can't override that.
 - **Settings** (font, size, theme, language) are stored in the app and shared by every site, unlike the iPhone Shortcut's per-site storage.
 
 User-facing install guide (Indonesian): [docs/install-android.md](../../docs/install-android.md).
@@ -21,16 +23,18 @@ Plain Java, no Kotlin, one dependency (`androidx.webkit` for document-start scri
 
 | File | Role |
 |---|---|
-| `RouterActivity` | Invisible. Receives every link; news → Reader, else → real browser. |
+| `RouterActivity` | Invisible. Receives news-site links; article → Reader, else → default browser. |
 | `ReaderActivity` | WebView + injected script + JS bridge (`window.SapuBeritaAndroid`: shared settings, result log). Debug builds enable `chrome://inspect`. |
-| `SetupActivity` | One-time setup: default-browser role request, browser for other links, sample article. |
-| `NewsSites` / `Browsers` | Domain matching from `domains.json`; forwarding target. |
+| `SetupActivity` | One-time setup: opens "Open by default", shows "Active on N of M sites", sample article. |
+| `NewsSites` / `Browsers` | Domain + article-path matching from `domains.json`; default-browser lookup for forwarding. |
+
+Testing without tapping through settings: `adb shell pm set-app-links-user-selection --user 0 --package id.sapu.berita true all`.
 
 ## Tested on the Pixel 5 emulator (Android 14), 2026-11-11
 
-- Setup screen renders; Chrome detected as the browser for other links.
-- With the app as default browser: a Kompas article link → clean reader on top of Kompas's interstitial ad (`rendered: true`).
-- A Wikipedia link → forwarded straight to Chrome.
+- Setup screen: "Active on 16 of 16 news sites" after enabling the links.
+- A Kompas article link → clean reader on top of Kompas's interstitial ad (`rendered: true`). A Suara article → clean, summary box and byline intact.
+- The Detik homepage → forwarded to Chrome.
 - One "isn't responding" dialog at first launch, while the emulator ran at load average 7 to 10 and Android's own system process was also dropping frames (WebView engine start-up on the main thread). **Check on a real phone**; if it shows there too, show a lightweight view first and create the WebView a frame later.
 
 ## Distribution: Google's developer verification (Indonesia, since 2026-09-30)

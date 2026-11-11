@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="setup_lead">Indonesian news without ads or \"Baca Juga\" interruptions, every page merged into one. Set it up once, then open news links as usual.</string>
-    <string name="setup_default_title">Make it your default browser</string>
-    <string name="setup_default_on">Active. News links open clean right away.</string>
-    <string name="setup_default_off">Not active yet. News links still open in another browser.</string>
-    <string name="setup_default_button">Make Sapu Berita the default browser</string>
-    <string name="setup_forward_title">Browser for other links</string>
-    <string name="setup_forward_hint">Links that aren\'t news open straight in this browser.</string>
-    <string name="setup_forward_button">Other links open in: %1$s</string>
-    <string name="setup_forward_none">no other browser</string>
+    <string name="setup_lead">Indonesian news without ads or \"Baca Juga\" interruptions, every page merged into one. Your browser stays your browser; only news links open clean.</string>
+    <string name="setup_links_title">Open news links in Sapu Berita</string>
+    <string name="setup_links_none">Not active yet (0 of %1$d news sites).</string>
+    <string name="setup_links_some">Active on %1$d of %2$d news sites.</string>
+    <string name="setup_links_old_status">%1$d news sites supported.</string>
+    <string name="setup_links_how">Tap the button below → \"Add link\" → tick all the news sites → Add.</string>
+    <string name="setup_links_how_old">The first time you open a news link, your phone asks which app to use. Pick Sapu Berita, then \"Always\".</string>
+    <string name="setup_links_button">Set up news links</string>
     <string name="setup_try_title">Try it</string>
     <string name="setup_try_button">Open a sample Kompas article</string>
     <string name="setup_privacy">Everything runs on your phone. Sapu Berita has no server and doesn\'t know what you read.</string>

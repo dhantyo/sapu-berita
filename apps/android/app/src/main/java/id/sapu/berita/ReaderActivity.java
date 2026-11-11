@@ -79,7 +79,7 @@ public class ReaderActivity extends Activity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 if (!request.isForMainFrame()) return false;
                 Uri uri = request.getUrl();
-                if (NewsSites.get(ReaderActivity.this).isNews(uri)) return false;
+                if (NewsSites.get(ReaderActivity.this).isArticle(uri)) return false;
                 Browsers.open(ReaderActivity.this, uri);
                 return true;
             }

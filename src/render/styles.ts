@@ -102,11 +102,11 @@ h1 {
   letter-spacing: -0.012em; text-wrap: balance;
 }
 .deck { margin: 0 0 0.9em; font: 400 1.08em/1.45 var(--head); color: var(--muted); text-wrap: pretty; }
-.meta { margin: 0; font: 400 0.74em/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+.meta { display: flex; flex-wrap: wrap; margin: 0; font: 400 0.74em/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
 .meta .section { color: var(--ink); font-weight: 600; }
 /* Each part (section, byline, date) stays whole; the row only breaks at the separators. */
-.meta span { white-space: nowrap; }
-.meta span + span::before { content: "·"; margin: 0 0.5em; color: var(--rule-strong); }
+.meta .section, .meta .date, .meta .name { white-space: nowrap; }
+.meta > span + span::before { content: "·"; margin: 0 0.5em; color: var(--rule-strong); }
 .hero { margin: 1.4em 0 0; }
 .hero img { display: block; width: 100%; height: auto; background: var(--chip); }
 

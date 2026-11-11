@@ -8,8 +8,8 @@ Clean reading overlay for Indonesian news sites. Opens an article and shows just
 
 | Platform | How users get it | Status |
 |---|---|---|
-| iPhone | Apple Shortcut (free, Share → Sapu Berita), [guide](docs/install-iphone.md) | script ready; Shortcut must be assembled once on an iPhone/Mac |
-| Android | Link-router app set as default browser, [guide](docs/install-android.md) | alpha APK built by CI; tested on emulator |
+| iPhone, iPad, Mac | Apple Shortcut in Safari (free, Share → Sapu Berita), [guide](docs/install-apple.md) | script ready; Shortcut must be assembled once on an iPhone/Mac |
+| Android | App that opens the news sites' links ("Open by default"); the browser stays as it is. [guide](docs/install-android.md) | alpha APK built by CI; tested on emulator |
 | Desktop Chrome | Dev extension | working, for development |
 
 ## Develop

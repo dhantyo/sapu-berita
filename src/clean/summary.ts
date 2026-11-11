@@ -35,6 +35,23 @@ export function normalizeSummaries(root: HTMLElement, headingPatterns: string[])
     if (!items.length) continue;
     box.replaceWith(buildBox(box.ownerDocument, heading, items));
   }
+
+  // Second shape: a heading on its own ("BACA 10 DETIK" on Suara) followed by a sibling list.
+  for (const head of [...root.querySelectorAll('h2, h3, h4, h5, p, div, strong, b')]) {
+    if (!root.contains(head)) continue;
+    const text = norm(head.textContent);
+    if (text.length > 60) continue;
+    const heading = headings.map((r) => text.match(r)?.[0]).find(Boolean);
+    if (!heading || norm(text.slice(heading.length))) continue; // the element must be just the heading
+    // The list may follow the heading itself or its wrapper (<p><strong>Heading</strong></p><ul>…).
+    const anchor = head.nextElementSibling ? head : head.parentElement && head.parentElement !== root ? head.parentElement : head;
+    const list = anchor.nextElementSibling;
+    if (!list || !/^(UL|OL)$/.test(list.tagName)) continue;
+    const items = [...list.querySelectorAll('li')].map((li) => stripMarker(norm(li.textContent))).filter(Boolean);
+    if (!items.length) continue;
+    list.remove();
+    anchor.replaceWith(buildBox(root.ownerDocument, heading, items));
+  }
 }
 
 function summaryItems(box: Element, heading: string): string[] {
