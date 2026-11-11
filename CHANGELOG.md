@@ -2,7 +2,7 @@
 
 Versions follow [semver](https://semver.org). Every tag `vX.Y.Z` publishes a GitHub Release built from this file.
 
-## [Unreleased]
+## [0.1.0-beta.2] - 2026-11-11
 
 - **New look:** a modernist sans, Geist, is now Sapu Berita's voice for headlines, text and labels, the same on every device. It's built in, so it shows instantly and offline.
 - **Aa → Serif** is now Merriweather and **Aa → Jelas** is Fira Sans (a humanist sans in the tradition of German public signage); both download only when chosen.
