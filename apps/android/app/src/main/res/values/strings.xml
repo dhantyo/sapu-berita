@@ -1,15 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sapu Berita</string>
-    <string name="setup_lead">Berita Indonesia tanpa iklan, tanpa \"Baca Juga\", semua halaman langsung digabung. Browser kamu tetap seperti biasa; hanya link berita yang dibuka bersih.</string>
-    <string name="setup_links_title">Buka link berita di Sapu Berita</string>
-    <string name="setup_links_none">Belum aktif (0 dari %1$d situs berita).</string>
-    <string name="setup_links_some">Aktif untuk %1$d dari %2$d situs berita.</string>
-    <string name="setup_links_old_status">%1$d situs berita didukung.</string>
-    <string name="setup_links_how">Ketuk tombol di bawah → \"Tambahkan link\" → centang semua situs berita → Tambahkan.</string>
-    <string name="setup_links_how_old">Saat pertama kali membuka link berita, ponsel akan bertanya aplikasi mana yang dipakai. Pilih Sapu Berita, lalu \"Selalu\".</string>
-    <string name="setup_links_button">Atur link berita</string>
-    <string name="setup_try_title">Coba</string>
-    <string name="setup_try_button">Buka contoh artikel Kompas</string>
-    <string name="setup_privacy">Semua berjalan di ponselmu. Sapu Berita tidak punya server dan tidak tahu apa yang kamu baca.</string>
+
+    <!-- Android's own labels, as the Settings app shows them in this language. Keep in sync with the OS wording. -->
+    <string name="sys_open_by_default">Buka secara default</string>
+    <string name="sys_open_supported">Buka link yang didukung</string>
+    <string name="sys_add_link">Tambahkan link</string>
+    <string name="sys_add">Tambahkan</string>
+    <string name="sys_always">Selalu</string>
+    <string name="sys_clear_defaults">Hapus default</string>
+
+    <string name="step_of">Langkah %1$d dari %2$d</string>
+    <string name="next">Lanjut</string>
+    <string name="skip">Lewati dulu</string>
+    <string name="back">Kembali</string>
+
+    <string name="welcome_title">Baca berita tanpa gangguan</string>
+    <string name="welcome_lead">Sapu Berita membuka link berita dalam versi bersih: tanpa iklan, tanpa \"Baca Juga\", dan semua halaman langsung digabung.</string>
+    <string name="welcome_point_1">Link berita dari WhatsApp, Telegram, dan lainnya langsung terbuka bersih.</string>
+    <string name="welcome_point_2">Browser kamu tetap seperti biasa. Link lain tidak berubah.</string>
+    <string name="welcome_point_3">Tanpa akun, tanpa server. Semua jalan di ponselmu.</string>
+    <string name="welcome_start">Mulai</string>
+
+    <string name="links_title">Izinkan Sapu Berita membuka link berita</string>
+    <string name="links_lead">Android butuh izinmu sekali saja. Tombol di bawah membuka halaman pengaturan seperti ini:</string>
+    <string name="links_mock_note">Tampilannya bisa sedikit beda di tiap ponsel.</string>
+    <string name="links_do_1">Pastikan \"%1$s\" nyala.</string>
+    <string name="links_do_2">Ketuk \"%1$s\".</string>
+    <string name="links_do_3">Centang semua %2$d kotak (geser ke bawah untuk melihat semuanya), lalu ketuk \"%1$s\".</string>
+    <string name="links_do_4">Tekan tombol kembali untuk balik ke sini.</string>
+    <string name="links_open">Buka pengaturan</string>
+    <string name="links_toast">Ketuk \"%1$s\" → centang semua → \"%2$s\"</string>
+    <string name="links_fallback">Kalau tombol \"%1$s\" tidak ada, cari \"%2$s\" di halaman yang terbuka.</string>
+
+    <string name="status_all">Beres! Aktif untuk semua %1$d situs berita.</string>
+    <string name="status_active">Aktif untuk semua %1$d situs berita.</string>
+    <string name="status_some">Aktif untuk %1$d dari %2$d situs. Belum dicentang: %3$s</string>
+    <string name="sites_count">%1$d situs lagi</string>
+    <string name="status_none">Belum aktif. Ketuk \"Buka pengaturan\" lalu ikuti langkah di atas.</string>
+    <string name="status_off">\"%1$s\" masih mati. Nyalakan dulu, lalu tambahkan link.</string>
+    <string name="status_taken">%1$s dibuka oleh aplikasi %2$s, jadi tidak bisa dipilih di sini. Tidak apa-apa, situs lain tetap jalan.</string>
+
+    <string name="old_title">Pilih Sapu Berita untuk link berita</string>
+    <string name="old_lead">Ketuk tombol di bawah. Ponsel akan bertanya aplikasi mana yang dipakai:</string>
+    <string name="old_do_1">Pilih Sapu Berita.</string>
+    <string name="old_do_2">Ketuk \"%1$s\".</string>
+    <string name="old_try">Buka link berita</string>
+    <string name="old_status_ok">Beres! Link berita sekarang dibuka Sapu Berita.</string>
+    <string name="old_status_browser">Link berita masih selalu dibuka %1$s. Hapus dulu pilihan itu: di halaman yang terbuka, cari \"%2$s\" lalu \"%3$s\".</string>
+    <string name="old_clear">Buka pengaturan %1$s</string>
+
+    <string name="try_title">Coba sekarang</string>
+    <string name="try_lead">Buka contoh artikel dari Kompas. Tombol Aa untuk ukuran huruf dan tema, Asli untuk melihat halaman aslinya.</string>
+    <string name="try_open">Buka contoh artikel</string>
+    <string name="try_tip">Link dari Instagram, Facebook, atau TikTok dibuka di browser mereka sendiri. Pilih \"Buka di browser\" dari menu ⋮.</string>
+    <string name="done">Selesai</string>
+
+    <string name="home_fix">Atur link berita</string>
+    <string name="home_try">Buka contoh artikel</string>
+    <string name="home_guide">Ulangi panduan</string>
+    <string name="version">Versi %1$s</string>
+    <string name="privacy">Semua jalan di ponselmu. Sapu Berita tidak punya server dan tidak tahu apa yang kamu baca. Sekali sehari mengecek versi baru dan perbaikan situs dari GitHub (bisa dimatikan di Aa → Cek update).</string>
 </resources>

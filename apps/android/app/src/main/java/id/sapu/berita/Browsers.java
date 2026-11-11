@@ -40,7 +40,7 @@ final class Browsers {
     }
 
     /** The app that opens ordinary web links (asked with a site we never claim). Null if unclear. */
-    private static String defaultBrowser(Context context) {
+    static String defaultBrowser(Context context) {
         PackageManager pm = context.getPackageManager();
         Intent probe = new Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com/"))
             .addCategory(Intent.CATEGORY_BROWSABLE);

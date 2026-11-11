@@ -97,7 +97,12 @@ writeFileSync(
 
 // Android manifest: the hosts whose links the app may open (user approves them under "Open by default").
 const manifestXml = join(ROOT, 'apps/android/app/src/main/AndroidManifest.xml');
-const hosts = domains.flatMap((d) => [d, `*.${d}`]);
+// Each host is one checkbox the reader must tick in Android's "Add link" dialog (there's no "select all"),
+// so list only what articles use: "*.site" (news.detik.com, www.suara.com), plus the bare domain only
+// for sites that publish articles there (tirto.id/…), judged from each rule's sample articles.
+const apexArticles = new Set(rules.sites.flatMap((s) =>
+  (s.samples ?? []).map((u) => new URL(u).hostname).filter((h) => s.domains.includes(h))));
+const hosts = domains.flatMap((d) => (apexArticles.has(d) ? [d, `*.${d}`] : [`*.${d}`]));
 const xml = readFileSync(manifestXml, 'utf8').replace(
   /(<!-- sapu:hosts:start[^>]*-->)[\s\S]*?(\s*<!-- sapu:hosts:end -->)/,
   (_m, start: string, end: string) =>

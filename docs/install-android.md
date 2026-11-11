@@ -10,12 +10,13 @@ Menu names are shown as they appear on a phone set to English, with the Indonesi
 
 1. On your phone, open the [Releases](https://github.com/dhantyo/sapu-berita/releases/latest) page and download **sapu-berita-….apk**.
 2. Open the downloaded file. If your phone asks, allow **Install unknown apps** (*Instal aplikasi tidak dikenal*) for the browser or file manager you used, then tap **Install**.
-3. Open **Sapu Berita**, then:
-   1. Tap **Atur link berita** (set up news links) → **Add link** (*Tambahkan link*) → tick every news site → **Add** (*Tambahkan*).
-   2. Go back to Sapu Berita. It should now say **"Aktif untuk 16 dari 16 situs berita"** (active on 16 of 16 news sites).
-   3. Tap **Buka contoh artikel Kompas** to try a sample article.
+3. Open **Sapu Berita** and follow its three short steps. The middle one opens the right Settings page for you and shows exactly what to tap:
+   1. Make sure **Open supported links** (*Buka link yang didukung*) is on.
+   2. Tap **Add link** (*Tambahkan link*).
+   3. Tick all 17 boxes (scroll down), then tap **Add** (*Tambahkan*).
+   4. Press back. Sapu Berita checks for itself and says **"Active on all 16 news sites"**, or tells you which ones are still missing.
 
-**Android 11 or older:** there's no step 3.1. The first time you open a news link, your phone asks which app to use: pick **Sapu Berita**, then **Always** (*Selalu*).
+**Android 11 or older:** Sapu Berita opens a news link for you instead, and your phone asks which app to use: pick **Sapu Berita**, then **Always** (*Selalu*). If a browser was already set to "Always", Sapu Berita says so and opens that browser's settings, where you tap **Clear defaults**.
 
 **Can't find "Add link"?** Phone makers word this screen differently. Go to **Settings → Apps → Sapu Berita** and look for **Open by default** or **Set as default** (*Buka secara default*, *Atur sebagai default*), then the list of supported links.
 
