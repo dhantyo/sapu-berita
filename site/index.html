@@ -75,6 +75,7 @@ ol.steps b { font-weight: 650; }
 .swept dd { margin: 2px 0 0; color: var(--muted); }
 .sites { color: var(--muted); max-width: 70ch; }
 .privacy { max-width: 62ch; }
+footer .ai { flex-basis: 100%; }
 footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px; display: flex; flex-wrap: wrap; gap: 8px 24px; }
 
 @media (max-width: 760px) {
@@ -220,6 +221,7 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     <a href="https://github.com/dhantyo/sapu-berita">GitHub</a>
     <a href="https://github.com/dhantyo/sapu-berita/issues/new/choose" data-t="report">Laporkan masalah</a>
     <span data-version></span>
+    <span class="ai" data-t="aiNote">Dibuat dengan AI (Claude dari Anthropic); dites dan dirilis oleh pengelolanya.</span>
   </footer>
 </div>
 
@@ -266,6 +268,7 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     s6t: 'Social posts the story quotes', s6d: 'Kept, as link cards to X, Instagram, TikTok or YouTube.',
     sitesLabel: 'Supported sites:', privTitle: 'Privacy',
     privText: 'Everything runs on your device. Sapu Berita has no server, no analytics, and doesn\'t know what you read. Once a day it downloads the latest version number and site rules from GitHub; nothing about you is sent.',
+    aiNote: 'Built with AI (Anthropic\'s Claude); tested and released by its maintainer.',
     report: 'Report a problem', copied: 'Copied. Now make the bookmark (step 2).', copyFail: 'Couldn\'t copy. Long-press the button below and copy the link instead.',
     dragHint: 'Drag this button to your bar, don\'t click it here.', version: 'Version '
   };

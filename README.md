@@ -55,6 +55,10 @@ Everything runs on your device. Sapu Berita has no server, no analytics, and doe
 
 Once a day it downloads two small files from GitHub: the latest version number and the latest site rules. Nothing about you or your reading is sent. You can turn it off under **Aa → Check for updates**.
 
+## Made with AI
+
+Sapu Berita is built with AI. Nearly all of its code, documentation and design were written by Claude, Anthropic's AI model, working under the direction of the maintainer, who decides what gets built, tests it and publishes each release. Site rules are checked against real articles by automated tests and a daily live check. If something looks wrong, please [report it](../../issues/new/choose).
+
 ## Contributing
 
 News sites change their layouts often, so the per-site rules need care. Reporting a broken article already helps a lot: open **Aa → Report it** on that article. To work on code or rules, see [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/DEVELOPING.md](docs/DEVELOPING.md).
