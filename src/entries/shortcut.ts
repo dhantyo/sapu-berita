@@ -14,7 +14,8 @@ const finish = (value: unknown) => {
 };
 
 setTimeout(() => finish({ rendered: false, reason: 'timeout' }), TIME_BUDGET_MS);
-boot().then(
+// Running the Shortcut is an explicit request, so open even if "open automatically" is off.
+boot({ forceOpen: true }).then(
   ({ result, rendered }) => finish({ rendered, reason: result.ok ? null : result.reason }),
   (err) => finish({ rendered: false, reason: String(err) }),
 );

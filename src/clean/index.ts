@@ -11,46 +11,83 @@ const LAZY_SRC_ATTRS = ['data-src', 'data-original', 'data-lazy-src', 'data-srcs
  * 3. promote lazy-loaded images, absolutize URLs, drop empty leftovers
  * Sanitizing for safety is a separate step (sanitize.ts).
  */
-export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet, adblock: string[], baseUrl: URL): void {
-  removeCustomElements(container);
-  removeSelectors(container, [...rules.common.remove, ...rule.remove, ...adblock]);
-  dropMatchingBlocks(container, rule.dropParagraphs.length ? rule.dropParagraphs : rules.common.dropParagraphs);
+/** Plumbing, not distractions: removed silently and never counted in the sweep line. */
+const UNCOUNTED = new Set(['script', 'style', 'noscript', 'form', 'button']);
+
+/**
+ * Remove junk from an extracted body, in place:
+ * 1. common + site + adblock selectors
+ * 2. blocks whose text matches "Baca juga:" style patterns
+ * 3. promote lazy-loaded images, absolutize URLs, drop empty leftovers
+ * Sanitizing for safety is a separate step (sanitize.ts).
+ *
+ * Returns how many distractions were swept (for the reader-facing sweep line).
+ */
+export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet, adblock: string[], baseUrl: URL): number {
+  let swept = removeCustomElements(container);
+  swept += removeSelectors(container, rules.common.remove.filter((s) => UNCOUNTED.has(s)), false);
+  swept += removeSelectors(container, [...rules.common.remove.filter((s) => !UNCOUNTED.has(s)), ...rule.remove, ...adblock]);
+  swept += dropMatchingBlocks(container, rule.dropParagraphs.length ? rule.dropParagraphs : rules.common.dropParagraphs);
   normalizeSummaries(container, rules.common.summaryHeadings ?? []);
   fixMedia(container, baseUrl);
   removeEmpty(container);
+  return swept;
 }
 
 /**
  * Custom elements (<social-actions>, <amp-ad>, …) are always widgets, never article text.
  * Sanitizing would unwrap them and leak their text ("…", share counts), so drop them whole first.
  */
-function removeCustomElements(root: HTMLElement): void {
+function removeCustomElements(root: HTMLElement): number {
+  let n = 0;
   for (const el of [...root.querySelectorAll('*')]) {
-    if (el.tagName.includes('-') && root.contains(el)) el.remove();
+    if (el.tagName.includes('-') && attached(el, root)) {
+      el.remove();
+      n++;
+    }
   }
+  return n;
 }
 
-function removeSelectors(root: HTMLElement, selectors: string[]): void {
+/** Still attached under root? Walking up is cheap; Node.contains() walks the whole subtree in some DOMs. */
+function attached(el: Node, root: Node): boolean {
+  for (let n: Node | null = el; n; n = n.parentNode) if (n === root) return true;
+  return false;
+}
+
+function removeSelectors(root: HTMLElement, selectors: string[], count = true): number {
+  let n = 0;
   for (const sel of selectors) {
     try {
-      root.querySelectorAll(sel).forEach((el) => el.remove());
+      root.querySelectorAll(sel).forEach((el) => {
+        // Nested matches go with their parent; count each removed subtree once.
+        if (!attached(el, root)) return;
+        el.remove();
+        n++;
+      });
     } catch {
       // Unsupported selector (e.g. engine without :has) or a bad rule; skip it.
     }
   }
+  return count ? n : 0;
 }
 
-function dropMatchingBlocks(root: HTMLElement, patterns: string[]): void {
+function dropMatchingBlocks(root: HTMLElement, patterns: string[]): number {
   const regexes = patterns.map((p) => new RegExp(p, 'i'));
+  let n = 0;
   for (const el of [...root.querySelectorAll(BLOCKS)]) {
     // The container is detached from the page, so isConnected is always false; check containment instead.
-    if (!root.contains(el)) continue;
+    if (!attached(el, root)) continue;
     const text = (el.textContent ?? '').replace(/\s+/g, ' ').trim();
     if (!regexes.some((r) => r.test(text))) continue;
     // Short blocks go. Long blocks only if they're mostly links (a "Baca Juga" list),
     // never a real paragraph that merely starts with similar words.
-    if (text.length <= 400 || linkDensity(el, text.length) > 0.5) el.remove();
+    if (text.length <= 400 || linkDensity(el, text.length) > 0.5) {
+      el.remove();
+      n++;
+    }
   }
+  return n;
 }
 
 function linkDensity(el: Element, textLength: number): number {

@@ -1,0 +1,584 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T00:12:04.794Z",
+  "title": "Design System: Sapu Berita",
+  "extensions": {
+    "colorMeta": {
+      "lidi-ochre": {
+        "role": "primary",
+        "displayName": "Lidi Ochre",
+        "canonical": "oklch(61.9% 0.125 76.5)",
+        "tonalRamp": [
+          "rgb(25 6 0)",
+          "rgb(58 29 0)",
+          "rgb(95 57 0)",
+          "rgb(134 86 0)",
+          "rgb(169 120 32)",
+          "rgb(200 157 91)",
+          "rgb(231 195 142)",
+          "rgb(255 234 193)"
+        ]
+      },
+      "sepia-lidi-ochre": {
+        "role": "primary",
+        "displayName": "Lidi Ochre (sepia)",
+        "canonical": "oklch(56.8% 0.118 73.2)",
+        "tonalRamp": [
+          "rgb(25 6 0)",
+          "rgb(58 29 0)",
+          "rgb(95 56 0)",
+          "rgb(134 85 0)",
+          "rgb(170 119 44)",
+          "rgb(200 156 98)",
+          "rgb(231 194 147)",
+          "rgb(255 233 196)"
+        ]
+      },
+      "dark-lidi-ochre": {
+        "role": "primary",
+        "displayName": "Lidi Ochre (dark)",
+        "canonical": "oklch(77.2% 0.131 82.2)",
+        "tonalRamp": [
+          "rgb(24 6 0)",
+          "rgb(56 31 0)",
+          "rgb(92 58 0)",
+          "rgb(131 88 0)",
+          "rgb(166 122 15)",
+          "rgb(197 159 86)",
+          "rgb(228 197 138)",
+          "rgb(255 235 190)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "sepia-paper": {
+        "role": "neutral",
+        "displayName": "Warm Newsprint",
+        "canonical": "oklch(95.9% 0.018 86.1)",
+        "tonalRamp": [
+          "rgb(13 11 7)",
+          "rgb(40 37 31)",
+          "rgb(69 66 57)",
+          "rgb(101 97 86)",
+          "rgb(135 130 119)",
+          "rgb(169 165 155)",
+          "rgb(204 201 193)",
+          "rgb(241 238 232)"
+        ]
+      },
+      "dark-paper": {
+        "role": "neutral",
+        "displayName": "Ink-Black Ground",
+        "canonical": "oklch(18.2% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(18.2% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "sepia-ink": {
+        "role": "neutral",
+        "displayName": "Brown-Black Ink",
+        "canonical": "oklch(26.0% 0.026 71.4)",
+        "tonalRamp": [
+          "rgb(15 10 6)",
+          "rgb(42 36 28)",
+          "rgb(73 64 54)",
+          "rgb(106 95 83)",
+          "rgb(140 128 115)",
+          "rgb(173 163 152)",
+          "rgb(208 200 190)",
+          "rgb(244 237 229)"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Off-White Ink",
+        "canonical": "oklch(93.0% 0.003 106.5)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 36)",
+          "rgb(66 66 65)",
+          "rgb(97 97 96)",
+          "rgb(130 130 129)",
+          "rgb(165 165 164)",
+          "rgb(201 201 200)",
+          "rgb(238 238 237)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Grey Sans Muted",
+        "canonical": "oklch(47.5% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "sepia-muted": {
+        "role": "neutral",
+        "displayName": "Grey Sans Muted (sepia)",
+        "canonical": "oklch(47.1% 0.037 72.9)",
+        "tonalRamp": [
+          "rgb(16 10 4)",
+          "rgb(44 35 24)",
+          "rgb(76 64 49)",
+          "rgb(109 94 76)",
+          "rgb(143 128 108)",
+          "rgb(177 163 146)",
+          "rgb(211 199 185)",
+          "rgb(246 237 226)"
+        ]
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Grey Sans Muted (dark)",
+        "canonical": "oklch(73.1% 0.004 106.5)",
+        "tonalRamp": [
+          "rgb(11 11 10)",
+          "rgb(37 37 36)",
+          "rgb(66 66 64)",
+          "rgb(97 97 95)",
+          "rgb(130 130 128)",
+          "rgb(165 165 163)",
+          "rgb(201 201 199)",
+          "rgb(238 238 237)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panel",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "sepia-panel": {
+        "role": "neutral",
+        "displayName": "Panel (sepia)",
+        "canonical": "oklch(97.7% 0.013 86.8)",
+        "tonalRamp": [
+          "rgb(12 11 8)",
+          "rgb(39 37 33)",
+          "rgb(68 66 60)",
+          "rgb(100 97 90)",
+          "rgb(133 130 123)",
+          "rgb(168 165 158)",
+          "rgb(203 201 195)",
+          "rgb(240 238 234)"
+        ]
+      },
+      "dark-panel": {
+        "role": "neutral",
+        "displayName": "Panel (dark)",
+        "canonical": "oklch(23.5% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "sepia-rule": {
+        "role": "neutral",
+        "displayName": "Hairline (sepia)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "dark-rule": {
+        "role": "neutral",
+        "displayName": "Hairline (dark)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "sepia-rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline (sepia)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "dark-rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline (dark)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "chip": {
+        "role": "neutral",
+        "displayName": "Chip",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "sepia-chip": {
+        "role": "neutral",
+        "displayName": "Chip (sepia)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "dark-chip": {
+        "role": "neutral",
+        "displayName": "Chip (dark)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "shadow": {
+        "role": "neutral",
+        "displayName": "Shadow",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "sepia-shadow": {
+        "role": "neutral",
+        "displayName": "Shadow (sepia)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "dark-shadow": {
+        "role": "neutral",
+        "displayName": "Shadow (dark)",
+        "note": "Translucent; composites over its ground, so no tonal ramp."
+      },
+      "plate": {
+        "role": "neutral",
+        "displayName": "Logo Plate",
+        "note": "Transparent on paper."
+      },
+      "sepia-plate": {
+        "role": "neutral",
+        "displayName": "Logo Plate (sepia)",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "dark-plate": {
+        "role": "neutral",
+        "displayName": "Logo Plate (dark)",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      },
+      "logo-ground-fallback": {
+        "role": "neutral",
+        "displayName": "Logo Ground Fallback",
+        "canonical": "oklch(20.9% 0.000 89.9)",
+        "tonalRamp": [
+          "rgb(11 11 11)",
+          "rgb(37 37 37)",
+          "rgb(66 66 66)",
+          "rgb(97 97 97)",
+          "rgb(130 130 130)",
+          "rgb(165 165 165)",
+          "rgb(201 201 201)",
+          "rgb(238 238 238)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Article title only; nothing sits above it."
+      },
+      "deck": {
+        "displayName": "Deck",
+        "purpose": "Standfirst under the headline, muted, only when distinct from the opening."
+      },
+      "title": {
+        "displayName": "Subhead",
+        "purpose": "h2 1.28em, h3 1.12em, h4 1em inside the article; always serif."
+      },
+      "body": {
+        "displayName": "Body (serif, default)",
+        "purpose": "The journalism. Five reader size steps: 16, 17.5, 19, 21, 23.5px; 1.5px smaller at 600px and under."
+      },
+      "body-sans": {
+        "displayName": "Body (sans option)",
+        "purpose": "Reader-chosen alternative body face."
+      },
+      "body-legible": {
+        "displayName": "Body (legible option)",
+        "purpose": "Reader-chosen wide, open face; looser leading and tracking."
+      },
+      "meta": {
+        "displayName": "Meta row",
+        "purpose": "Section (ink, 600) · byline · date; each part unbroken."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Figcaptions and the sweep line."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Pill buttons, reopen button, segmented options."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Settings group labels, sentence case, muted."
+      },
+      "outlet-name": {
+        "displayName": "Outlet name",
+        "purpose": "Fallback for, or companion to, a square logo in the masthead."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel-float",
+        "value": "0 16px 40px -8px var(--shadow), 0 2px 6px var(--shadow)",
+        "purpose": "Settings popover and bottom sheet; --shadow retuned per ground."
+      },
+      {
+        "name": "knob",
+        "value": "0 1px 3px rgb(0 0 0 / 0.3)",
+        "purpose": "Switch thumb."
+      },
+      {
+        "name": "reopen-lift",
+        "value": "0 6px 20px -4px rgb(0 0 0 / 0.4)",
+        "purpose": "Floating reopen button over the original page."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "purpose": "The one easing for every state change."
+      },
+      {
+        "name": "duration-state",
+        "value": "160ms",
+        "purpose": "Hover and selected fills and borders; panel opacity."
+      },
+      {
+        "name": "duration-switch",
+        "value": "180ms",
+        "purpose": "Switch track colour and thumb travel."
+      },
+      {
+        "name": "duration-panel",
+        "value": "200ms",
+        "purpose": "Panel rise (6px popover, 16px sheet)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none",
+        "purpose": "All transitions dropped under prefers-reduced-motion; spinner slowed to 2.4s."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "600px",
+        "purpose": "At and below: body text 1.5px smaller, settings panel becomes a bottom sheet."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Pill Button",
+      "kind": "button",
+      "refersTo": "button-pill",
+      "description": "Masthead control (Asli / Original); outlined, quiet.",
+      "html": "<button class=\"ds-pill\">Asli</button>",
+      "css": ".ds-pill { height: 34px; padding: 0 13px; border-radius: 17px; border: 1px solid rgb(0 0 0 / 0.26); background: transparent; color: rgb(18 18 18); font: 600 14px/1 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; cursor: pointer; display: inline-flex; align-items: center; transition: background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1); } .ds-pill:hover { background: rgb(0 0 0 / 0.045); } .ds-pill:focus-visible { outline: 2px solid rgb(176 122 18); outline-offset: 2px; }"
+    },
+    {
+      "name": "Aa Button (expanded)",
+      "kind": "button",
+      "refersTo": "button-pill-expanded",
+      "description": "Opens reading settings; lidi-ochre outline while open.",
+      "html": "<button class=\"ds-aa\" aria-expanded=\"true\"><span class=\"ds-aa-big\">A</span><span class=\"ds-aa-small\">a</span></button>",
+      "css": ".ds-aa { height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid rgb(0 0 0 / 0.26); background: transparent; color: rgb(18 18 18); font: 700 14px/1 Charter, \"Bitstream Charter\", \"Iowan Old Style\", \"Sitka Text\", Cambria, Georgia, \"Noto Serif\", serif; letter-spacing: -0.02em; display: inline-flex; align-items: center; gap: 1px; cursor: pointer; transition: background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1); } .ds-aa-big { font-size: 18px; } .ds-aa-small { font-size: 13px; } .ds-aa:hover { background: rgb(0 0 0 / 0.045); } .ds-aa[aria-expanded=\"true\"] { border-color: rgb(176 122 18); background: rgb(0 0 0 / 0.045); } .ds-aa:focus-visible { outline: 2px solid rgb(176 122 18); outline-offset: 2px; }"
+    },
+    {
+      "name": "Masthead Bar",
+      "kind": "nav",
+      "refersTo": "masthead-bar",
+      "description": "Outlet logo left, Aa and Asli right, lidi-ochre progress hairline on the bottom rule.",
+      "html": "<header class=\"ds-bar\"><span class=\"ds-outlet\">Kompas.com</span><div class=\"ds-tools\"><button class=\"ds-bar-btn\"><span style=\"font-size:18px\">A</span><span style=\"font-size:13px\">a</span></button><button class=\"ds-bar-btn ds-sans\">Asli</button></div><div class=\"ds-progress\"></div></header>",
+      "css": ".ds-bar { position: relative; height: 56px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; background: rgb(255 255 255); border-bottom: 1px solid rgb(0 0 0 / 0.1); color: rgb(18 18 18); } .ds-outlet { font: 700 18px/1 Charter, \"Bitstream Charter\", \"Iowan Old Style\", \"Sitka Text\", Cambria, Georgia, \"Noto Serif\", serif; letter-spacing: -0.01em; } .ds-tools { display: flex; gap: 8px; } .ds-bar-btn { height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid rgb(0 0 0 / 0.26); background: transparent; color: inherit; font: 700 14px/1 Charter, \"Bitstream Charter\", \"Iowan Old Style\", \"Sitka Text\", Cambria, Georgia, \"Noto Serif\", serif; letter-spacing: -0.02em; display: inline-flex; align-items: center; gap: 1px; cursor: pointer; transition: background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1); } .ds-bar-btn.ds-sans { padding: 0 13px; font: 600 14px/1 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; letter-spacing: 0; } .ds-bar-btn:hover { background: rgb(0 0 0 / 0.045); } .ds-bar-btn:focus-visible { outline: 2px solid rgb(176 122 18); outline-offset: 2px; } .ds-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: rgb(176 122 18); transform-origin: 0 50%; transform: scaleX(0.38); }"
+    },
+    {
+      "name": "Article Header",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Headline, deck, then section · byline · date in grey sans; no kicker above.",
+      "html": "<header class=\"ds-head\"><h1>Pemerintah umumkan jadwal baru libur nasional 2027</h1><p class=\"ds-deck\">Perubahan menyasar cuti bersama di akhir tahun, dengan dua hari dipindah ke Januari.</p><p class=\"ds-meta\"><span class=\"ds-sec\">Nasional</span><span>Oleh Rina Wulandari</span><span>11 November 2026 09.30 WIB</span></p></header>",
+      "css": ".ds-head { font-size: 19px; max-width: 34em; color: rgb(18 18 18); } .ds-head h1 { margin: 0 0 0.45em; font: 700 2.15em/1.14 Charter, \"Bitstream Charter\", \"Iowan Old Style\", \"Sitka Heading\", Cambria, Georgia, \"Noto Serif\", serif; letter-spacing: -0.012em; text-wrap: balance; } .ds-deck { margin: 0 0 0.9em; font: 400 1.08em/1.45 Charter, \"Bitstream Charter\", \"Iowan Old Style\", \"Sitka Text\", Cambria, Georgia, \"Noto Serif\", serif; color: rgb(92 92 92); text-wrap: pretty; } .ds-meta { margin: 0; font: 400 0.74em/1.5 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; color: rgb(92 92 92); font-variant-numeric: tabular-nums; } .ds-meta span { white-space: nowrap; } .ds-meta .ds-sec { color: rgb(18 18 18); font-weight: 600; } .ds-meta span + span::before { content: \"\\00B7\"; margin: 0 0.5em; color: rgb(0 0 0 / 0.26); }"
+    },
+    {
+      "name": "Summary Box",
+      "kind": "card",
+      "refersTo": "body",
+      "description": "An outlet's summary blockquote: 2px ink rule above, hairline below, no fill.",
+      "html": "<blockquote class=\"ds-summary\"><b>Poin penting</b><ul><li>Dua hari cuti bersama dipindah ke Januari.</li><li>Berlaku untuk ASN dan swasta.</li></ul></blockquote>",
+      "css": ".ds-summary { margin: 0; padding: 0.9em 0 0.2em; border-top: 2px solid rgb(18 18 18); border-bottom: 1px solid rgb(0 0 0 / 0.1); font: 400 17.86px/1.62 Charter, \"Bitstream Charter\", \"Iowan Old Style\", \"Sitka Text\", Cambria, Georgia, \"Noto Serif\", serif; color: rgb(18 18 18); max-width: 34em; } .ds-summary > b:first-child { display: block; margin-bottom: 0.55em; font: 700 0.74em/1.3 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; } .ds-summary ul { margin: 0 0 0.9em; padding-left: 1.25em; } .ds-summary li + li { margin-top: 0.4em; } .ds-summary li::marker { color: rgb(92 92 92); }"
+    },
+    {
+      "name": "Sweep Line",
+      "kind": "custom",
+      "refersTo": "caption",
+      "description": "End-of-article receipt: broom mark in lidi ochre, counts, link to the original.",
+      "html": "<footer class=\"ds-sweep\"><span class=\"ds-mark\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 4 13 11\"/><path d=\"M11.2 9.2l3.6 3.6\"/><path d=\"M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2\"/><path d=\"M6.8 16.4 9.6 13.6\"/><path d=\"M9 17.6l2.2-2.2\"/></svg>14 gangguan disapu</span><span>3 halaman digabung</span><a href=\"\">Baca di situs asli<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 16 16 8\"/><path d=\"M9 8h7v7\"/></svg></a></footer>",
+      "css": ".ds-sweep { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 1em 0; border-top: 1px solid rgb(0 0 0 / 0.1); font: 13.68px/1.45 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; color: rgb(92 92 92); max-width: 34em; } .ds-mark { display: inline-flex; align-items: center; gap: 6px; color: rgb(18 18 18); font-weight: 600; } .ds-mark svg { color: rgb(176 122 18); flex: none; } .ds-sweep a { margin-left: auto; color: rgb(18 18 18); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; } .ds-sweep a:hover { text-decoration: underline; text-underline-offset: 0.2em; } .ds-sweep a:focus-visible { outline: 2px solid rgb(176 122 18); outline-offset: 2px; border-radius: 4px; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "refersTo": "segmented-option-selected",
+      "description": "Theme picker with ground swatches; selected option gets chip fill and a lidi-ochre border.",
+      "html": "<div class=\"ds-seg\" role=\"radiogroup\" aria-label=\"Tema\"><button role=\"radio\" aria-checked=\"false\"><span class=\"ds-sw\" style=\"background:linear-gradient(135deg, rgb(255 255 255) 50%, rgb(18 18 18) 50%)\"></span>Otomatis</button><button role=\"radio\" aria-checked=\"true\"><span class=\"ds-sw\" style=\"background:rgb(255 255 255)\"></span>Terang</button><button role=\"radio\" aria-checked=\"false\"><span class=\"ds-sw\" style=\"background:rgb(247 241 228)\"></span>Sepia</button><button role=\"radio\" aria-checked=\"false\"><span class=\"ds-sw\" style=\"background:rgb(18 18 18)\"></span>Gelap</button></div>",
+      "css": ".ds-seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; padding: 3px; border: 1px solid rgb(0 0 0 / 0.1); border-radius: 10px; width: 288px; } .ds-seg button { min-height: 38px; padding: 6px 4px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: rgb(18 18 18); font: 14px/1.1 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1); } .ds-seg button:hover { background: rgb(0 0 0 / 0.045); } .ds-seg button[aria-checked=\"true\"] { background: rgb(0 0 0 / 0.045); border-color: rgb(176 122 18); font-weight: 600; } .ds-seg button:focus-visible { outline: 2px solid rgb(176 122 18); outline-offset: 2px; } .ds-sw { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgb(0 0 0 / 0.26); }"
+    },
+    {
+      "name": "Switch",
+      "kind": "input",
+      "refersTo": "switch-on",
+      "description": "Settings toggle row; muted track off, lidi-ochre track on.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-text\">Buka otomatis<span class=\"ds-hint\">Kalau mati, buka lewat tombol Sapu</span></span><button class=\"ds-switch\" role=\"switch\" aria-checked=\"true\" aria-label=\"Buka otomatis\"></button></div>",
+      "css": ".ds-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 0; width: 288px; color: rgb(18 18 18); } .ds-text { font: 14px/1.3 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; } .ds-hint { display: block; font-size: 12px; color: rgb(92 92 92); margin-top: 2px; } .ds-switch { flex: none; width: 42px; height: 26px; border-radius: 13px; border: 0; padding: 3px; cursor: pointer; background: rgb(92 92 92); transition: background-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1); } .ds-switch::after { content: \"\"; display: block; width: 20px; height: 20px; border-radius: 50%; background: rgb(255 255 255); box-shadow: 0 1px 3px rgb(0 0 0 / 0.3); transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1); } .ds-switch[aria-checked=\"true\"] { background: rgb(176 122 18); } .ds-switch[aria-checked=\"true\"]::after { transform: translateX(16px); } .ds-switch:focus-visible { outline: 2px solid rgb(176 122 18); outline-offset: 2px; }"
+    },
+    {
+      "name": "Reopen Button",
+      "kind": "button",
+      "refersTo": "reopen-button",
+      "description": "Floats over the original page; ink-black pill with the broom mark in lidi ochre.",
+      "html": "<button class=\"ds-reopen\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 4 13 11\"/><path d=\"M11.2 9.2l3.6 3.6\"/><path d=\"M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2\"/><path d=\"M6.8 16.4 9.6 13.6\"/><path d=\"M9 17.6l2.2-2.2\"/></svg>Baca bersih</button>",
+      "css": ".ds-reopen { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px 0 14px; border: 0; border-radius: 22px; cursor: pointer; font: 600 14px/1 -apple-system, BlinkMacSystemFont, \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; color: rgb(255 255 255); background: rgb(18 18 18); box-shadow: 0 6px 20px -4px rgb(0 0 0 / 0.4); } .ds-reopen svg { color: rgb(222 172 70); } .ds-reopen:focus-visible { outline: 2px solid rgb(222 172 70); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Paper's Own Web Edition",
+    "overview": "Sapu Berita sets a swept Indonesian news article the way a great newspaper sets its own web edition: serif authority for the journalism, generous white space, order kept by hairline rules rather than boxes. The reader should feel they are reading the outlet's story in its best possible form, not a generic reader-mode card and not the outlet's cluttered chrome. Everything that belongs to the journalism (headline, deck, body, subheads) is serif; everything that belongs to Sapu Berita or to the page's bookkeeping (bylines, dates, captions, labels, controls) is a quiet grey sans.\n\nDensity is low and vertical: one centered column, one slim bar above it, nothing in the margins. Colour is almost absent. Paper and ink carry the page; a single accent, lidi ochre (the straw colour of a sapu lidi broom), appears only where Sapu itself is acting: the reading-progress hairline, the active setting, the sweep line at the end. Three grounds exist and are first-class: paper white, warm newsprint sepia, and ink-black dark.\n\nThe overlay lives inside one Shadow DOM over the original page, so the system is self-contained: system font stacks only, colours written as `rgb()` only, no external assets. The Sapu broom mark and lidi ochre are the shared identity with the planned sibling product Sapu Buzzer and must stay recognisably the same across both.",
+    "keyCharacteristics": [
+      "Serif for the journalism, grey sans for everything that is ours.",
+      "Hairline rules (1px, low-alpha ink) instead of cards, fills or shadows on the page.",
+      "One accent, lidi ochre, reserved for Sapu marks; never decoration, never text.",
+      "Three grounds (paper, sepia newsprint, ink-black) with per-theme tuned tokens.",
+      "The outlet's own logo, on its own plate, credits whose journalism this is.",
+      "System font stacks, `rgb()` colours, one Shadow DOM: constraints, not preferences."
+    ],
+    "rules": [
+      {
+        "name": "The Lidi Rule",
+        "body": "Lidi ochre marks only what Sapu is doing: progress, the active setting, the sweep. It never fills a surface, never colours text, never decorates. If removing it would not lose information about Sapu's state, it should not be there.",
+        "section": "colors"
+      },
+      {
+        "name": "The rgb() Rule",
+        "body": "Every colour is written as `rgb()` (space-separated, `/ alpha` for translucency). No hex anywhere in shipped CSS or markup: the iOS Shortcut build chokes on `#`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Retune Rule",
+        "body": "A new token gets a value for every ground (light, sepia, dark). Grounds are tuned, not inverted.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Serif is the journalism's voice; sans is ours. A new element is serif only if it is the outlet's words.",
+        "section": "typography"
+      },
+      {
+        "name": "The System Stack Rule",
+        "body": "System font stacks only. News-site CSP blocks web fonts and the bundle must stay small for the iOS Shortcut time limit.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bold Is B Rule",
+        "body": "Bold is rendered as `<b>`, never `<strong>`: Brave Shields hides every `<strong>` on some news domains, even inside Shadow DOM.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline Order Rule",
+        "body": "On the reading surface, structure is drawn with 1px rules, never with cards, fills or shadows. Shadows are for things that float over the page.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set the outlet's words in the serif and everything of ours in the grey sans (The Two Voices Rule).",
+      "**Do** keep lidi ochre to Sapu marks: progress, active setting, sweep line, focus.",
+      "**Do** write every colour as `rgb()` and give every new token a light, sepia and dark value.",
+      "**Do** draw order with 1px hairlines (`rule`, `rule-strong`) and white space.",
+      "**Do** size article elements in `em` against the reader's text size; keep the column at 34em.",
+      "**Do** use the shared ease `cubic-bezier(0.2, 0.8, 0.2, 1)` at 160 to 200ms for state changes, and drop transitions under reduced motion.",
+      "**Do** draw icons as authored 24px SVG at 1.6 stroke in `currentColor`, and reuse the broom mark as is; it is shared with Sapu Buzzer.",
+      "**Do** keep each meta-row part (section, byline, date) unbroken; wrap only at the separators."
+    ],
+    "donts": [
+      "**Don't** load web fonts or external assets; system font stacks only, everything inside the one Shadow DOM.",
+      "**Don't** write hex colours anywhere in shipped code.",
+      "**Don't** emit `<strong>`; bold is `<b>`.",
+      "**Don't** put a kicker, eyebrow or section label above the headline.",
+      "**Don't** use lidi ochre for text, fills, backgrounds or decoration.",
+      "**Don't** wrap the article in cards, tinted panels or side-striped callouts; the reader-mode card with blue accents is the anti-reference.",
+      "**Don't** hard-code per-site logos or colours; the logo and its dark ground are detected from the live page.",
+      "**Don't** spread the summary box's uppercase tracked title to other labels; labels are sentence case."
+    ]
+  }
+}

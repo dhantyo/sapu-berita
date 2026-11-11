@@ -1,6 +1,7 @@
 import type { Article, ArticleMeta, Context, ResolvedRule, RunResult } from './types.ts';
 import { adblockSelectors, findRule } from './rules/match.ts';
 import { extractMetadata } from './extract/metadata.ts';
+import { findLogo, groundForSrc } from './extract/logo.ts';
 import { extractByRule } from './extract/content.ts';
 import { extractWithReadability } from './extract/fallback.ts';
 import { assessQuality } from './extract/quality.ts';
@@ -28,7 +29,12 @@ export async function run(ctx: Context, onProgress?: ProgressCallback): Promise<
     const rule = findRule(ctx.rules, ctx.url);
     if (!rule) return report({ ok: false, reason: 'not-article' });
 
-    const meta = extractMetadata(ctx.doc);
+    const extracted = extractMetadata(ctx.doc);
+    // The site's own masthead logo (auto-detected, carries regional brands) beats the generic JSON-LD one.
+    const masthead = findLogo(ctx.doc, rule.logo);
+    const meta = masthead
+      ? { ...extracted, logo: masthead.src, logoGround: masthead.darkGround }
+      : { ...extracted, logoGround: extracted.logo ? groundForSrc(ctx.doc, extracted.logo) : undefined };
     const q = ctx.rules.common.quality;
 
     const byRule: Extractor = (doc) => extractByRule(doc, rule);
@@ -73,9 +79,9 @@ function finishArticle(
   source: Article['source'],
   ctx: Context,
 ): RunResult {
-  clean(container, rule, ctx.rules, adblockSelectors(ctx.rules, ctx.url.hostname), ctx.url);
+  const swept = clean(container, rule, ctx.rules, adblockSelectors(ctx.rules, ctx.url.hostname), ctx.url);
   const content = sanitize(container);
   const quality = assessQuality(content, ctx.rules.common.quality);
   if (!quality.ok) return { ok: false, reason: 'low-quality', detail: JSON.stringify(quality) };
-  return { ok: true, article: { meta, content, source, pages, ruleId: rule.id } };
+  return { ok: true, article: { meta, content, source, pages, swept, ruleId: rule.id } };
 }

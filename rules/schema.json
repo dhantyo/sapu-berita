@@ -63,6 +63,11 @@
         }
       }
     },
+    "logo": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Escape hatch only: CSS selectors for the header logo <img> when automatic detection picks the wrong image. Leave unset normally; the logo and its background are detected from the live page."
+    },
     "feed": {
       "type": "string",
       "format": "uri",

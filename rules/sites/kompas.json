@@ -18,6 +18,7 @@
   "dropParagraphs": [
     "^gabung membership kompas\\.com\\+",
     "^dukung kompas\\.com\\b",
+    "^baca berita tanpa iklan\\b",
     "^akses tanya langsung\\b"
   ],
   "pagination": {

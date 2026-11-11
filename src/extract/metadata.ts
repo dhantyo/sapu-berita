@@ -7,6 +7,16 @@ export function extractMetadata(doc: Document): ArticleMeta {
   const ld = findArticleJsonLd(doc);
   const meta = (sel: string) => doc.querySelector<HTMLMetaElement>(sel)?.content?.trim() || undefined;
 
+  const publisher = (ld?.publisher ?? undefined) as Json | undefined;
+  const absolute = (u?: string) => {
+    if (!u) return undefined;
+    try {
+      return new URL(u, doc.baseURI).href;
+    } catch {
+      return undefined;
+    }
+  };
+
   return {
     title:
       str(ld?.headline) ??
@@ -18,7 +28,11 @@ export function extractMetadata(doc: Document): ArticleMeta {
       meta('meta[property="article:published_time"]') ??
       meta('meta[name="publishdate"]'),
     image: imageUrl(ld?.image) ?? meta('meta[property="og:image"]'),
-    siteName: meta('meta[property="og:site_name"]'),
+    // publisher.name is the outlet's real name; og:site_name is sometimes a section ("nasional" on CNN Indonesia).
+    siteName: str(publisher?.name) ?? meta('meta[property="og:site_name"]'),
+    // Every supported outlet ships its official logo in NewsArticle.publisher.logo (verified 2026-11-11).
+    logo: absolute(imageUrl(publisher?.logo)),
+    section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
   };
 }

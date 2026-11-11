@@ -15,7 +15,7 @@ Test both on a real iPhone. Keep whichever works on all 5 outlets and delete the
 
 ## Making the Shortcut (once, by the maintainer)
 
-1. Shortcuts app → **+** → name it "Baca Bersih".
+1. Shortcuts app → **+** → name it "Sapu Berita".
 2. Shortcut details (ⓘ) → turn on **Show in Share Sheet**, accept types: **Safari web pages**.
 3. Add the action **Run JavaScript on Web Page**, input: *Shortcut Input*.
 4. Paste the contents of the chosen build file.

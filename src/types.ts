@@ -22,6 +22,7 @@ export interface SiteRule extends RuleOverrides {
   body: string[];
   pagination: Pagination;
   variants?: Array<RuleOverrides & { when: string }>;
+  logo?: string[];
   feed?: string;
   samples?: string[];
   verified?: string;
@@ -64,6 +65,7 @@ export interface ResolvedRule {
   remove: string[];
   dropParagraphs: string[];
   pagination: Pagination;
+  logo: string[];
   /** True when only pagination is known (AutoAllPage import) and the body must come from Readability. */
   generic: boolean;
 }
@@ -74,6 +76,11 @@ export interface ArticleMeta {
   published?: string;
   image?: string;
   siteName?: string;
+  /** Outlet's official logo (absolute URL), shown in the overlay's masthead. */
+  logo?: string;
+  /** The dark colour the site draws its logo on (white lettering), detected from the live page. Unset = light ground. */
+  logoGround?: string;
+  section?: string;
   description?: string;
 }
 
@@ -83,6 +90,8 @@ export interface Article {
   content: HTMLElement;
   source: 'rule' | 'readability';
   pages: number;
+  /** How many distractions were removed (Baca Juga boxes, ads, promos, embeds), for the sweep line. */
+  swept: number;
   ruleId?: string;
 }
 

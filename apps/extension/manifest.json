@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Baca Bersih (dev)",
+  "name": "Sapu Berita (dev)",
   "version": "0.0.0",
-  "description": "Development build of the Baca Bersih overlay. Load unpacked in chrome://extensions after `npm run build`.",
+  "description": "Development build of the Sapu Berita overlay. Load unpacked in chrome://extensions after `npm run build`.",
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": [

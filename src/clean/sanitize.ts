@@ -5,8 +5,9 @@ import createDOMPurify from 'dompurify';
  * DOMPurify does the security part; the allow-list keeps the output looking like an article.
  */
 export function sanitize(container: HTMLElement): HTMLElement {
-  const win = container.ownerDocument.defaultView;
-  if (!win) throw new Error('sanitize: container has no window');
+  // A DOMParser document has no window of its own; the page's window works for it too.
+  const win = container.ownerDocument.defaultView ?? (typeof window !== 'undefined' ? window : null);
+  if (!win) throw new Error('sanitize: no window available');
   const purify = createDOMPurify(win as unknown as Window & typeof globalThis);
 
   const fragment = purify.sanitize(container.innerHTML, {

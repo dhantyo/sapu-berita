@@ -1,4 +1,4 @@
-# Baca Bersih
+# Sapu Berita
 
 Clean reading overlay for Indonesian news sites. Opens an article and shows just the article: no ads, no "Baca Juga" interruptions, and every page merged into one.
 
@@ -7,7 +7,7 @@ Clean reading overlay for Indonesian news sites. Opens an article and shows just
 
 | Platform | How users get it | Status |
 |---|---|---|
-| iPhone | Apple Shortcut (free, Share → Baca Bersih) | build ready, needs on-device test |
+| iPhone | Apple Shortcut (free, Share → Sapu Berita) | build ready, needs on-device test |
 | Android | Link-router app set as default browser (free APK) | planned |
 | Desktop Chrome | Dev extension | working, for development |
 
@@ -31,3 +31,8 @@ npm run build                # all wrappers into dist/ and apps/extension/
 
 ## License
 GPL-3.0-only. Rule data is derived from GPL-3.0 projects (AdBlockID, ABPindo, AutoAllPage).
+
+## Dev scripts
+
+- `npm run preview`: local page that runs the real pipeline on saved fixtures, to check the overlay at any viewport.
+- `npm run rebaseline`: recompute fixture expectations from saved HTML after a deliberate cleaning change.

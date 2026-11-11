@@ -26,6 +26,7 @@ export function findRule(rules: RuleSet, url: URL): ResolvedRule | null {
       remove: [],
       dropParagraphs: [],
       pagination: generic.pagination,
+      logo: [],
       generic: true,
     };
   }
@@ -46,6 +47,7 @@ function resolve(site: SiteRule, path: string, rules: RuleSet): ResolvedRule {
       ...(variant?.dropParagraphs ?? []),
     ],
     pagination: variant?.pagination ?? site.pagination,
+    logo: site.logo ?? [],
     generic: false,
   };
 }

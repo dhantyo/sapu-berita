@@ -34,6 +34,7 @@ const JUNK = [
   /Dukung KOMPAS\.com/i,
   /Artikel Kompas\.id/i,
   /Tautan telah disalin/i,
+  /Baca berita tanpa iklan/i,
 ];
 
 describe.skipIf(!cases.length)('fixtures', () => {
