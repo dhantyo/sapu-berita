@@ -6,10 +6,26 @@
 import { build, type Plugin } from 'esbuild';
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { execSync } from 'node:child_process';
 import { ROOT } from './lib/rules.ts';
 import { buildRules } from './build-rules.ts';
 
-const REMOTE_RULES_URL = process.env.REMOTE_RULES_URL ?? '';
+// The GitHub repository this build belongs to: CI's own, else the local git remote.
+const REPO = process.env.GITHUB_REPOSITORY ?? (() => {
+  try {
+    return execSync('git remote get-url origin', { encoding: 'utf8' }).trim().match(/github\.com[/:](.+?)(?:\.git)?$/)?.[1] ?? '';
+  } catch {
+    return '';
+  }
+})();
+const [OWNER = '', NAME = ''] = REPO.split('/');
+// Release channel: GitHub Pages of this repo, holding update.json + rules.json (published by the release job).
+// Note: GitHub Pages URLs don't redirect after a repository rename; installed copies keep asking the old URL.
+const CHANNEL_URL = process.env.SAPU_CHANNEL_URL ?? (REPO ? `https://${OWNER.toLowerCase()}.github.io/${NAME}/` : '');
+// "Report a problem": a prefilled "Artikel rusak" issue form. update.json can swap in a form that needs no account.
+const REPORT_URL = process.env.SAPU_REPORT_URL ?? (REPO
+  ? `https://github.com/${REPO}/issues/new?template=artikel-rusak.yml&url={url}&details=${encodeURIComponent('Sapu Berita ')}{version}%20(%7Bplatform%7D)`.replace('%7Bplatform%7D', '{platform}')
+  : '');
 
 const rules = buildRules();
 
@@ -27,7 +43,8 @@ const common = {
   target: ['safari15', 'chrome100'],
   plugins: [rulesPlugin],
   define: {
-    __REMOTE_RULES_URL__: JSON.stringify(REMOTE_RULES_URL),
+    __CHANNEL_URL__: JSON.stringify(CHANNEL_URL),
+    __REPORT_URL__: JSON.stringify(REPORT_URL),
     __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
   },
   legalComments: 'eof' as const,

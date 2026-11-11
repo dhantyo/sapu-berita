@@ -45,11 +45,21 @@ Detik · Kompas · Tribunnews (termasuk situs daerah) · CNN Indonesia · CNBC I
 
 Semua berjalan di perangkatmu. Sapu Berita tidak punya server, tidak memakai analitik, dan tidak tahu apa yang kamu baca. Artikel tetap dimuat dari situs aslinya, jadi kunjunganmu tetap tercatat oleh media tersebut seperti biasa.
 
-*Everything runs on your device. No server, no analytics. Articles still load from the publisher's own site.*
+Sekali sehari, Sapu Berita mengambil dua file kecil dari GitHub: nomor versi terbaru dan aturan situs terbaru, supaya perbaikan sampai tanpa pasang ulang. Tidak ada data tentangmu atau bacaanmu yang dikirim. Bisa dimatikan di **Aa → Cek pembaruan**.
+
+*Everything runs on your device. No server, no analytics. Articles still load from the publisher's own site. Once a day it downloads the latest version number and site rules from GitHub (nothing about you is sent); turn it off under Aa → Check for updates.*
+
+## Pembaruan / Updates
+
+Sapu Berita memberi tahu sendiri kalau ada versi baru: muncul kotak **"Sapu Berita … sudah tersedia · Perbarui"** di atas artikel.
+- **Perbaikan situs** (misalnya situs ganti tampilan) sampai otomatis, tanpa perlu memperbarui aplikasi.
+- **Android:** ketuk **Perbarui** → file APK baru terunduh → buka → **Perbarui**. Pengaturanmu tetap tersimpan.
+- **iPhone, iPad, Mac:** ketuk **Perbarui** → panduan berisi tautan pintasan terbaru → **Ganti** pintasan lama.
+- **Ekstensi:** ketuk **Perbarui** → unduh zip baru, timpa folder lama, klik ↻.
 
 ## Ikut membantu / Contributing
 
-Situs berita sering ganti tampilan, jadi aturan per situs perlu dirawat. Laporan artikel yang rusak saja sudah sangat membantu. Yang mau ikut menulis kode atau aturan, baca [CONTRIBUTING.md](CONTRIBUTING.md).
+Situs berita sering ganti tampilan, jadi aturan per situs perlu dirawat. Laporan artikel yang rusak saja sudah sangat membantu: buka **Aa → Laporkan** di artikel yang bermasalah. Yang mau ikut menulis kode atau aturan, baca [CONTRIBUTING.md](CONTRIBUTING.md).
 
 *English: see [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/DEVELOPING.md](docs/DEVELOPING.md).*
 

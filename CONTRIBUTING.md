@@ -4,7 +4,9 @@ Terima kasih! Ada tiga cara membantu, dari yang paling mudah.
 
 ## 1. Laporkan artikel yang tampil aneh
 
-[Buka laporan baru](../../issues/new/choose) → **Artikel rusak**. Sertakan:
+Paling mudah: di artikel itu, buka **Aa → Laporkan**. Tautan artikel dan versi Sapu Berita sudah terisi otomatis.
+
+Atau [buka laporan baru](../../issues/new/choose) → **Artikel rusak**. Sertakan:
 - **tautan artikelnya** (paling penting),
 - perangkat yang dipakai (Android, iPhone, ekstensi),
 - apa yang salah: teks hilang, masih ada iklan atau "Baca Juga", halaman tidak tergabung, dan sebagainya. Tangkapan layar sangat membantu.
@@ -28,7 +30,7 @@ For a new site, `npm run probe -- https://www.example.com` drafts the rule for y
 
 Ground rules:
 - **No paywall bypassing.** Sapu Berita cleans what the site already shows you.
-- **No network calls of our own.** Everything runs on the reader's device; no servers, no analytics.
+- **No servers, no analytics.** Everything runs on the reader's device. The only request of our own is the daily, opt-out fetch of `update.json` and `rules.json` from the release channel; it carries nothing about the reader.
 - Prefer stable selectors (ids, semantic class names) over generated ones like `.css-1x2y3z`.
 
 More background: [docs/DEVELOPING.md](docs/DEVELOPING.md).

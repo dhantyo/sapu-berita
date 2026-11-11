@@ -11,7 +11,7 @@ import { sanitize } from './clean/sanitize.ts';
 
 export type { Article, Context, RunResult, RuleSet } from './types.ts';
 export { renderOverlay, type OverlayHandle } from './render/overlay.ts';
-export { loadRules } from './rules/load.ts';
+export { loadRules, refreshRulesIfStale } from './rules/load.ts';
 export { fetchSameOriginDocument, parseHtml } from './dom.ts';
 
 /** Called with the first (page 1) result right away, then again once extra pages are merged in. */

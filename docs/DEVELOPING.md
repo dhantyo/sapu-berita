@@ -39,6 +39,11 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 1. Bump `version` in `package.json` (the extension, the APK and the Shortcut all read it) and add a section to `CHANGELOG.md`.
 2. Commit, then tag and push: `git tag v0.1.0-beta.2 && git push --tags`.
 3. CI builds and signs everything and publishes a GitHub Release with the APK, the extension zip and the Shortcut script. Versions with a `-` suffix are marked pre-release.
+4. CI also publishes the **release channel** to GitHub Pages: `update.json` (latest version and per-platform update links) and `rules.json` (site rules). Installed copies read both once a day: a newer version shows an "update available" bar in the reader; newer rules apply silently, so most site fixes need no app update. For iOS, update the iCloud link in `docs/install-apple.md` before tagging, since `update.json` points Apple users there.
+
+One-time setup: Settings → Pages → Source: **GitHub Actions** (needs a public repository on the free plan). Pages URLs don't follow repository renames, so rename before the first release.
+
+`update.json` may also carry `"report": "<url template>"` to point the in-app **Laporkan** button somewhere other than GitHub issues (for example a form that needs no account); placeholders `{url} {title} {site} {version} {platform}`.
 
 The APK signing key is only in the repository's Actions secrets (`SAPU_KEYSTORE_B64`, `SAPU_KEYSTORE_PASSWORD`, `SAPU_KEY_ALIAS`, `SAPU_KEY_PASSWORD`). Keep a backup of the keystore: if it is lost, existing users cannot update and must reinstall.
 

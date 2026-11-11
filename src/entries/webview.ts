@@ -35,7 +35,7 @@ const appStore: SettingsStore | undefined = bridge && {
 };
 
 const start = () =>
-  void boot({ store: appStore }).then(
+  void boot({ store: appStore, platform: 'android' }).then(
     ({ result, rendered }) =>
       bridge?.onResult(JSON.stringify({ rendered, reason: result.ok ? null : result.reason, url: location.href })),
     (err) => bridge?.onResult(JSON.stringify({ rendered: false, reason: String(err), url: location.href })),

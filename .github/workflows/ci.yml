@@ -95,6 +95,21 @@ jobs:
           cp apk/sapu-berita.apk "out/sapu-berita-$V.apk"
           (cd builds/apps/extension && zip -q "$GITHUB_WORKSPACE/out/sapu-berita-extension-$V.zip" manifest.json content.js)
           cp builds/dist/shortcut.b64.js "out/sapu-berita-shortcut-$V.js"
+          # Release channel, served by GitHub Pages: installed copies check update.json once a day
+          # and pick up rules.json (site fixes) without reinstalling.
+          REPO_URL="https://github.com/$GITHUB_REPOSITORY"
+          mkdir channel
+          cp builds/dist/rules.json channel/rules.json
+          cat > channel/update.json <<JSON
+          {
+            "version": "$V",
+            "notes": "$REPO_URL/releases/tag/v$V",
+            "android": "$REPO_URL/releases/download/v$V/sapu-berita-$V.apk",
+            "extension": "$REPO_URL/releases/tag/v$V",
+            "apple": "$REPO_URL/blob/master/docs/install-apple.md"
+          }
+          JSON
+          node -e "JSON.parse(require('fs').readFileSync('channel/update.json','utf8'))"
           # Release notes: this version's section of CHANGELOG.md.
           awk -v h="## [$V]" 'index($0, h) == 1 {on=1; next} on && index($0, "## [") == 1 {exit} on' CHANGELOG.md > notes.md
           test -s notes.md || { echo "::error::No CHANGELOG.md section for $V"; exit 1; }
@@ -105,3 +120,18 @@ jobs:
         run: |
           PRE=""; [[ "$V" == *-* ]] && PRE="--prerelease"
           gh release create "$GITHUB_REF_NAME" out/* --title "Sapu Berita $V" --notes-file notes.md $PRE
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: channel/
+
+  # Publish the release channel. Needs GitHub Pages enabled with "GitHub Actions" as the source.
+  channel:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v5

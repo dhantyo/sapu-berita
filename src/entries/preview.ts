@@ -50,7 +50,11 @@ async function main() {
       else overlay = renderOverlay(document, r.article, {
         settings, loadingMore, originalUrl: meta.url,
         onSettingsChange: (s) => void localStorageStore.save(s),
+        reportUrl: () => 'https://github.com/example/repo/issues/new',
       });
+      // ?update=0.2.0 shows the "new version" bar.
+      const offered = params.get('update');
+      if (offered && !loadingMore) overlay.offerUpdate({ version: offered, url: '#update' });
     },
   );
 }

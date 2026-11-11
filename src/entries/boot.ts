@@ -2,15 +2,22 @@ import bundledRules from 'bacabersih:rules';
 import {
   fetchSameOriginDocument,
   loadRules,
+  refreshRulesIfStale,
   renderOverlay,
   run,
   type OverlayHandle,
   type RunResult,
 } from '../index.ts';
 import { localStorageStore, normalizeSettings, type SettingsStore } from '../settings.ts';
+import { cachedManifest, isSnoozed, latestManifest, offerFor, reportLink, snoozeOffer, type Platform } from '../update.ts';
 
-/** Where published rules live. Set at build time via esbuild `define`; empty disables remote updates. */
-declare const __REMOTE_RULES_URL__: string;
+/** Release channel (update.json + rules.json), set at build time via esbuild `define`; empty = no updates. */
+declare const __CHANNEL_URL__: string;
+/** Report link template with {url} {title} {site} {version} {platform}; update.json may override it. */
+declare const __REPORT_URL__: string;
+declare const __SAPU_VERSION__: string | undefined;
+const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
+const CHANNEL = __CHANNEL_URL__ || undefined;
 
 export interface BootResult {
   result: RunResult;
@@ -23,6 +30,8 @@ export interface BootOptions {
   store?: SettingsStore;
   /** Ignore the "open automatically" setting (the user explicitly asked, e.g. via the iOS Shortcut). */
   forceOpen?: boolean;
+  /** Which wrapper is running: picks the update link and labels bug reports. */
+  platform?: Platform;
 }
 
 /**
@@ -35,6 +44,13 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
     if (options.debug) console.debug('[sapuberita]', msg, data ?? '');
   };
   const url = new URL(location.href);
+  const platform = options.platform ?? 'web';
+  const checkForUpdates = async (shown: OverlayHandle) => {
+    if (!CHANNEL) return;
+    refreshRulesIfStale(new URL('rules.json', CHANNEL).href);
+    const offer = offerFor(await latestManifest(CHANNEL), VERSION, platform);
+    if (offer && !isSnoozed(offer.version)) shown.offerUpdate(offer);
+  };
   const store = options.store ?? localStorageStore;
   const settingsReady = store.load().then(normalizeSettings, () => normalizeSettings(undefined));
   let overlay: OverlayHandle | null = null;
@@ -44,7 +60,8 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
     {
       doc: document,
       url,
-      rules: loadRules(bundledRules, __REMOTE_RULES_URL__ || undefined),
+      // Cached remote rules if newer than the bundled ones; refreshed below only if the reader allows updates.
+      rules: loadRules(bundledRules),
       fetchDocument: (u) => fetchSameOriginDocument(u, url.origin),
       log: debug,
     },
@@ -61,7 +78,15 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
               startHidden: !settings.autoOpen && !options.forceOpen,
               originalUrl: url.href,
               onSettingsChange: (s) => void store.save(s),
+              onSnoozeUpdate: snoozeOffer,
+              reportUrl: (a) => {
+                const template = cachedManifest()?.report || __REPORT_URL__;
+                return template ? reportLink(template, {
+                  url: url.href, title: a.meta.title, site: url.hostname, version: VERSION, platform,
+                }) : undefined;
+              },
             });
+            if (settings.updates) void checkForUpdates(overlay);
           }
           const now = Math.round(performance.now());
           debug(`${loadingMore ? 'page 1' : 'final'} rendered ${now} ms after navigation (${Math.round(now - t0)} ms of work)`, {

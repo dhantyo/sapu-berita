@@ -13,7 +13,8 @@ async function bundle(): Promise<string> {
     entryPoints: [join(ROOT, 'src/entries/preview.ts')],
     bundle: true, format: 'iife', write: false, target: ['safari15', 'chrome100'],
     define: {
-      __REMOTE_RULES_URL__: '""',
+      __CHANNEL_URL__: '""',
+      __REPORT_URL__: '"https://github.com/example/repo/issues/new?url={url}&details={version}%20({platform})"',
       __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
     },
     plugins: [{

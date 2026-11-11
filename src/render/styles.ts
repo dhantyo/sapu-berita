@@ -90,6 +90,7 @@ button { font: inherit; color: inherit; }
   transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
 }
 .btn:hover { background: var(--chip); }
+a.btn { color: inherit; text-decoration: none; flex: none; }
 .btn[aria-expanded="true"] { border-color: var(--accent); background: var(--chip); }
 .aa { font-family: var(--serif); font-weight: 700; letter-spacing: -0.02em; padding: 0 12px; gap: 1px; }
 .aa .big { font-size: 18px; } .aa .small { font-size: 13px; }
@@ -180,6 +181,12 @@ svg { flex: none; }
     padding-bottom: max(18px, env(safe-area-inset-bottom)); transform: translateY(16px); }
 }
 .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.panel .report { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.panel .report .text { font: 14px/1.3 var(--sans); }
+.update { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 0 0 28px; padding: 12px 14px; border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 10px; font: 14px/1.4 var(--sans); }
+.update .actions { display: flex; align-items: center; gap: 8px; }
+.update .later { border: 0; background: none; padding: 6px 4px; color: var(--muted); font: inherit; cursor: pointer; }
+.update .later:hover { color: var(--ink); }
 .panel .version { margin: 14px 0 0; font: 400 12px/1.4 var(--sans); color: var(--muted); }
 .panel-head h2 { margin: 0; font: 600 15px/1.3 var(--sans); }
 .icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); }

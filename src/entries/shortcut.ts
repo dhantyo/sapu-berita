@@ -15,7 +15,7 @@ const finish = (value: unknown) => {
 
 setTimeout(() => finish({ rendered: false, reason: 'timeout' }), TIME_BUDGET_MS);
 // Running the Shortcut is an explicit request, so open even if "open automatically" is off.
-boot({ forceOpen: true }).then(
+boot({ forceOpen: true, platform: 'apple' }).then(
   ({ result, rendered }) => finish({ rendered, reason: result.ok ? null : result.reason }),
   (err) => finish({ rendered: false, reason: String(err) }),
 );

@@ -144,7 +144,7 @@ The weakest spots: Instagram, Facebook and TikTok in-app browsers (no fix on eit
 | Situation | What the user does | Where it lands today | Gap |
 |---|---|---|---|
 | Article looks wrong, user is technical | GitHub issue "Artikel rusak" (form asks for the link) | ✅ GitHub, once the repo is public | Needs a GitHub account |
-| Article looks wrong, user is not technical | Taps **Asli**, carries on; tells a friend | Nowhere | **No in-app "Laporkan" button** |
+| Article looks wrong, user is not technical | **Aa → Laporkan** (link and version prefilled) | GitHub issue form | Still needs a GitHub account; `update.json` can switch it to a no-account form |
 | Site redesign breaks a rule for everyone | Nobody reports it | ✅ daily canary goes red (most sites) | Bisnis, Tirto, and Tribun from CI are blocked; checked by hand only |
 | Wants a new site | GitHub "Usul situs baru" | GitHub | Needs a GitHub account |
 | Install fails (unknown sources, Play Protect, verification) | Gives up | Nowhere | No channel before the app even works |
@@ -155,7 +155,7 @@ The weakest spots: Instagram, Facebook and TikTok in-app browsers (no fix on eit
 | Bug in the reader UI itself (settings, theme) | GitHub "Masalah lain" | GitHub | Needs an account; the version is under **Aa** |
 
 ### What would close the biggest gaps
-1. **"Laporkan" button in the reader** (in the Aa panel). It opens a prefilled report with the article link, platform and version. The target has to work without a GitHub account: a Google Form, an email address, or a WhatsApp/Telegram number. The user taps send; nothing is sent automatically.
+1. ~~"Laporkan" button in the reader~~ Done (Aa panel). Remaining: a target that needs no GitHub account (Google Form, email or WhatsApp), set through `update.json` without an app update.
 2. **A short landing page** (GitHub Pages) with one big button per platform, linked from the README. Easier to share in WhatsApp than a GitHub repo.
 3. **A 30-second screen recording** for the Android "Open by default" step and the iOS "Allow Running Scripts" step.
 4. **A Telegram or WhatsApp group** for beta testers, as the low-friction feedback channel for the first 20 people.

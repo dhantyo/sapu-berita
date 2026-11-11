@@ -4,6 +4,7 @@ import { strings, type Strings } from './i18n.ts';
 import { analyzeLoadedLogo, corsLogoUrl, opticalHeight, recolourNeeds } from './logo.ts';
 import { PLATFORM_NAMES, type Platform } from '../clean/embeds.ts';
 import { OVERLAY_CSS } from './styles.ts';
+import type { UpdateOffer } from '../update.ts';
 
 declare const __SAPU_VERSION__: string | undefined;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
@@ -20,6 +21,8 @@ export interface OverlayHandle {
   show(): void;
   hide(): void;
   destroy(): void;
+  /** Show the "new version available" bar (once per article view; the reader can dismiss it). */
+  offerUpdate(offer: UpdateOffer): void;
 }
 
 export interface OverlayOptions {
@@ -31,6 +34,10 @@ export interface OverlayOptions {
   startHidden?: boolean;
   /** Link target for "read on the original site". */
   originalUrl?: string;
+  /** Builds the "report a problem" link for the current article; no link when unset. */
+  reportUrl?: (article: Article) => string | undefined;
+  /** The reader chose "not now" on the update bar. */
+  onSnoozeUpdate?: (version: string) => void;
 }
 
 /** Draw the article over the page inside a Shadow DOM. The original page stays underneath, untouched. */
@@ -41,6 +48,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
   let settings = { ...opts.settings };
   let loading = opts.loadingMore ?? false;
   let panelOpen = false;
+  let updateOffer: UpdateOffer | null = null;
 
   const host = doc.createElement('div');
   host.className = HOST_CLASS;
@@ -200,6 +208,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     article.content.classList.add('content');
     localizeEmbeds(article.content, t);
     const parts: Node[] = [head, article.content];
+    if (updateOffer) parts.unshift(updateBar(t, updateOffer));
     if (loading) parts.push(h(doc, 'p', { class: 'status', role: 'status' }, h(doc, 'span', { class: 'spinner', 'aria-hidden': 'true' }), t.loadingMore));
 
     if (settings.sweepLine) {
@@ -215,6 +224,20 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       parts.push(h(doc, 'div', { class: 'end' }));
     }
     return h(doc, 'main', { class: 'column' }, ...parts);
+  };
+
+  const updateBar = (t: Strings, offer: UpdateOffer) => {
+    const later = h(doc, 'button', { type: 'button', class: 'later' }, t.dismiss);
+    later.addEventListener('click', () => {
+      updateOffer = null;
+      root.querySelector('.update')?.remove();
+      opts.onSnoozeUpdate?.(offer.version);
+    });
+    return h(doc, 'aside', { class: 'update', role: 'status' },
+      h(doc, 'span', { class: 'text' }, t.updateAvailable(offer.version)),
+      h(doc, 'span', { class: 'actions' },
+        h(doc, 'a', { class: 'btn', href: offer.url, target: '_blank', rel: 'noopener' }, t.updateAction),
+        later));
   };
 
   const settingsPanel = (t: Strings) => {
@@ -267,8 +290,15 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       switchRow(t.hero, undefined, settings.hero, (v) => change({ hero: v }, '[data-switch="hero"]'), 'hero'),
       switchRow(t.autoOpen, t.autoOpenHint, settings.autoOpen, (v) => change({ autoOpen: v }, '[data-switch="autoOpen"]'), 'autoOpen'),
       switchRow(t.sweepLine, undefined, settings.sweepLine, (v) => change({ sweepLine: v }, '[data-switch="sweepLine"]'), 'sweepLine'),
+      switchRow(t.updates, t.updatesHint, settings.updates, (v) => change({ updates: v }, '[data-switch="updates"]'), 'updates'),
     );
     panel.append(toggles);
+    const report = opts.reportUrl?.(article);
+    if (report) {
+      panel.append(h(doc, 'div', { class: 'group report' },
+        h(doc, 'span', { class: 'text' }, t.report),
+        h(doc, 'a', { class: 'btn', href: report, target: '_blank', rel: 'noopener' }, t.reportAction)));
+    }
     // Version, so bug reports say which build they came from.
     panel.append(h(doc, 'p', { class: 'version' }, `Sapu Berita ${VERSION}`));
     return panel;
@@ -384,6 +414,10 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     },
     show,
     hide,
+    offerUpdate: (offer) => {
+      updateOffer = offer;
+      render();
+    },
     destroy: () => {
       hide();
       host.remove();

@@ -14,6 +14,8 @@ First public beta.
 - Embedded posts that belong to the story (X/Twitter, Instagram, TikTok, YouTube, Facebook) are kept as link cards.
 - The outlet's own logo is detected from the site and recoloured for dark mode when needed.
 - Settings: text size, font (serif, sans, extra-legible), light, sepia or dark theme, Indonesian or English interface.
+- **Updates on its own:** once a day it checks for a new version and shows "Perbarui" in the reader; site fixes arrive without reinstalling. Can be turned off.
+- **Laporkan:** report a broken article from the reader, with the link and version filled in.
 
 **Apps**
 - **Android:** app that opens only news-site links (Open by default); every other link still goes to your browser.

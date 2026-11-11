@@ -19,4 +19,4 @@ const extensionStore: SettingsStore = {
   },
 };
 
-void boot({ debug: true, store: extensionStore });
+void boot({ debug: true, store: extensionStore, platform: 'extension' });

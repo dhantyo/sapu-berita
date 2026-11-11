@@ -16,6 +16,8 @@ export interface Settings {
   autoOpen: boolean;
   /** Show the "N distractions swept · merged pages · original link" line at the end. */
   sweepLine: boolean;
+  /** Once a day, fetch update.json and the latest site rules from the release channel. */
+  updates: boolean;
 }
 
 export const SIZE_STEPS = 5;
@@ -28,6 +30,7 @@ export const DEFAULT_SETTINGS: Settings = {
   hero: true,
   autoOpen: true,
   sweepLine: true,
+  updates: true,
 };
 
 /** Storage adapter. Wrappers pick the most durable one they have (extension storage, else localStorage). */
@@ -74,5 +77,6 @@ export function normalizeSettings(raw: Partial<Settings> | undefined): Settings 
     hero: bool(r.hero, d.hero),
     autoOpen: bool(r.autoOpen, d.autoOpen),
     sweepLine: bool(r.sweepLine, d.sweepLine),
+    updates: bool(r.updates, d.updates),
   };
 }
