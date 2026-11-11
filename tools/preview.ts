@@ -14,6 +14,7 @@ async function bundle(): Promise<string> {
     bundle: true, format: 'iife', write: false, target: ['safari15', 'chrome100'],
     define: {
       __CHANNEL_URL__: '""',
+      __GEIST__: JSON.stringify(readFileSync(join(ROOT, 'fonts/geist.woff2')).toString('base64')),
       __REPORT_URL__: '"https://github.com/example/repo/issues/new?url={url}&details={version}%20({platform})"',
       __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
     },
@@ -47,6 +48,11 @@ createServer(async (req, res) => {
     } else if (url.pathname === '/fixtures') {
       res.writeHead(200, { 'content-type': TYPES['.json']! });
       res.end(JSON.stringify(fixtures()));
+    } else if (url.pathname.startsWith('/fonts/')) {
+      const file = normalize(join(ROOT, decodeURIComponent(url.pathname)));
+      if (!file.startsWith(join(ROOT, 'fonts')) || !existsSync(file)) throw new Error('not found');
+      res.writeHead(200, { 'content-type': 'font/woff2' });
+      res.end(readFileSync(file));
     } else if (url.pathname.startsWith('/test/fixtures/')) {
       const file = normalize(join(ROOT, decodeURIComponent(url.pathname)));
       if (!file.startsWith(join(ROOT, 'test', 'fixtures')) || !existsSync(file)) throw new Error('not found');

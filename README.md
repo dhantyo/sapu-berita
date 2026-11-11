@@ -61,6 +61,6 @@ News sites change their layouts often, so the per-site rules need care. Reportin
 
 ## License
 
-[GPL-3.0](LICENSE). Ad filters and pagination rules are derived from [AdBlockID](https://github.com/realodix/AdBlockID), [ABPindo](https://github.com/ABPindo/indonesianadblockrules) and [AutoAllPage](https://github.com/reforget-id/AutoAllPage) (all GPL-3.0). Sapu Berita is not affiliated with any news outlet; their names and logos belong to their owners.
+[GPL-3.0](LICENSE). Ad filters and pagination rules are derived from [AdBlockID](https://github.com/realodix/AdBlockID), [ABPindo](https://github.com/ABPindo/indonesianadblockrules) and [AutoAllPage](https://github.com/reforget-id/AutoAllPage) (all GPL-3.0). Fonts: [Geist](https://github.com/vercel/geist-font), [Merriweather](https://github.com/SorkinType/Merriweather) and [Fira Sans](https://github.com/mozilla/Fira) under the SIL Open Font License 1.1 (see `fonts/`). Sapu Berita is not affiliated with any news outlet; their names and logos belong to their owners.
 
 Part of the **Sapu** family, alongside Sapu Buzzer (coming soon).

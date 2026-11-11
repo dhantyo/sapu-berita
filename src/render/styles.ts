@@ -9,26 +9,37 @@
 const LIGHT = `
   --bg: rgb(255 255 255); --ink: rgb(18 18 18); --muted: rgb(92 92 92);
   --rule: rgb(0 0 0 / 0.1); --rule-strong: rgb(0 0 0 / 0.26); --chip: rgb(0 0 0 / 0.045);
-  --panel: rgb(255 255 255); --accent: rgb(176 122 18); --plate: transparent; --shadow: rgb(0 0 0 / 0.16);`;
+  --panel: rgb(255 255 255); --accent: rgb(176 122 18); --plate: transparent; --shadow: rgb(0 0 0 / 0.16);
+  --text-weight: 400; --text-track: 0em;`;
 const SEPIA = `
   --bg: rgb(247 241 228); --ink: rgb(44 34 22); --muted: rgb(104 88 68);
   --rule: rgb(60 40 10 / 0.12); --rule-strong: rgb(60 40 10 / 0.3); --chip: rgb(60 40 10 / 0.06);
-  --panel: rgb(251 247 238); --accent: rgb(160 106 10); --plate: rgb(255 255 255); --shadow: rgb(60 40 10 / 0.2);`;
+  --panel: rgb(251 247 238); --accent: rgb(160 106 10); --plate: rgb(255 255 255); --shadow: rgb(60 40 10 / 0.2);
+  --text-weight: 400; --text-track: 0em;`;
 const DARK = `
   --bg: rgb(18 18 18); --ink: rgb(232 232 230); --muted: rgb(168 168 165);
   --rule: rgb(255 255 255 / 0.12); --rule-strong: rgb(255 255 255 / 0.28); --chip: rgb(255 255 255 / 0.07);
-  --panel: rgb(30 30 30); --accent: rgb(222 172 70); --plate: rgb(255 255 255); --shadow: rgb(0 0 0 / 0.5);`;
+  --panel: rgb(30 30 30); --accent: rgb(222 172 70); --plate: rgb(255 255 255); --shadow: rgb(0 0 0 / 0.5);
+  /* Light text on black looks heavier: a touch lighter and looser (Geist is variable; others snap to 400). */
+  --text-weight: 370; --text-track: 0.006em;`;
 
 export const OVERLAY_CSS = `
 :host { all: initial; }
 .root {
   ${LIGHT}
-  --serif: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Noto Serif", "Droid Serif", serif;
-  /* Headline, deck and subheads follow the font setting; serif by default. */
-  --head: var(--serif);
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --legible: Verdana, "Segoe UI", Tahoma, "DejaVu Sans", sans-serif;
-  --body: var(--serif);
+  /* One modernist voice: Geist sets the journalism and every label (bundled, see render/fonts.ts).
+     Aa → Serif swaps the journalism to Merriweather, Aa → Jelas to Fira Sans; labels stay Geist. */
+  --sans: "Sapu Geist", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: "Sapu Merriweather", Charter, "Iowan Old Style", Georgia, "Noto Serif", serif;
+  --legible: "Sapu Fira Sans", Verdana, "Segoe UI", Tahoma, "DejaVu Sans", sans-serif;
+  --head: var(--sans);
+  --body: var(--sans);
+  /* Per-face tuning, so text size 3 looks the same size in every face (x-heights differ). */
+  --text-k: 0.95;
+  --lead: 1.6;
+  --head-lead: 1.08;
+  --head-track: -0.028em;
+  --sub-track: -0.016em;
   --fs: 19px;
   --narrow: 0px;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -40,8 +51,8 @@ export const OVERLAY_CSS = `
 .root[data-theme="sepia"] { ${SEPIA} }
 .root[data-theme="dark"] { ${DARK} }
 @media (prefers-color-scheme: dark) { .root[data-theme="auto"] { ${DARK} } }
-.root[data-font="sans"] { --body: var(--sans); --head: var(--sans); }
-.root[data-font="legible"] { --body: var(--legible); --head: var(--legible); }
+.root[data-font="serif"] { --body: var(--serif); --head: var(--serif); --text-k: 0.92; --lead: 1.68; --head-lead: 1.16; --head-track: -0.008em; --sub-track: 0em; }
+.root[data-font="legible"] { --body: var(--legible); --head: var(--legible); --text-k: 1; --lead: 1.7; --head-lead: 1.14; --head-track: -0.01em; --sub-track: 0em; }
 @media (max-width: 600px) { .root { --narrow: 1.5px; } }
 .root ::selection { background: color-mix(in srgb, var(--accent) 32%, transparent); }
 .root :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
@@ -77,7 +88,7 @@ button { font: inherit; color: inherit; }
 .root[data-theme="sepia"] .logo[data-state="plate"], .root[data-theme="dark"] .logo[data-state="plate"] { padding: 4px 8px; }
 @media (prefers-color-scheme: dark) { .root[data-theme="auto"] .logo[data-state="plate"] { padding: 4px 8px; } }
 .logo[data-state="plate"][data-plate="dark"] { background: var(--logo-ground, rgb(24 24 24)); padding: 4px 8px; }
-.outlet-name { font: 700 18px/1 var(--serif); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.outlet-name { font: 700 18px/1 var(--sans); letter-spacing: -0.025em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .outlet.square { gap: 9px; }
 .outlet.square .logo { border-radius: 6px; }
 .outlet.square .logo[data-state="plate"] { padding: 0; background: transparent; }
@@ -92,17 +103,17 @@ button { font: inherit; color: inherit; }
 .btn:hover { background: var(--chip); }
 a.btn { color: inherit; text-decoration: none; flex: none; }
 .btn[aria-expanded="true"] { border-color: var(--accent); background: var(--chip); }
-.aa { font-family: var(--serif); font-weight: 700; letter-spacing: -0.02em; padding: 0 12px; gap: 1px; }
+.aa { font-weight: 650; letter-spacing: -0.03em; padding: 0 12px; gap: 1px; }
 .aa .big { font-size: 18px; } .aa .small { font-size: 13px; }
 .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
 
 /* ── The article ── */
-.column { font-size: calc(var(--fs) - var(--narrow)); width: min(100% - 32px, 34em); margin: 0 auto; padding: 2.2em 0 0; }
+.column { font-size: calc((var(--fs) - var(--narrow)) * var(--text-k)); width: min(100% - 32px, 34em); margin: 0 auto; padding: 2.2em 0 0; }
 h1 {
-  margin: 0 0 0.45em; font: 700 clamp(1.55em, 1.05em + 2.2vw, 2.15em)/1.14 var(--head);
-  letter-spacing: -0.012em; text-wrap: balance;
+  margin: 0 0 0.45em; font: 700 clamp(1.6em, 1.1em + 2.3vw, 2.3em)/var(--head-lead) var(--head);
+  letter-spacing: var(--head-track); text-wrap: balance;
 }
-.deck { margin: 0 0 0.9em; font: 400 1.08em/1.45 var(--head); color: var(--muted); text-wrap: pretty; }
+.deck { margin: 0 0 0.9em; font: 400 1.1em/1.42 var(--head); letter-spacing: calc(var(--sub-track) / 2); color: var(--muted); text-wrap: pretty; }
 /* Every item carries its "·" in a left gutter; the gutter is clipped, so a wrapped line never starts with a dot. */
 .meta { display: flex; flex-wrap: wrap; margin: 0 0 0 -1.4em; clip-path: inset(-0.6em -0.6em -0.6em 1.4em); font: 400 0.74em/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
 .meta .section { color: var(--ink); font-weight: 600; }
@@ -113,11 +124,11 @@ h1 {
 .hero { margin: 1.4em 0 0; }
 .hero img { display: block; width: 100%; height: auto; background: var(--chip); }
 
-.content { margin-top: 1.6em; font-family: var(--body); line-height: 1.62; overflow-wrap: break-word; }
-.root[data-font="legible"] .content { line-height: 1.7; letter-spacing: 0.005em; }
+.content { margin-top: 1.6em; font-family: var(--body); font-weight: var(--text-weight); letter-spacing: var(--text-track); line-height: var(--lead); overflow-wrap: break-word; text-wrap: pretty; }
+.root[data-font="legible"] .content { letter-spacing: calc(var(--text-track) + 0.005em); }
 .content > :first-child { margin-top: 0; }
 .content p, .content div { margin: 0 0 1.05em; }
-.content h2, .content h3, .content h4 { font-family: var(--head); line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance; }
+.content h2, .content h3, .content h4 { font-family: var(--head); line-height: 1.25; letter-spacing: var(--sub-track); margin: 1.7em 0 0.5em; text-wrap: balance; }
 .content h2 { font-size: 1.28em; } .content h3 { font-size: 1.12em; } .content h4 { font-size: 1em; }
 .content a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--rule-strong); }
 .content a:hover { text-decoration-color: var(--accent); }
@@ -204,7 +215,7 @@ svg { flex: none; }
 .seg button[aria-checked="true"] { background: var(--chip); border-color: var(--accent); font-weight: 600; }
 .swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--rule-strong); }
 .size { display: flex; align-items: center; gap: 10px; }
-.size .icon-btn { border: 1px solid var(--rule); border-radius: 10px; width: 44px; height: 38px; color: var(--ink); font-family: var(--serif); font-weight: 700; }
+.size .icon-btn { border: 1px solid var(--rule); border-radius: 10px; width: 44px; height: 38px; color: var(--ink); font-family: var(--sans); font-weight: 650; letter-spacing: -0.02em; }
 .size .icon-btn:disabled { opacity: 0.35; cursor: default; }
 .dots { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
 .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--rule-strong); }

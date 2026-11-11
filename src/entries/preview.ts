@@ -3,6 +3,9 @@
 import bundledRules from 'sapuberita:rules';
 import { parseHtml, renderOverlay, run } from '../index.ts';
 import { localStorageStore, normalizeSettings } from '../settings.ts';
+import { ensureFonts } from '../render/fonts.ts';
+
+declare const __GEIST__: string;
 
 interface Fixture {
   url: string;
@@ -51,6 +54,7 @@ async function main() {
         settings, loadingMore, originalUrl: meta.url,
         onSettingsChange: (s) => void localStorageStore.save(s),
         reportUrl: () => 'https://github.com/example/repo/issues/new',
+        loadFonts: (f) => ensureFonts(document, f, __GEIST__, new URL('/fonts/', location.href).href),
       });
       // ?update=0.2.0 shows the "new version" bar.
       const offered = params.get('update');

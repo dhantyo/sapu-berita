@@ -9,6 +9,7 @@ import {
   type RunResult,
 } from '../index.ts';
 import { localStorageStore, normalizeSettings, type SettingsStore } from '../settings.ts';
+import { ensureFonts } from '../render/fonts.ts';
 import { cachedManifest, isSnoozed, latestManifest, offerFor, reportLink, snoozeOffer, type Platform } from '../update.ts';
 
 /** Release channel (update.json + rules.json), set at build time via esbuild `define`; empty = no updates. */
@@ -16,6 +17,8 @@ declare const __CHANNEL_URL__: string;
 /** Report link template with {url} {title} {site} {version} {platform}; update.json may override it. */
 declare const __REPORT_URL__: string;
 declare const __SAPU_VERSION__: string | undefined;
+/** Geist, base64 (fonts/geist.woff2), inlined at build time. */
+declare const __GEIST__: string;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
 const CHANNEL = __CHANNEL_URL__ || undefined;
 
@@ -82,6 +85,7 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
               originalUrl: url.href,
               onSettingsChange: (s) => void store.save(s),
               onSnoozeUpdate: snoozeOffer,
+              loadFonts: (f) => ensureFonts(document, f, __GEIST__, CHANNEL && new URL('fonts/', CHANNEL).href),
               reportUrl: (a) => {
                 const template = cachedManifest()?.report || __REPORT_URL__;
                 return template ? reportLink(template, {

@@ -106,6 +106,8 @@ jobs:
           # Install page.
           cp -r site/. channel/
           mkdir -p channel/img && cp docs/img/phone-light.png docs/img/phone-dark.png channel/img/
+          # Fonts: Aa → Serif / Jelas download these on demand; the install page uses Geist.
+          mkdir -p channel/fonts && cp fonts/*.woff2 fonts/OFL-*.txt channel/fonts/
           cat > channel/update.json <<JSON
           {
             "version": "$V",

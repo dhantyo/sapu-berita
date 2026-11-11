@@ -38,6 +38,8 @@ export interface OverlayOptions {
   reportUrl?: (article: Article) => string | undefined;
   /** The reader chose "not now" on the update bar. */
   onSnoozeUpdate?: (version: string) => void;
+  /** Load the faces this font setting needs (see render/fonts.ts). Called on every render; must be cheap. */
+  loadFonts?: (font: Font) => void;
 }
 
 /** Draw the article over the page inside a Shadow DOM. The original page stays underneath, untouched. */
@@ -76,6 +78,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     const top = root.scrollTop;
     root.dataset.theme = settings.theme;
     root.dataset.font = settings.font;
+    opts.loadFonts?.(settings.font);
     root.style.setProperty('--fs', `${SIZES[settings.size]}px`);
     root.setAttribute('lang', settings.lang);
     root.setAttribute('aria-label', article.meta.title);
@@ -263,7 +266,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     // Font: each option previews itself in its own face
     const faces: Record<Font, string> = { serif: 'var(--serif)', sans: 'var(--sans)', legible: 'var(--legible)' };
     panel.append(group(t.font, segmented<Font>(t.font, settings.font, [
-      ['serif', t.fontSerif], ['sans', t.fontSans], ['legible', t.fontLegible],
+      ['sans', t.fontSans], ['serif', t.fontSerif], ['legible', t.fontLegible],
     ], (v) => change({ font: v }, `[data-value="${v}"]`), (btn, v) => (btn.style.fontFamily = faces[v]))));
 
     // Theme: swatch of each ground

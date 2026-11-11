@@ -24,7 +24,7 @@ export const SIZE_STEPS = 5;
 
 export const DEFAULT_SETTINGS: Settings = {
   size: 2,
-  font: 'serif',
+  font: 'sans',
   theme: 'auto',
   lang: 'id',
   hero: true,
@@ -71,7 +71,7 @@ export function normalizeSettings(raw: Partial<Settings> | undefined): Settings 
   const bool = (v: unknown, fallback: boolean) => (typeof v === 'boolean' ? v : fallback);
   return {
     size,
-    font: pick(r.font, ['serif', 'sans', 'legible'] as const, d.font),
+    font: pick(r.font, ['sans', 'serif', 'legible'] as const, d.font),
     theme: pick(r.theme, ['auto', 'light', 'sepia', 'dark'] as const, d.theme),
     lang: pick(r.lang, ['id', 'en'] as const, d.lang),
     hero: bool(r.hero, d.hero),

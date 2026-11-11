@@ -148,14 +148,14 @@ public class SetupActivity extends Activity {
     private View settingsDrawing() {
         LinearLayout phone = box(card, dp(14), dp(16));
 
-        TextView heading = body(getString(R.string.sys_open_by_default), 18, ink, 0, 12);
+        TextView heading = sys(body(getString(R.string.sys_open_by_default), 18, ink, 0, 12));
         heading.setTypeface(Typeface.DEFAULT_BOLD);
         phone.addView(heading);
 
         // Row 1: the master switch.
         LinearLayout row1 = row();
         row1.addView(badge(1));
-        row1.addView(grow(body(getString(R.string.sys_open_supported), 14, ink, 0, 0)));
+        row1.addView(grow(sys(body(getString(R.string.sys_open_supported), 14, ink, 0, 0))));
         row1.addView(fakeSwitch());
         phone.addView(row1);
 
@@ -183,12 +183,12 @@ public class SetupActivity extends Activity {
             LinearLayout r = row();
             if (i == 0) r.addView(badge(3));
             else r.addView(spacer(dp(30)));
-            r.addView(body("☑  " + sample.get(i), 14, ink, 0, 0));
+            r.addView(sys(body("☑  " + sample.get(i), 14, ink, 0, 0)));
             dialog.addView(r);
         }
         LinearLayout more = row();
         more.addView(spacer(dp(30)));
-        more.addView(body("☑  …", 14, muted, 0, 0));
+        more.addView(sys(body("☑  …", 14, muted, 0, 0)));
         dialog.addView(more);
         TextView addBtn = body(getString(R.string.sys_add), 14, ochre, 6, 0);
         addBtn.setTypeface(Typeface.DEFAULT_BOLD);
@@ -245,7 +245,8 @@ public class SetupActivity extends Activity {
     // ── Home (after the guide) ────────────────────────────────────────
     private void home(LinearLayout col) {
         TextView name = title(getString(R.string.app_name));
-        name.setTypeface(Typeface.SERIF, Typeface.BOLD);
+        name.setTypeface(geist(700));
+        name.setLetterSpacing(-0.03f);
         col.addView(name);
         status = body("", 15, muted, 12, 0);
         col.addView(status);
@@ -424,15 +425,16 @@ public class SetupActivity extends Activity {
 
     private TextView stepLabel(int n) {
         TextView t = body(getString(R.string.step_of, n, STEPS).toUpperCase(), 12, ochre, 0, 8);
-        t.setTypeface(Typeface.DEFAULT_BOLD);
+        t.setTypeface(geist(650));
         t.setLetterSpacing(0.06f);
         return t;
     }
 
     private TextView title(String s) {
         TextView t = body(s, 26, ink, 0, 0);
-        t.setTypeface(Typeface.SERIF, Typeface.BOLD);
-        t.setLineSpacing(0, 1.15f);
+        t.setTypeface(geist(700));
+        t.setLetterSpacing(-0.03f);
+        t.setLineSpacing(0, 1.1f);
         return t;
     }
 
@@ -442,6 +444,7 @@ public class SetupActivity extends Activity {
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
         t.setTextColor(color);
         t.setLineSpacing(0, 1.3f);
+        t.setTypeface(geist(400));
         t.setPadding(0, dp(top), 0, dp(bottom));
         return t;
     }
@@ -469,7 +472,7 @@ public class SetupActivity extends Activity {
         TextView b = new TextView(this);
         b.setText(String.valueOf(n));
         b.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        b.setTypeface(Typeface.DEFAULT_BOLD);
+        b.setTypeface(geist(700));
         b.setTextColor(onOchre);
         b.setGravity(Gravity.CENTER);
         GradientDrawable c = new GradientDrawable();
@@ -537,6 +540,7 @@ public class SetupActivity extends Activity {
         b.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         b.setGravity(Gravity.CENTER);
         b.setStateListAnimator(null);
+        b.setTypeface(geist(600));
         style(b, primary);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(50));
         lp.topMargin = dp(14);
@@ -564,6 +568,27 @@ public class SetupActivity extends Activity {
             Math.round(Color.red(a) + (Color.red(b) - Color.red(a)) * t),
             Math.round(Color.green(a) + (Color.green(b) - Color.green(a)) * t),
             Math.round(Color.blue(a) + (Color.blue(b) - Color.blue(a)) * t));
+    }
+
+    private Typeface geistBase;
+
+    /** Geist (res/font/geist.ttf, variable 100 to 900, OFL), the Sapu Berita voice. */
+    private Typeface geist(int weight) {
+        if (geistBase == null) {
+            try {
+                geistBase = getResources().getFont(R.font.geist);
+            } catch (Exception e) {
+                geistBase = Typeface.DEFAULT;
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) return Typeface.create(geistBase, weight, false);
+        return Typeface.create(geistBase, weight >= 600 ? Typeface.BOLD : Typeface.NORMAL);
+    }
+
+    /** Text inside the drawing of Android's Settings screen: Android's own font, like the real thing. */
+    private TextView sys(TextView t) {
+        t.setTypeface(Typeface.DEFAULT);
+        return t;
     }
 
     private int dp(int v) {

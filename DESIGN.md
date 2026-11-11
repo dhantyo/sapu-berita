@@ -35,64 +35,72 @@ colors:
   logo-ground-fallback: "rgb(24 24 24)"
 typography:
   headline:
-    fontFamily: 'Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Heading", Cambria, Georgia, "Noto Serif", serif'
-    fontSize: "clamp(1.55em, 1.05em + 2.2vw, 2.15em)"
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
+    fontSize: "clamp(1.6em, 1.1em + 2.3vw, 2.3em)"
     fontWeight: 700
-    lineHeight: 1.14
-    letterSpacing: "-0.012em"
+    lineHeight: 1.08
+    letterSpacing: "-0.028em"
   deck:
-    fontFamily: 'Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, "Noto Serif", serif'
-    fontSize: "1.08em"
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
+    fontSize: "1.1em"
     fontWeight: 400
-    lineHeight: 1.45
+    lineHeight: 1.42
+    letterSpacing: "-0.008em"
   title:
-    fontFamily: 'Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, "Noto Serif", serif'
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
     fontSize: "1.28em"
     fontWeight: 700
     lineHeight: 1.25
+    letterSpacing: "-0.016em"
   body:
-    fontFamily: 'Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, "Noto Serif", serif'
-    fontSize: "19px"
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
+    fontSize: "19px × 0.95"
     fontWeight: 400
-    lineHeight: 1.62
-  body-sans:
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-    fontSize: "19px"
+    lineHeight: 1.6
+  body-dark:
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
+    fontSize: "19px × 0.95"
+    fontWeight: 370
+    lineHeight: 1.6
+    letterSpacing: "0.006em"
+  body-serif:
+    fontFamily: '"Sapu Merriweather", Merriweather, Charter, Georgia, serif'
+    fontSize: "19px × 0.92"
     fontWeight: 400
-    lineHeight: 1.62
+    lineHeight: 1.68
   body-legible:
-    fontFamily: 'Verdana, "Segoe UI", Tahoma, "DejaVu Sans", sans-serif'
+    fontFamily: '"Sapu Fira Sans", "Fira Sans", Verdana, "Segoe UI", sans-serif'
     fontSize: "19px"
     fontWeight: 400
     lineHeight: 1.7
     letterSpacing: "0.005em"
   meta:
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
     fontSize: "0.74em"
     fontWeight: 400
     lineHeight: 1.5
     fontFeature: '"tnum"'
   caption:
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
     fontSize: "0.72em"
     fontWeight: 400
     lineHeight: 1.45
   control:
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
     fontSize: "14px"
     fontWeight: 600
     lineHeight: 1
   label:
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
     fontSize: "12px"
     fontWeight: 600
     lineHeight: 1.3
   outlet-name:
-    fontFamily: 'Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, "Noto Serif", serif'
+    fontFamily: '"Sapu Geist", Geist, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif'
     fontSize: "18px"
     fontWeight: 700
     lineHeight: 1
-    letterSpacing: "-0.01em"
+    letterSpacing: "-0.025em"
 rounded:
   plate: "4px"
   icon: "6px"
@@ -174,21 +182,21 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Paper's Own Web Edition"**
+**Creative North Star: "The Swept Page"**
 
-Sapu Berita sets a swept Indonesian news article the way a great newspaper sets its own web edition: serif authority for the journalism, generous white space, order kept by hairline rules rather than boxes. The reader should feel they are reading the outlet's story in its best possible form, not a generic reader-mode card and not the outlet's cluttered chrome. Everything that belongs to the journalism (headline, deck, body, subheads) is serif; everything that belongs to Sapu Berita or to the page's bookkeeping (bylines, dates, captions, labels, controls) is a quiet grey sans.
+Sapu Berita sets a swept Indonesian news article in one modernist voice: a strict Swiss-style grotesk (Geist) for headline, text and every label, generous white space, order kept by hairline rules rather than boxes. The reader should feel the clutter is gone and only the story is left, in a calm, contemporary hand, not a generic reader-mode card and not the outlet's cluttered chrome. Hierarchy comes from weight, size and tracking within the one family: tight, bold headlines; even, open text; small grey labels. A serif (Merriweather) and an extra-legible humanist sans (Fira Sans) are reader options, never the identity.
 
 Density is low and vertical: one centered column, one slim bar above it, nothing in the margins. Colour is almost absent. Paper and ink carry the page; a single accent, lidi ochre (the straw colour of a sapu lidi broom), appears only where Sapu itself is acting: the reading-progress hairline, the active setting, the sweep line at the end. Three grounds exist and are first-class: paper white, warm newsprint sepia, and ink-black dark.
 
-The overlay lives inside one Shadow DOM over the original page, so the system is self-contained: system font stacks only, colours written as `rgb()` only, no external assets. The Sapu broom mark and lidi ochre are the shared identity with the planned sibling product Sapu Buzzer and must stay recognisably the same across both.
+The overlay lives inside one Shadow DOM over the original page, so the system is self-contained: Geist ships inside the script (registered from bytes on the page's font set, so no site's font policy can block it), the optional faces download from the release channel only when chosen, and colours are written as `rgb()` only. The Sapu broom mark and lidi ochre are the shared identity with the planned sibling product Sapu Buzzer and must stay recognisably the same across both.
 
 **Key Characteristics:**
-- Serif for the journalism, grey sans for everything that is ours.
+- One modernist grotesk (Geist) for everything; hierarchy by weight, size and tracking, not by switching families.
 - Hairline rules (1px, low-alpha ink) instead of cards, fills or shadows on the page.
 - One accent, lidi ochre, reserved for Sapu marks; never decoration, never text.
 - Three grounds (paper, sepia newsprint, ink-black) with per-theme tuned tokens.
 - The outlet's own logo, trimmed, sized optically and recoloured only when it would vanish, credits whose journalism this is.
-- System font stacks, `rgb()` colours, one Shadow DOM: constraints, not preferences.
+- Bundled Geist, on-demand Merriweather and Fira Sans, `rgb()` colours, one Shadow DOM: the same type on every device.
 
 ## Colors
 
@@ -217,27 +225,26 @@ Paper and ink with one straw-coloured mark; every token is re-tuned per ground r
 
 ## Typography
 
-**Display Font:** Charter (with Bitstream Charter, Iowan Old Style, Sitka Heading, Cambria, Georgia, Noto Serif, serif)
-**Body Font:** Charter (with Bitstream Charter, Iowan Old Style, Sitka Text, Cambria, Georgia, Noto Serif, serif); reader-switchable to the sans stack or to the legible stack (Verdana, Segoe UI, Tahoma, DejaVu Sans)
-**Label Font:** the platform UI sans (-apple-system, BlinkMacSystemFont, Segoe UI Variable Text, Segoe UI, Roboto, Helvetica Neue, Arial)
+**Display, Body and Label Font:** Geist (Vercel, SIL OFL 1.1), variable 100 to 900, Latin subset, bundled into every build as "Sapu Geist"; falls back to the platform UI sans.
+**Reader options (Aa → Huruf):** Serif = Merriweather (400, 700, 400 italic; optical size pinned to 18, subset to Latin, about 43 KB each) as "Sapu Merriweather". Jelas = Fira Sans (400, 700, 400 italic) as "Sapu Fira Sans", Erik Spiekermann's humanist sans in the FF Meta lineage. Both load on demand from the release channel's `fonts/`; until then, and offline, the stacks fall back to Charter/Georgia and Verdana.
 
-**Character:** A transitional book serif with newspaper sturdiness, paired with the reader's own system UI sans kept small and grey so it reads as apparatus, not voice. The display stack differs from the body stack only in pulling Sitka's heading cut on Windows.
+**Character:** Swiss-modernist: a strict grotesk with tight, bold headlines (-0.028em) and an even text colour, so the page reads as clear and contemporary rather than literary. Labels are the same face, small and grey, so Sapu's apparatus and the journalism share one voice and differ only in size and tone. Per-face tuning (`--text-k`, `--lead`, `--head-lead`, `--head-track`) keeps text size 3 optically the same in all three faces. On dark grounds body text drops to weight 370 with +0.006em tracking to offset halation.
 
 ### Hierarchy
 The article column's sizes are in `em` against the reader's text size, five steps (16, 17.5, 19, 21, 23.5px; default 19px), 1.5px smaller on phones under 600px. Chrome sizes are fixed px.
-- **Headline** (700, fluid clamp, 1.14, -0.012em, balanced wrap): the article title, the largest thing on the page. Nothing sits above it.
-- **Deck** (400, 1.08em, 1.45, muted, pretty wrap): the standfirst, shown only when it does not repeat the article's opening.
-- **Title** (700, 1.28em / 1.12em / 1em for h2 / h3 / h4, 1.25, balanced): subheads inside the article, always serif even when the body is switched to sans.
-- **Body** (400, 19px default, 1.62; legible face 1.7 with 0.005em tracking): the journalism. Column capped at 34em.
+- **Headline** (700, clamp(1.6em, 1.1em + 2.3vw, 2.3em), 1.08, -0.028em, balanced wrap): the article title, the largest thing on the page. Nothing sits above it. In Merriweather 1.16 / -0.008em; in Fira Sans 1.14 / -0.01em.
+- **Deck** (400, 1.1em, 1.42, muted, pretty wrap): the standfirst, shown only when it does not repeat the article's opening.
+- **Title** (700, 1.28em / 1.12em / 1em for h2 / h3 / h4, 1.25, -0.016em, balanced): subheads inside the article; follow the chosen face.
+- **Body** (400, text size × 0.95, 1.6, pretty wrap; Merriweather × 0.92 at 1.68; Fira Sans × 1 at 1.7 with 0.005em tracking): the journalism. Column capped at 34em.
 - **Meta** (400, 0.74em, 1.5, tabular numerals): section (ink, 600) · byline · date in the reader's timezone label. Each part stays whole; the row breaks only at the separators.
 - **Caption** (400, 0.72em, 1.45, muted): figcaptions and the sweep line. Tables use the sans at 0.78em with tabular numerals.
 - **Control** (600, 14px): pill buttons, reopen button, segmented options (400, 600 when selected).
 - **Label** (600, 12px, muted, sentence case): settings group labels. Panel heading 600 15px.
 
 ### Named Rules
-**The Two Voices Rule.** Serif is the journalism's voice; sans is ours. A new element is serif only if it is the outlet's words.
+**The One Voice Rule.** Geist sets everything Sapu draws. Hierarchy is made with weight, size, tracking and tone, never by adding a family. Merriweather and Fira Sans exist only as reader choices for the journalism; labels and controls stay Geist in every setting.
 
-**The System Stack Rule.** System font stacks only. News-site CSP blocks web fonts and the bundle must stay small for the iOS Shortcut time limit.
+**The Bundled Face Rule.** Only Geist ships in the bundle (about 40 KB as base64); every other face loads on demand from the release channel, from bytes (FontFace with an ArrayBuffer), so no news site's CSP font-src applies and nothing loads that the reader didn't choose. Any new face must be OFL, Latin-subset, and on demand.
 
 **The Bold Is B Rule.** Bold is rendered as `<b>`, never `<strong>`: Brave Shields hides every `<strong>` on some news domains, even inside Shadow DOM.
 

@@ -27,7 +27,7 @@ Runs entirely on the reader's own device (no proxy server, nothing redistributed
 ## Capabilities and Constraints
 
 - Hand-verified rules for Detik, CNN Indonesia, Kompas, Tribunnews (incl. regional subdomains), Liputan6; ~20 more outlets via imported page-merging rules and generic extraction.
-- Rendering constraints: everything inside one Shadow DOM, CSS as a string, no framework; bundle ~90 kB and must stay small (iOS Shortcut time limit). External web fonts are unreliable (news sites' CSP, privacy) — prefer system font stacks.
+- Rendering constraints: everything inside one Shadow DOM, CSS as a string, no framework; bundle ~175 kB including the bundled Geist font, kept small for the iOS Shortcut time limit. Fonts are registered from bytes (immune to news sites' CSP); optional faces download only when the reader picks them.
 - Brave Shields hides every `<strong>` on some news domains even inside Shadow DOM; the overlay renders bold as `<b>`.
 - iOS Shortcut builds should avoid `#` characters where possible (hex colors → `rgb()`).
 - UI language: Indonesian and English, switchable; Indonesian by default.
