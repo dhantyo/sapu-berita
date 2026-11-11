@@ -31,7 +31,7 @@ The **Original** button always takes you back to the publisher's page.
 | **iPhone, iPad, Mac** | An Apple Shortcut. Open an article in Safari, then Share → Sapu Berita. | [Apple guide](docs/install-apple.md) |
 | **Chrome, Brave, Edge** (desktop) | A browser extension that runs automatically on news sites. | [Extension guide](apps/extension/README.md) |
 
-All downloads are on the [Releases](../../releases/latest) page. The install guides are in Indonesian, for the people who'll use them.
+All downloads are on the [Releases](../../releases/latest) page.
 
 ## Supported sites
 

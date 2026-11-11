@@ -1,34 +1,47 @@
-# Sapu Berita di Android
+# Sapu Berita on Android
 
-Baca berita Indonesia tanpa iklan, tanpa "Baca Juga", dan semua halaman langsung digabung. Setelah diatur sekali, link berita dari WhatsApp, Telegram, atau mana pun langsung terbuka bersih. **Browser kamu tetap seperti biasa**; hanya link artikel berita yang dibuka Sapu Berita.
+Read Indonesian news without ads or "Baca Juga" link lists, with every page of an article merged into one. Set it up once, and news links you tap in WhatsApp, Telegram or anywhere else open clean. **Your browser stays as it is**; Sapu Berita only opens links to news articles.
 
-> **Versi beta.** Untuk sementara aplikasi dibagikan langsung (APK) lewat GitHub, belum lewat Play Store.
+> **Beta.** For now the app comes as an APK file from GitHub, not from the Play Store.
 
-## Pasang
+Menu names are shown as they appear on a phone set to English, with the Indonesian name in brackets.
 
-1. Di ponsel, buka halaman [Releases](https://github.com/dhantyo/sapu-berita/releases/latest) dan download **sapu-berita-….apk**.
-2. Buka file-nya. Kalau ponsel bertanya, izinkan **"Instal aplikasi tidak dikenal"** (*Install unknown apps*) untuk browser/file manager yang kamu pakai.
-3. Buka **Sapu Berita**, lalu:
-   1. Ketuk **Atur link berita** → **Tambahkan link** (*Add link*) → centang semua situs berita → **Tambahkan**.
-   2. Kembali ke Sapu Berita: tulisannya berubah jadi **"Aktif untuk 16 dari 16 situs berita"**.
-   3. Ketuk **Buka contoh artikel Kompas** untuk mencoba.
+## Install
 
-**Android 11 atau lebih lama:** tidak ada langkah 3.1. Saat pertama kali membuka link berita, ponsel bertanya aplikasi mana yang dipakai: pilih **Sapu Berita**, lalu **Selalu**.
+1. On your phone, open the [Releases](https://github.com/dhantyo/sapu-berita/releases/latest) page and download **sapu-berita-….apk**.
+2. Open the downloaded file. If your phone asks, allow **Install unknown apps** (*Instal aplikasi tidak dikenal*) for the browser or file manager you used, then tap **Install**.
+3. Open **Sapu Berita**, then:
+   1. Tap **Atur link berita** (set up news links) → **Add link** (*Tambahkan link*) → tick every news site → **Add** (*Tambahkan*).
+   2. Go back to Sapu Berita. It should now say **"Aktif untuk 16 dari 16 situs berita"** (active on 16 of 16 news sites).
+   3. Tap **Buka contoh artikel Kompas** to try a sample article.
 
-## Pakai
+**Android 11 or older:** there's no step 3.1. The first time you open a news link, your phone asks which app to use: pick **Sapu Berita**, then **Always** (*Selalu*).
 
-Tidak perlu apa-apa lagi. Buka link berita seperti biasa:
-- **Artikel** dari Detik, Kompas, Tribunnews (termasuk situs daerahnya), CNN Indonesia, CNBC Indonesia, Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com, Tirto → terbuka bersih di Sapu Berita.
-- **Halaman depan / rubrik** situs-situs itu, dan **semua link lain** → terbuka di browser biasamu.
+**Can't find "Add link"?** Phone makers word this screen differently. Go to **Settings → Apps → Sapu Berita** and look for **Open by default** or **Set as default** (*Buka secara default*, *Atur sebagai default*), then the list of supported links.
 
-Di artikel: tombol **Aa** untuk ukuran huruf, jenis huruf, tema gelap/sepia, dan bahasa (berlaku untuk semua situs). Tombol **Asli** untuk melihat halaman aslinya.
+## Use
 
-## Catatan
+Nothing else to do. Open news links as usual:
+- **Articles** from Detik, Kompas, Tribunnews (including its regional sites), CNN Indonesia, CNBC Indonesia, Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com and Tirto open clean in Sapu Berita.
+- **Homepages and section pages** of those sites, and **every other link**, open in your usual browser.
 
-- Kalau aplikasi resmi sebuah situs (misalnya aplikasi Detik) terpasang, link situs itu tetap dibuka aplikasi resminya; Android tidak mengizinkan aplikasi lain mengambil alih. Situs lainnya tetap lewat Sapu Berita.
-- Link yang dibuka di dalam aplikasi Instagram/Facebook memakai browser bawaan mereka sendiri, jadi tidak lewat Sapu Berita. Pilih **Buka di browser** dari menu ⋮.
-- Mau berhenti? Pengaturan → Aplikasi → Sapu Berita → **Buka secara default** → matikan, atau hapus aplikasinya.
+In an article, **Aa** sets text size, font, light, sepia or dark theme, and language (for every site at once). **Asli** shows the original page.
 
-## Privasi
+## Updates
 
-Semua berjalan di ponselmu. Sapu Berita tidak punya server, tidak mengirim apa pun, dan tidak tahu apa yang kamu baca.
+When a new version is out, a box appears above the article: **"Sapu Berita … sudah tersedia"** (is available).
+1. Tap **Update**. The new APK downloads in your browser.
+2. Open it and tap **Update**. Your settings are kept.
+
+Fixes for news sites arrive on their own, without updating the app.
+
+## Good to know
+
+- If a site's official app is installed (the Detik app, for example), that app keeps opening that site's links; Android doesn't let another app take over. Other sites still go through Sapu Berita.
+- Instagram, Facebook and TikTok open links in their own built-in browser, so those don't go through Sapu Berita. Use **⋮ → Open in browser**.
+- Something wrong with an article? **Aa → Laporkan** (report it) sends us the link.
+- To stop: **Settings → Apps → Sapu Berita → Open by default** → turn it off, or uninstall the app.
+
+## Privacy
+
+Everything runs on your phone. Sapu Berita has no server, no analytics, and doesn't know what you read. Once a day it downloads the latest version number and site rules from GitHub; nothing about you is sent. Turn it off under **Aa → Cek update**.

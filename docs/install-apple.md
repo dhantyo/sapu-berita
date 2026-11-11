@@ -1,39 +1,48 @@
-# Sapu Berita di iPhone, iPad, dan Mac
+# Sapu Berita on iPhone, iPad and Mac
 
-Baca berita Indonesia tanpa iklan, tanpa "Baca Juga", dan semua halaman langsung digabung. Gratis, tanpa App Store. Satu Shortcut yang sama jalan di iPhone, iPad, dan Mac, dan tersinkron lewat iCloud.
+Read Indonesian news without ads or "Baca Juga" link lists, with every page of an article merged into one. Free, no App Store. One Shortcut works on iPhone, iPad and Mac, and syncs through iCloud.
 
-> **Untuk maintainer:** ganti `LINK_ICLOUD` di bawah dengan link iCloud Shortcut (lihat `apps/ios-shortcut/README.md`).
+> **For the maintainer:** replace `ICLOUD_LINK` below with the Shortcut's iCloud link (see `apps/ios-shortcut/README.md`).
 
-## Pasang (sekali saja, ±1 menit)
+Menu names are shown as they appear on a device set to English, with the Indonesian name in brackets.
 
-1. Buka link ini di iPhone, iPad, atau Mac: **LINK_ICLOUD**
-2. Ketuk/klik **Tambahkan Pintasan** (*Add Shortcut*).
-3. Izinkan Shortcut menjalankan skrip:
-   - **iPhone/iPad:** Pengaturan → Apps → Pintasan → Lanjutan → nyalakan **Izinkan Menjalankan Skrip**
-     (*Settings → Apps → Shortcuts → Advanced → Allow Running Scripts*)
-   - **Mac:** buka aplikasi **Pintasan** → menu **Pintasan → Pengaturan → Lanjutan** → centang **Izinkan Menjalankan Skrip**.
-     Di **Safari**: Pengaturan → Lanjutan → centang **Tampilkan fitur untuk pengembang web**, lalu menu **Kembangkan** → centang **Izinkan JavaScript dari Apple Events**.
+## Install (once, about a minute)
 
-## Pakai
+1. Open this link on your iPhone, iPad or Mac: **ICLOUD_LINK**
+2. Tap or click **Add Shortcut** (*Tambahkan Pintasan*).
+3. Allow the Shortcut to run scripts:
+   - **iPhone and iPad:** **Settings → Apps → Shortcuts → Advanced** → turn on **Allow Running Scripts**
+     (*Pengaturan → Apps → Pintasan → Lanjutan → Izinkan Menjalankan Skrip*).
+   - **Mac:** in the **Shortcuts** app, menu **Shortcuts → Settings → Advanced** → tick **Allow Running Scripts**.
+     Then in **Safari**: **Settings → Advanced** → tick **Show features for web developers**, then menu **Develop** → tick **Allow JavaScript from Apple Events**.
 
-1. Buka artikel berita di **Safari**. Didukung: Detik, Kompas, Tribunnews (termasuk situs daerahnya), CNN Indonesia, CNBC Indonesia, Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com, Tirto.
-2. **iPhone/iPad:** ketuk tombol **Bagikan** (kotak dengan panah ke atas) → **Sapu Berita**.
-   **Mac:** klik tombol **Bagikan** di toolbar Safari → **Sapu Berita**.
-   - Pertama kali per situs, akan muncul pertanyaan apakah Shortcut boleh mengakses situs itu. Pilih **Izinkan Selalu**.
-3. Artikel bersih langsung tampil. Tombol **Aa** untuk ukuran huruf, jenis huruf, tema gelap/sepia, dan bahasa. Tombol **Asli** untuk kembali ke halaman asli.
+## Use
 
-**Tips iPhone:** geser daftar aplikasi di lembar Bagikan ke paling kanan → **Edit Tindakan** → taruh **Sapu Berita** di Favorit.
+1. Open a news article in **Safari**. Supported: Detik, Kompas, Tribunnews (including its regional sites), CNN Indonesia, CNBC Indonesia, Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com, Tirto.
+2. **iPhone and iPad:** tap **Share** (the square with an arrow) → **Sapu Berita**.
+   **Mac:** click **Share** in Safari's toolbar → **Sapu Berita**.
+   - The first time on each site, you're asked whether the Shortcut may access it. Choose **Always Allow** (*Izinkan Selalu*).
+3. The clean article appears. **Aa** sets text size, font, light, sepia or dark theme, and language. **Asli** takes you back to the original page.
 
-## Kalau tidak muncul
+**iPhone tip:** in the Share sheet, scroll the action list to the bottom → **Edit Actions** (*Edit Tindakan*) → add **Sapu Berita** to Favourites, so it's always near the top.
 
-- Pastikan artikelnya dibuka di **Safari**, bukan di browser bawaan WhatsApp/Instagram. Di WhatsApp: ketuk link → tombol Safari/kompas di pojok.
-- Halaman depan situs (bukan artikel) memang tidak dibersihkan.
-- Pengaturan (ukuran huruf, tema) disimpan per situs: atur sekali di tiap situs berita.
+## Updates
 
-## Pakai Chrome, Brave, atau Edge di Mac/Windows?
+When a new version is out, a box appears above the article: **"Sapu Berita … sudah tersedia"** (is available). Tap **Update**, open the new Shortcut link, and choose **Replace** to swap out the old one.
 
-Ada juga versi ekstensi browser yang berjalan otomatis tanpa perlu menekan tombol apa pun (lihat `apps/extension/README.md`).
+Fixes for news sites arrive on their own, without updating the Shortcut.
 
-## Privasi
+## If nothing happens
 
-Semua berjalan di perangkatmu. Sapu Berita tidak punya server, tidak mengirim apa pun ke mana pun, dan tidak tahu apa yang kamu baca.
+- Make sure the article is open in **Safari**, not in the built-in browser of WhatsApp, Instagram or X. In those apps, use the Safari or compass button, or **Open in Safari**.
+- Homepages and section pages (not articles) aren't cleaned, on purpose.
+- Settings (text size, theme) are saved per site, so set them once on each news site.
+- Something wrong with an article? **Aa → Laporkan** (report it) sends us the link.
+
+## On Chrome, Brave or Edge on a computer?
+
+There's also a browser extension that runs on its own, without tapping anything: see the [extension guide](../apps/extension/README.md).
+
+## Privacy
+
+Everything runs on your device. Sapu Berita has no server, no analytics, and doesn't know what you read. Once a day it downloads the latest version number and site rules from GitHub; nothing about you is sent. Turn it off under **Aa → Cek update**.

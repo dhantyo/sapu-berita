@@ -2,7 +2,7 @@
 
 Free iOS distribution: an Apple Shortcut shared through an iCloud link. The reader runs it from Safari's share sheet on a news article. No App Store, no developer account.
 
-User-facing install guide (Indonesian): [docs/install-apple.md](../../docs/install-apple.md) (iPhone, iPad, Mac).
+User-facing install guide: [docs/install-apple.md](../../docs/install-apple.md) (iPhone, iPad, Mac).
 
 ## Build
 

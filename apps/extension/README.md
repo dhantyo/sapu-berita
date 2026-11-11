@@ -1,18 +1,22 @@
-# Ekstensi browser (Chrome, Brave, Edge)
+# Browser extension (Chrome, Brave, Edge)
 
-Di komputer, Sapu Berita berjalan otomatis setiap kali kamu membuka artikel dari situs yang didukung.
+On a computer, Sapu Berita runs on its own whenever you open an article from a supported site.
 
-> Selama beta, ekstensi belum ada di Chrome Web Store, jadi dipasang secara manual (±1 menit).
+> During the beta the extension isn't in the Chrome Web Store yet, so it's installed by hand (about a minute).
 
-## Pasang
+## Install
 
-1. Download **sapu-berita-extension-….zip** dari halaman [Releases](https://github.com/dhantyo/sapu-berita/releases/latest), lalu ekstrak (klik kanan → *Extract All*).
-2. Buka `chrome://extensions` (Brave: `brave://extensions`, Edge: `edge://extensions`).
-3. Nyalakan **Developer mode** / **Mode pengembang** di pojok kanan atas.
-4. Klik **Load unpacked** / **Muat yang belum dibuka**, lalu pilih folder hasil ekstrak tadi.
-5. Buka artikel dari Detik, Kompas, atau situs lain yang didukung.
+1. Download **sapu-berita-extension-….zip** from the [Releases](https://github.com/dhantyo/sapu-berita/releases/latest) page and unzip it (right-click → *Extract All*).
+2. Open `chrome://extensions` (Brave: `brave://extensions`, Edge: `edge://extensions`).
+3. Turn on **Developer mode** in the top-right corner.
+4. Click **Load unpacked** and pick the unzipped folder.
+5. Open an article on Detik, Kompas or another supported site.
 
-**Update:** download zip versi baru, timpa isi folder yang sama, lalu klik ↻ di kartu Sapu Berita pada halaman ekstensi. Pengaturanmu tetap tersimpan.
+Chrome may show a notice about developer-mode extensions when it starts. That's expected for extensions installed this way.
+
+## Updates
+
+When a new version is out, a box appears above the article: **"Sapu Berita … sudah tersedia"** (is available). Tap **Update**, download the new zip, replace the contents of the same folder, and click ↻ on the Sapu Berita card in the extensions page. Your settings are kept.
 
 ## For developers
 

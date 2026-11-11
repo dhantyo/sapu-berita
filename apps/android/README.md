@@ -8,7 +8,7 @@ The app claims **only the news sites' links**, the way the YouTube app claims yo
 - If a site's official app is installed and verified for its domain, Android sends that site's links to it; we can't override that.
 - **Settings** (font, size, theme, language) are stored in the app and shared by every site, unlike the iPhone Shortcut's per-site storage.
 
-User-facing install guide (Indonesian): [docs/install-android.md](../../docs/install-android.md).
+User-facing install guide: [docs/install-android.md](../../docs/install-android.md).
 
 ## Build
 
