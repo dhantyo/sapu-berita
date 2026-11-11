@@ -102,11 +102,13 @@ h1 {
   letter-spacing: -0.012em; text-wrap: balance;
 }
 .deck { margin: 0 0 0.9em; font: 400 1.08em/1.45 var(--head); color: var(--muted); text-wrap: pretty; }
-.meta { display: flex; flex-wrap: wrap; margin: 0; font: 400 0.74em/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+/* Every item carries its "·" in a left gutter; the gutter is clipped, so a wrapped line never starts with a dot. */
+.meta { display: flex; flex-wrap: wrap; margin: 0 0 0 -1.4em; clip-path: inset(-0.6em -0.6em -0.6em 1.4em); font: 400 0.74em/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
 .meta .section { color: var(--ink); font-weight: 600; }
 /* Each part (section, byline, date) stays whole; the row only breaks at the separators. */
 .meta .section, .meta .date, .meta .name { white-space: nowrap; }
-.meta > span + span::before { content: "·"; margin: 0 0.5em; color: var(--rule-strong); }
+.meta > span { position: relative; margin-left: 1.4em; }
+.meta > span::before { content: "·"; position: absolute; left: -0.95em; color: var(--rule-strong); }
 .hero { margin: 1.4em 0 0; }
 .hero img { display: block; width: 100%; height: auto; background: var(--chip); }
 
@@ -178,6 +180,7 @@ svg { flex: none; }
     padding-bottom: max(18px, env(safe-area-inset-bottom)); transform: translateY(16px); }
 }
 .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.panel .version { margin: 14px 0 0; font: 400 12px/1.4 var(--sans); color: var(--muted); }
 .panel-head h2 { margin: 0; font: 600 15px/1.3 var(--sans); }
 .icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); }
 .icon-btn:hover { background: var(--chip); color: var(--ink); }

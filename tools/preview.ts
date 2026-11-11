@@ -12,7 +12,10 @@ async function bundle(): Promise<string> {
   const out = await build({
     entryPoints: [join(ROOT, 'src/entries/preview.ts')],
     bundle: true, format: 'iife', write: false, target: ['safari15', 'chrome100'],
-    define: { __REMOTE_RULES_URL__: '""' },
+    define: {
+      __REMOTE_RULES_URL__: '""',
+      __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
+    },
     plugins: [{
       name: 'rules',
       setup(b) {

@@ -26,7 +26,10 @@ const common = {
   format: 'iife' as const,
   target: ['safari15', 'chrome100'],
   plugins: [rulesPlugin],
-  define: { __REMOTE_RULES_URL__: JSON.stringify(REMOTE_RULES_URL) },
+  define: {
+    __REMOTE_RULES_URL__: JSON.stringify(REMOTE_RULES_URL),
+    __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
+  },
   legalComments: 'eof' as const,
   logLevel: 'info' as const,
 };
@@ -55,6 +58,10 @@ const manifestPath = join(ROOT, 'apps/extension/manifest.json');
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const domains = [...new Set(rules.sites.flatMap((s) => s.domains))].sort();
 manifest.content_scripts[0].matches = domains.map((d) => `https://*.${d}/*`);
+// One version for every wrapper, from package.json. Chrome wants dotted numbers; the label goes in version_name.
+const { version } = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string };
+manifest.version = version.split('-')[0];
+manifest.version_name = version;
 writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
 
 // Android app assets: the WebView script and the list of news hosts the router keeps in-app.

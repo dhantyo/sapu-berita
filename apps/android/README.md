@@ -43,8 +43,19 @@ From Google's announcement ([Android Developers Blog, March 2026](https://androi
 
 | Path | Cost | Reach | Notes |
 |---|---|---|---|
-| **Limited distribution account** (students/hobbyists) | free, email only, no ID | **up to 20 devices** | Right for the alpha with friends. |
+| **Limited distribution account** (students/hobbyists) | free, email only, no ID | **up to 20 devices** | Right for the beta with friends. |
 | Full developer verification | identity verification (fee not stated in the post) | everyone | Needed for a public release, with or without Play Store. |
 | Unregistered APK | free | anyone willing | Google's "advanced flow" (multi-step, with a waiting period) or `adb install`; too much for normal users. |
 
-Before a public release: register the package `id.sapu.berita` under a verified account and replace the debug signing key with a real one (`app/build.gradle.kts`).
+Before a public release: register the package `id.sapu.berita` under a verified account.
+
+## Signing
+
+Phones only accept an update signed with the same key as the installed app, so every published APK is signed by CI with one release key, read from Actions secrets:
+
+| Secret | Value |
+|---|---|
+| `SAPU_KEYSTORE_B64` | the `.jks` keystore, base64-encoded |
+| `SAPU_KEYSTORE_PASSWORD`, `SAPU_KEY_ALIAS`, `SAPU_KEY_PASSWORD` | its passwords and alias |
+
+Without them (forks, pull requests, local builds) `assembleRelease` falls back to the debug key; a release tag fails instead. Back up the keystore and its passwords outside GitHub: a lost key means every user has to uninstall and reinstall.

@@ -1,0 +1,18 @@
+name: Usul situs baru / Suggest a site
+description: Minta Sapu Berita mendukung situs berita lain.
+labels: ["situs baru"]
+body:
+  - type: input
+    id: site
+    attributes:
+      label: Nama situs / Site
+      placeholder: kumparan.com
+    validations:
+      required: true
+  - type: textarea
+    id: samples
+    attributes:
+      label: 2 sampai 3 tautan artikel / 2 to 3 article links
+      description: Lebih baik lagi kalau ada artikel yang terdiri dari beberapa halaman.
+    validations:
+      required: true

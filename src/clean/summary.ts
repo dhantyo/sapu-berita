@@ -25,7 +25,7 @@ export function normalizeSummaries(root: HTMLElement, headingPatterns: string[])
   };
 
   for (const box of [...root.querySelectorAll(CONTAINERS)]) {
-    if (!root.contains(box)) continue;
+    if (!root.contains(box) || isBuilt(box)) continue;
     const heading = headingOf(box);
     if (!heading) continue;
     // Work on the innermost matching container, not every wrapper around it.
@@ -38,7 +38,8 @@ export function normalizeSummaries(root: HTMLElement, headingPatterns: string[])
 
   // Second shape: a heading on its own ("BACA 10 DETIK" on Suara) followed by a sibling list.
   for (const head of [...root.querySelectorAll('h2, h3, h4, h5, p, div, strong, b')]) {
-    if (!root.contains(head)) continue;
+    // Skip boxes already in the final shape, or the first pass's <b> + <ul> would be wrapped again.
+    if (!root.contains(head) || (head.parentElement && isBuilt(head.parentElement))) continue;
     const text = norm(head.textContent);
     if (text.length > 60) continue;
     const heading = headings.map((r) => text.match(r)?.[0]).find(Boolean);
@@ -73,6 +74,12 @@ function summaryItems(box: Element, heading: string): string[] {
     .flatMap((line) => line.split(/\s(?=\d{1,2}[.)]\s)/))
     .map((s) => stripMarker(s.trim()))
     .filter((s) => s.length > 1);
+}
+
+/** Already <blockquote><b>Heading</b><ul>…</ul></blockquote>: running again must not touch it. */
+function isBuilt(el: Element): boolean {
+  const [first, second, extra] = el.children;
+  return el.tagName === 'BLOCKQUOTE' && !extra && first?.tagName === 'B' && second?.tagName === 'UL';
 }
 
 function buildBox(doc: Document, heading: string, items: string[]): HTMLElement {

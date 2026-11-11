@@ -5,6 +5,9 @@ import { analyzeLoadedLogo, corsLogoUrl, opticalHeight, recolourNeeds } from './
 import { PLATFORM_NAMES, type Platform } from '../clean/embeds.ts';
 import { OVERLAY_CSS } from './styles.ts';
 
+declare const __SAPU_VERSION__: string | undefined;
+const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
+
 const HOST_CLASS = 'sapuberita-overlay';
 /** Body text size per settings step (px). Phones get 1.5px less via CSS. */
 const SIZES = [16, 17.5, 19, 21, 23.5];
@@ -266,6 +269,8 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       switchRow(t.sweepLine, undefined, settings.sweepLine, (v) => change({ sweepLine: v }, '[data-switch="sweepLine"]'), 'sweepLine'),
     );
     panel.append(toggles);
+    // Version, so bug reports say which build they came from.
+    panel.append(h(doc, 'p', { class: 'version' }, `Sapu Berita ${VERSION}`));
     return panel;
   };
 

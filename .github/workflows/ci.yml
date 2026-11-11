@@ -45,10 +45,63 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      # Every published APK must be signed with the same key, or phones refuse the update.
+      # Without the secret (forks, pull requests) the build falls back to a throwaway debug key.
+      - name: Signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.SAPU_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "SAPU_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          elif [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "::error::Release tags need the SAPU_KEYSTORE_B64 secret (see apps/android/README.md)." && exit 1
+          fi
       # The runner image ships the Android SDK (ANDROID_HOME); the wrapper fetches Gradle.
-      - run: ./gradlew assembleDebug --no-daemon
+      - run: ./gradlew assembleRelease --no-daemon
         working-directory: apps/android
+        env:
+          SAPU_KEYSTORE_PASSWORD: ${{ secrets.SAPU_KEYSTORE_PASSWORD }}
+          SAPU_KEY_ALIAS: ${{ secrets.SAPU_KEY_ALIAS }}
+          SAPU_KEY_PASSWORD: ${{ secrets.SAPU_KEY_PASSWORD }}
+      - run: mv apps/android/app/build/outputs/apk/release/app-release.apk sapu-berita.apk
       - uses: actions/upload-artifact@v7
         with:
           name: sapu-berita-android-apk
-          path: apps/android/app/build/outputs/apk/debug/app-debug.apk
+          path: sapu-berita.apk
+
+  # Pushing a tag like v0.1.0-beta.1 publishes a GitHub Release with the APK, the extension and the Shortcut script.
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [check, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: builds
+          path: builds/
+      - uses: actions/download-artifact@v8
+        with:
+          name: sapu-berita-android-apk
+          path: apk/
+      - name: Package
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          test "$V" = "$(node -p "require('./package.json').version")" || { echo "::error::Tag $GITHUB_REF_NAME does not match package.json"; exit 1; }
+          mkdir out
+          cp apk/sapu-berita.apk "out/sapu-berita-$V.apk"
+          (cd builds/apps/extension && zip -q "$GITHUB_WORKSPACE/out/sapu-berita-extension-$V.zip" manifest.json content.js)
+          cp builds/dist/shortcut.b64.js "out/sapu-berita-shortcut-$V.js"
+          # Release notes: this version's section of CHANGELOG.md.
+          awk -v h="## [$V]" 'index($0, h) == 1 {on=1; next} on && index($0, "## [") == 1 {exit} on' CHANGELOG.md > notes.md
+          test -s notes.md || { echo "::error::No CHANGELOG.md section for $V"; exit 1; }
+          echo "V=$V" >> "$GITHUB_ENV"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRE=""; [[ "$V" == *-* ]] && PRE="--prerelease"
+          gh release create "$GITHUB_REF_NAME" out/* --title "Sapu Berita $V" --notes-file notes.md $PRE

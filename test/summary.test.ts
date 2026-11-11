@@ -37,6 +37,14 @@ describe('summary boxes', () => {
     expect(normalize('<div>Ringkasan Berita: 1. Satu poin. 2. Dua poin. 3. Tiga poin.</div>').items).toEqual(EXPECTED);
   });
 
+  it('builds exactly one box, and running again changes nothing (Tribun blockquote.summary-article)', () => {
+    const r = normalize('<blockquote class="summary-article"><strong>Ringkasan Berita:</strong><ul><li>Satu poin.</li><li>Dua poin.</li><li>Tiga poin.</li></ul></blockquote>');
+    expect(r.root.querySelectorAll('blockquote').length).toBe(1);
+    const once = r.root.innerHTML;
+    normalizeSummaries(r.root, HEADINGS);
+    expect(r.root.innerHTML).toBe(once);
+  });
+
   it('leaves the article alone when there is no summary box', () => {
     const r = normalize('<div><p>Ringkasan berita hari ini dimulai dengan…</p>' + '<p>' + 'x '.repeat(900) + '</p></div>');
     expect(r.root.querySelector('blockquote')).toBeNull();

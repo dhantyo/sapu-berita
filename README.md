@@ -1,40 +1,60 @@
+<div align="center">
+
 # Sapu Berita
 
-Clean reading overlay for Indonesian news sites. Opens an article and shows just the article: no ads, no "Baca Juga" interruptions, and every page merged into one.
+**Baca berita Indonesia dengan tenang.** Tanpa iklan, tanpa "Baca Juga" di tengah artikel, dan semua halaman langsung digabung jadi satu.
 
-**Supported (hand-verified rules, 16 portals):** Detik, CNN Indonesia, CNBC Indonesia, Kompas, Tribunnews (incl. regional sites), Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com, Tirto.
-**Not yet:** Tempo (mostly paywalled; Sapu Berita does not bypass paywalls), Kumparan and Sindonews (article text is rendered by JavaScript; generic extraction may still work), IDN Times (auto-generated class names).
-**Plus page merging, with generic extraction,** for about 20 more outlets via imported [AutoAllPage](https://github.com/reforget-id/AutoAllPage) rules.
+*Read Indonesian news in peace: no ads, no "Baca Juga" interruptions, every page merged into one.*
 
-| Platform | How users get it | Status |
+[Unduh / Download](../../releases/latest) · [Android](docs/install-android.md) · [iPhone, iPad, Mac](docs/install-apple.md) · [Situs yang didukung](#situs-yang-didukung--supported-sites)
+
+<img src="docs/img/phone-light.png" width="250" alt="Artikel Kompas yang sudah dibersihkan, tema terang"> <img src="docs/img/phone-dark.png" width="250" alt="Artikel yang sama, tema gelap"> <img src="docs/img/phone-settings.png" width="250" alt="Panel pengaturan: ukuran teks, huruf, tema, bahasa">
+
+</div>
+
+> **Beta.** Sapu Berita masih versi awal (0.x). Kalau ada artikel yang tampil aneh, [laporkan di sini](../../issues/new/choose) beserta tautannya.
+
+## Apa yang dilakukan / What it does
+
+- **Membuang gangguan:** iklan, daftar "Baca Juga", tombol bagikan, ajakan Google News dan newsletter.
+- **Menggabung halaman:** artikel yang dipecah jadi 2, 3, 5 halaman tampil utuh dalam satu halaman.
+- **Merapikan ringkasan:** kotak "Ringkasan Berita" atau "Poin Penting" tampil sebagai satu daftar rapi.
+- **Menyimpan yang penting:** foto, keterangan foto, dan unggahan media sosial yang memang bagian dari berita.
+- **Logo media tetap tampil**, diambil langsung dari situsnya, supaya kamu tahu sedang membaca siapa.
+- **Atur sesukamu:** ukuran teks, jenis huruf (serif, sans, ekstra jelas), tema terang, sepia atau gelap, bahasa Indonesia atau Inggris.
+
+Tombol **Asli** selalu membawamu kembali ke halaman asli media tersebut.
+
+## Pasang / Install
+
+| Perangkat | Cara kerja | Panduan |
 |---|---|---|
-| iPhone, iPad, Mac | Apple Shortcut in Safari (free, Share → Sapu Berita), [guide](docs/install-apple.md) | script ready; Shortcut must be assembled once on an iPhone/Mac |
-| Android | App that opens the news sites' links ("Open by default"); the browser stays as it is. [guide](docs/install-android.md) | alpha APK built by CI; tested on emulator |
-| Desktop Chrome | Dev extension | working, for development |
+| **Android** | Aplikasi kecil yang membuka tautan berita dari WhatsApp, Telegram, dan lainnya langsung dalam versi bersih. Browser kamu tetap seperti biasa. | [Panduan Android](docs/install-android.md) |
+| **iPhone, iPad, Mac** | Pintasan (Shortcut) Apple. Buka artikel di Safari, lalu Bagikan → Sapu Berita. | [Panduan Apple](docs/install-apple.md) |
+| **Chrome, Brave, Edge** (komputer) | Ekstensi browser, berjalan otomatis di situs berita. | [Panduan ekstensi](apps/extension/README.md) |
 
-## Develop
+Semua file ada di halaman [Releases](../../releases/latest).
 
-```bash
-npm install
-npm run import:autoallpage   # pagination rules for ~20 extra sites
-npm run import:adblock       # ad selectors from AdBlockID + ABPindo
-npm test                     # schema + matching + real-article fixtures
-npm run build                # all wrappers into dist/ and apps/extension/
-```
+## Situs yang didukung / Supported sites
 
-- Add a test article: `npm run capture -- <url>`
-- Draft a rule for a new portal: `npm run probe -- https://www.example.com` (samples live articles, reports body, junk and pagination)
-- Check live sites like the daily CI canary does: `npm run canary`
+Detik · Kompas · Tribunnews (termasuk situs daerah) · CNN Indonesia · CNBC Indonesia · Liputan6 · Merdeka · Suara · Okezone · Viva · iNews · JPNN · ANTARA · Republika · Bisnis.com · Tirto
 
-## Docs
-- [Architecture](docs/ARCHITECTURE.md): pipeline, wrappers, rule lifecycle
-- [Writing rules](docs/RULES.md): fixing a site when it redesigns
-- [Prior art](docs/PRIOR-ART.md): what we reuse and why
+**Belum / Not yet:** Tempo (berbayar; Sapu Berita tidak membobol paywall), Kumparan, Sindonews, IDN Times. Mau situs lain? [Usulkan di sini](../../issues/new/choose).
 
-## License
-GPL-3.0-only. Rule data is derived from GPL-3.0 projects (AdBlockID, ABPindo, AutoAllPage).
+## Privasi / Privacy
 
-## Dev scripts
+Semua berjalan di perangkatmu. Sapu Berita tidak punya server, tidak memakai analitik, dan tidak tahu apa yang kamu baca. Artikel tetap dimuat dari situs aslinya, jadi kunjunganmu tetap tercatat oleh media tersebut seperti biasa.
 
-- `npm run preview`: local page that runs the real pipeline on saved fixtures, to check the overlay at any viewport.
-- `npm run rebaseline`: recompute fixture expectations from saved HTML after a deliberate cleaning change.
+*Everything runs on your device. No server, no analytics. Articles still load from the publisher's own site.*
+
+## Ikut membantu / Contributing
+
+Situs berita sering ganti tampilan, jadi aturan per situs perlu dirawat. Laporan artikel yang rusak saja sudah sangat membantu. Yang mau ikut menulis kode atau aturan, baca [CONTRIBUTING.md](CONTRIBUTING.md).
+
+*English: see [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/DEVELOPING.md](docs/DEVELOPING.md).*
+
+## Lisensi / License
+
+[GPL-3.0](LICENSE). Penyaring iklan dan aturan halaman diturunkan dari [AdBlockID](https://github.com/realodix/AdBlockID), [ABPindo](https://github.com/ABPindo/indonesianadblockrules), dan [AutoAllPage](https://github.com/reforget-id/AutoAllPage) (semuanya GPL-3.0). Sapu Berita tidak berafiliasi dengan media mana pun; nama dan logo media milik pemiliknya masing-masing.
+
+Bagian dari keluarga **Sapu**, bersama Sapu Buzzer (segera hadir).

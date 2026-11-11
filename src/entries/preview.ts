@@ -22,7 +22,9 @@ async function main() {
   const base = `/test/fixtures/${fx}/`;
   const meta = (await (await fetch(base + 'fixture.json')).json()) as Fixture;
   const doc = parseHtml(await (await fetch(base + 'page.html')).text(), meta.url);
-  const settings = normalizeSettings(await localStorageStore.load());
+  // ?theme=dark etc. override the saved settings (used for README screenshots).
+  const overrides = Object.fromEntries(['theme', 'font', 'lang'].flatMap((k) => (params.get(k) ? [[k, params.get(k)]] : [])));
+  const settings = normalizeSettings({ ...(await localStorageStore.load()), ...overrides });
 
   let overlay: ReturnType<typeof renderOverlay> | null = null;
   await run(

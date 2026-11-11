@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Sapu Berita (dev)",
-  "version": "0.0.0",
-  "description": "Development build of the Sapu Berita overlay. Load unpacked in chrome://extensions after `npm run build`.",
+  "name": "Sapu Berita",
+  "version": "0.1.0",
+  "description": "Baca berita Indonesia tanpa iklan dan tanpa \"Baca Juga\"; semua halaman digabung jadi satu.",
   "permissions": [
     "storage"
   ],
@@ -31,5 +31,6 @@
       ],
       "run_at": "document_end"
     }
-  ]
+  ],
+  "version_name": "0.1.0-beta.1"
 }

@@ -2,11 +2,11 @@
 
 Baca berita Indonesia tanpa iklan, tanpa "Baca Juga", dan semua halaman langsung digabung. Setelah diatur sekali, tautan berita dari WhatsApp, Telegram, atau mana pun langsung terbuka bersih. **Browser kamu tetap seperti biasa**; hanya tautan artikel berita yang dibuka Sapu Berita.
 
-> **Versi alfa.** Untuk sementara aplikasi dibagikan langsung (APK), belum lewat Play Store.
+> **Versi beta.** Untuk sementara aplikasi dibagikan langsung (APK) lewat GitHub, belum lewat Play Store.
 
 ## Pasang
 
-1. Unduh **Sapu Berita.apk** dari tautan yang dibagikan.
+1. Di ponsel, buka halaman [Releases](https://github.com/dhantyo/bacabersih/releases/latest) dan unduh **sapu-berita-….apk**.
 2. Buka file-nya. Kalau ponsel bertanya, izinkan **"Instal aplikasi tidak dikenal"** untuk browser/file manager yang kamu pakai.
 3. Buka **Sapu Berita**, lalu:
    1. Ketuk **Atur tautan berita** → **Tambahkan link** (*Add link*) → centang semua situs berita → **Tambahkan**.
