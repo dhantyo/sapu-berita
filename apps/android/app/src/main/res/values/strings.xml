@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sapu Berita</string>
+    <string name="setup_lead">Berita Indonesia tanpa iklan, tanpa \"Baca Juga\", semua halaman langsung digabung. Sekali atur, lalu buka tautan berita seperti biasa.</string>
+    <string name="setup_default_title">Jadikan browser utama</string>
+    <string name="setup_default_on">Sudah aktif. Tautan berita akan langsung bersih.</string>
+    <string name="setup_default_off">Belum aktif. Tautan berita masih terbuka di browser lain.</string>
+    <string name="setup_default_button">Jadikan Sapu Berita browser utama</string>
+    <string name="setup_forward_title">Browser untuk tautan lain</string>
+    <string name="setup_forward_hint">Tautan yang bukan berita langsung dibuka di browser ini.</string>
+    <string name="setup_forward_button">Tautan lain dibuka di: %1$s</string>
+    <string name="setup_forward_none">tidak ada browser lain</string>
+    <string name="setup_try_title">Coba</string>
+    <string name="setup_try_button">Buka contoh artikel Kompas</string>
+    <string name="setup_privacy">Semua berjalan di ponselmu. Sapu Berita tidak punya server dan tidak tahu apa yang kamu baca.</string>
+</resources>

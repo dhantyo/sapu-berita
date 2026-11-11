@@ -4,7 +4,7 @@
 //   dist/shortcut.js           iOS Shortcut (minified)
 //   dist/shortcut.b64.js       same, base64-wrapped: no '#' and no whitespace (iOS 17+/18.4 quirks)
 import { build, type Plugin } from 'esbuild';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/rules.ts';
 import { buildRules } from './build-rules.ts';
@@ -48,6 +48,21 @@ const b64 = Buffer.from(shortcut, 'utf8').toString('base64');
 writeFileSync(
   join(ROOT, 'dist/shortcut.b64.js'),
   `(0,eval)(decodeURIComponent(escape(atob("${b64}"))))`,
+);
+
+// Android app assets: the WebView script and the list of news hosts the router keeps in-app.
+// Every other link goes straight to the user's normal browser.
+const assets = join(ROOT, 'apps/android/app/src/main/assets');
+mkdirSync(assets, { recursive: true });
+copyFileSync(join(ROOT, 'dist/webview.js'), join(assets, 'webview.js'));
+writeFileSync(
+  join(assets, 'domains.json'),
+  JSON.stringify({
+    // Registrable domains with hand-verified rules: host === d or host ends with "." + d.
+    domains: [...new Set(rules.sites.flatMap((s) => s.domains))].sort(),
+    // Hostname regexes from imported pagination-only rules (Java regex compatible: no lookbehind used here).
+    patterns: rules.paginationOnly.map((r) => r.hostname),
+  }),
 );
 
 const kb = (s: string) => `${(Buffer.byteLength(s) / 1024).toFixed(1)} kB`;

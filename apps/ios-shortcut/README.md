@@ -1,33 +1,44 @@
 # iOS Shortcut
 
-Free iOS distribution: an Apple Shortcut shared through an iCloud link. The user runs it from Safari's share sheet on a news article.
+Free iOS distribution: an Apple Shortcut shared through an iCloud link. The reader runs it from Safari's share sheet on a news article. No App Store, no developer account.
+
+User-facing install guide (Indonesian): [docs/install-iphone.md](../../docs/install-iphone.md).
 
 ## Build
 
-`npm run build` produces two candidates:
+`npm run build` produces two candidates (CI also uploads them as the `builds` artifact):
 
-| File | What it is | Why |
+| File | What it is | Status |
 |---|---|---|
-| `dist/shortcut.js` | minified core | smallest and fastest; contains `#` characters |
-| `dist/shortcut.b64.js` | the same code, base64 inside `eval(atob(…))` | no `#` and no whitespace, to dodge reported iOS 17 / 18.4 quirks; **may be blocked** on sites whose CSP forbids `eval` |
+| `dist/shortcut.b64.js` | the core, base64 inside `eval(atob(…))`: no `#`, no whitespace | **ship this one** |
+| `dist/shortcut.js` | the same core, minified, contains `#` | backup if eval ever gets blocked |
 
-Test both on a real iPhone. Keep whichever works on all 5 outlets and delete the other from the build.
+Why the base64 one: forum reports say Shortcuts' JavaScript action breaks on `#` (iOS 17+) and slows down on whitespace (iOS 18.4+). Its only risk is a site whose Content-Security-Policy forbids `eval`. **Checked 2026-11-11: none of the five outlets restrict `script-src` or `img-src`** (Detik and Tribun only send `frame-ancestors`, CNN Indonesia, Kompas and Liputan6 send no CSP), so eval, the logo pixel reads and YouTube thumbnails all work. Re-check with the canary if an outlet adds a CSP.
 
-## Making the Shortcut (once, by the maintainer)
+## Making the Shortcut (once, by the maintainer, on an iPhone or Mac)
 
-1. Shortcuts app → **+** → name it "Sapu Berita".
-2. Shortcut details (ⓘ) → turn on **Show in Share Sheet**, accept types: **Safari web pages**.
-3. Add the action **Run JavaScript on Web Page**, input: *Shortcut Input*.
-4. Paste the contents of the chosen build file.
-5. Settings → Apps → Shortcuts → Advanced → turn on **Allow Running Scripts**. Every user needs this too, so the install guide must say it.
-6. Share → **Copy iCloud Link**. That link is what you distribute.
+1. Shortcuts app → **+** → name it **Sapu Berita**, pick an icon (the broom glyph if available, colour: orange/ochre).
+2. Shortcut details (ⓘ) → turn on **Show in Share Sheet**; under *Share Sheet Types* keep only **Safari web pages**.
+3. Add the action **Run JavaScript on Web Page**; its input is *Shortcut Input*.
+4. Replace the action's sample code with the full contents of `dist/shortcut.b64.js` (one long line).
+5. Optional: add **Show Notification** after it only when you want debugging; the script's result is `{ rendered, reason }`.
+6. Settings → Apps → Shortcuts → Advanced → turn on **Allow Running Scripts** (each user must do this too; the guide says so).
+7. In the shortcut's share menu → **Copy iCloud Link**. Put that link in the install guide and the README.
+
+Apple doesn't allow importing unsigned `.shortcut` files anymore, and signing needs a Mac (`shortcuts sign`). The iCloud link is the free path that works for everyone.
+
+## Behaviour on iPhone
+
+- Running the Shortcut is an explicit request, so it opens the clean view even when "open automatically" is off.
+- The script always calls `completion()` within 8 s; the overlay keeps rendering after that (it lives in the page).
+- Settings are stored in the page's `localStorage`, which Safari keeps **per site**: a reader who changes the font on Kompas sets it again once on Detik. A shared store would need a native app (the Safari-extension upgrade path).
 
 ## Updating
 
-Rule changes reach users automatically through the remote `rules.json` (when `REMOTE_RULES_URL` is set at build time). Code changes need a new Shortcut version, and users re-add it from the link.
+Rule changes (site layouts) reach users through the remote `rules.json` once `REMOTE_RULES_URL` is set at build time. Code changes need a new Shortcut version: update the action's code, and users re-add it from the same iCloud link.
 
-## Open questions to verify on a device
-- [ ] Time budget actually available (the script answers within 8 s regardless)
-- [ ] Does `localStorage` persist between runs (remote rules cache)?
-- [ ] Does the overlay stay after `completion()` returns? (Expected yes: it's in the page DOM)
-- [ ] `#` / whitespace issues: which build variant works
+## Still to verify on a real device
+- [ ] Time budget actually available to the action (the script answers within 8 s regardless)
+- [ ] `localStorage` persists between runs
+- [ ] Overlay stays after `completion()` returns (expected: yes)
+- [ ] Base64 variant runs on iOS 17 and 18.4+

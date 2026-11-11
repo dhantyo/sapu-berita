@@ -41,6 +41,13 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
   const host = doc.createElement('div');
   host.className = HOST_CLASS;
+  // Top layer (Popover API): above everything the page does, whatever its z-index, including
+  // full-screen interstitial ads that load after us. Older engines fall back to z-index.
+  const topLayer = typeof (host as HTMLElement & { showPopover?: unknown }).showPopover === 'function';
+  // Reading: a full-viewport, transparent popover carrier in the top layer (UA popover box neutralised).
+  const READING_HOST = 'inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;overflow:visible;color:inherit';
+  // Original page showing: a zero-size fixed carrier that only holds the floating reopen button.
+  const IDLE_HOST = 'position:fixed;top:0;left:0;width:0;height:0;margin:0;padding:0;border:0;overflow:visible;z-index:2147483647';
   const shadow = host.attachShadow({ mode: 'open' });
   const style = h(doc, 'style');
   style.textContent = OVERLAY_CSS;
@@ -320,16 +327,31 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
   // ── Visibility ──────────────────────────────────────────────────────────
   const prevOverflow = doc.documentElement.style.overflow;
+  const popover = host as HTMLElement & { showPopover?: () => void; hidePopover?: () => void };
   const show = () => {
     root.style.display = '';
     reopen.style.display = 'none';
     doc.documentElement.style.overflow = 'hidden';
+    if (topLayer && !host.matches(':popover-open')) {
+      host.setAttribute('popover', 'manual');
+      host.style.cssText = READING_HOST;
+      // Re-append first so we're also last in DOM order (ties go to the later element).
+      doc.documentElement.append(host);
+      popover.showPopover?.();
+    }
   };
   const hide = () => {
     if (panelOpen) setPanel(false);
     root.style.display = 'none';
     reopen.style.display = '';
     doc.documentElement.style.overflow = prevOverflow;
+    // Out of the top layer, so the full-viewport carrier never blocks the original page. A closed
+    // popover is display:none, which would hide the reopen button, so drop the attribute too.
+    if (topLayer) {
+      if (host.matches(':popover-open')) popover.hidePopover?.();
+      host.removeAttribute('popover');
+      host.style.cssText = IDLE_HOST;
+    }
   };
   reopen.addEventListener('click', show);
 

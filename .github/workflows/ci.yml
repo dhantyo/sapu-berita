@@ -25,3 +25,30 @@ jobs:
           path: |
             dist/
             apps/extension/
+      # Hand the generated WebView script + domain list to the Android job.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android-assets
+          path: apps/android/app/src/main/assets/
+
+  android:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: android-assets
+          path: apps/android/app/src/main/assets/
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      # The runner image ships the Android SDK (ANDROID_HOME); the wrapper fetches Gradle.
+      - run: ./gradlew assembleDebug --no-daemon
+        working-directory: apps/android
+      - uses: actions/upload-artifact@v7
+        with:
+          name: sapu-berita-android-apk
+          path: apps/android/app/build/outputs/apk/debug/app-debug.apk

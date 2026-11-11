@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Sapu" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorAccent">@color/lidi</item>
+        <item name="android:windowBackground">@color/paper</item>
+        <item name="android:statusBarColor">@color/paper</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <!-- The router never shows anything: it forwards the link and finishes. -->
+    <style name="Theme.Sapu.Router" parent="android:Theme.Translucent.NoTitleBar">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+</resources>

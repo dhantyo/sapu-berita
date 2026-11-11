@@ -5,3 +5,10 @@ apps/extension/content.js
 apps/extension/content.js.map
 *.log
 .DS_Store
+apps/android/app/src/main/assets/webview.js
+apps/android/app/src/main/assets/domains.json
+apps/android/.gradle/
+apps/android/build/
+apps/android/app/build/
+apps/android/local.properties
+*.apk
