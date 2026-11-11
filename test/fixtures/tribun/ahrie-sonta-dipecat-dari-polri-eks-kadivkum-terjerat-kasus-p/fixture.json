@@ -1,0 +1,14 @@
+{
+  "url": "https://jakarta.tribunnews.com/news/446316/ahrie-sonta-dipecat-dari-polri-eks-kadivkum-terjerat-kasus-penyadapan-ilegal",
+  "capturedAt": "2026-11-11T01:45:07.173Z",
+  "pages": {
+    "https://jakarta.tribunnews.com/news/446316/ahrie-sonta-dipecat-dari-polri-eks-kadivkum-terjerat-kasus-penyadapan-ilegal?page=all": "pages/p2.html"
+  },
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 2,
+    "chars": 5468,
+    "title": "Ahrie Sonta Dipecat dari Polri, Eks Kadivkum Terjerat Kasus Penyadapan Ilegal"
+  }
+}

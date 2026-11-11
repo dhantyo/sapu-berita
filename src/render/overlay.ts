@@ -2,6 +2,7 @@ import type { Article } from '../types.ts';
 import { SIZE_STEPS, type Font, type Lang, type Settings, type Theme } from '../settings.ts';
 import { strings, type Strings } from './i18n.ts';
 import { analyzeLoadedLogo, corsLogoUrl, opticalHeight, recolourNeeds } from './logo.ts';
+import { PLATFORM_NAMES, type Platform } from '../clean/embeds.ts';
 import { OVERLAY_CSS } from './styles.ts';
 
 const HOST_CLASS = 'sapuberita-overlay';
@@ -179,6 +180,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     }
 
     article.content.classList.add('content');
+    localizeEmbeds(article.content, t);
     const parts: Node[] = [head, article.content];
     if (loading) parts.push(h(doc, 'p', { class: 'status', role: 'status' }, h(doc, 'span', { class: 'spinner', 'aria-hidden': 'true' }), t.loadingMore));
 
@@ -352,6 +354,25 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       host.remove();
     },
   };
+}
+
+/** Social-post cards (clean/embeds.ts): link labels in the reader's language, a play mark on video thumbnails. */
+function localizeEmbeds(content: Element, t: Strings): void {
+  for (const a of content.querySelectorAll<HTMLAnchorElement>('a[data-embed-link]')) {
+    const platform = PLATFORM_NAMES[a.dataset.embedLink as Platform] ?? a.dataset.embedLink ?? '';
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
+    if (a.querySelector('img')) {
+      a.setAttribute('aria-label', t.playOn(platform));
+      if (!a.querySelector('.play')) {
+        const play = icon(44, ['M9 7.5v9l7.5-4.5z']);
+        play.classList.add('play');
+        a.append(play);
+      }
+    } else {
+      a.replaceChildren(t.openOn(platform), arrow());
+    }
+  }
 }
 
 /** The description as a deck, unless it just repeats the first lines of the article (common on Indonesian sites). */

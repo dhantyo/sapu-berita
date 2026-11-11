@@ -1,0 +1,14 @@
+{
+  "url": "https://www.kompas.com/hype/read/2026/11/11/051100766/3-kali-batal-manggung-dongker-bersyukur-bisa-bawakan-nirimajinasi-bersama",
+  "capturedAt": "2026-11-11T01:49:57.450Z",
+  "pages": {
+    "https://www.kompas.com/hype/read/2026/11/11/051100766/3-kali-batal-manggung-dongker-bersyukur-bisa-bawakan-nirimajinasi-bersama?page=all": "pages/p2.html"
+  },
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 1772,
+    "title": "3 Kali Batal Manggung, Dongker Bersyukur Bisa Bawakan “Nirimajinasi” Bersama Cholil Mahmud"
+  }
+}

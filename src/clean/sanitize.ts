@@ -17,7 +17,8 @@ export function sanitize(container: HTMLElement): HTMLElement {
       'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p', 'picture', 'pre', 'q', 's',
       'small', 'source', 'span', 'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'u', 'ul',
     ],
-    ALLOWED_ATTR: ['href', 'src', 'srcset', 'sizes', 'alt', 'title', 'loading', 'colspan', 'rowspan'],
+    // data-embed / data-embed-link mark social-post cards (clean/embeds.ts) for styling and label localization.
+    ALLOWED_ATTR: ['href', 'src', 'srcset', 'sizes', 'alt', 'title', 'loading', 'colspan', 'rowspan', 'data-embed', 'data-embed-link'],
     ALLOW_DATA_ATTR: false,
   });
 

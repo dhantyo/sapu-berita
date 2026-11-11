@@ -1,0 +1,12 @@
+{
+  "url": "https://www.cnnindonesia.com/hiburan/20261110094541-227-1425266/patung-sexy-robot-konser-the-weeknd-tuai-polemik-di-malaysia",
+  "capturedAt": "2026-11-11T01:49:58.882Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 2532,
+    "title": "Dituding Serupa Ritual, Konser The Weeknd Diusut Malaysia"
+  }
+}

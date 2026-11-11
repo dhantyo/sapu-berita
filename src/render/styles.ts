@@ -23,9 +23,9 @@ export const OVERLAY_CSS = `
 :host { all: initial; }
 .root {
   ${LIGHT}
-  --serif: Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, "Noto Serif", serif;
-  /* Same families, but Windows gets Sitka's display cut for headlines instead of the small-text cut. */
-  --display: Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Heading", Cambria, Georgia, "Noto Serif", serif;
+  --serif: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Noto Serif", "Droid Serif", serif;
+  /* Headline, deck and subheads follow the font setting; serif by default. */
+  --head: var(--serif);
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --legible: Verdana, "Segoe UI", Tahoma, "DejaVu Sans", sans-serif;
   --body: var(--serif);
@@ -40,8 +40,8 @@ export const OVERLAY_CSS = `
 .root[data-theme="sepia"] { ${SEPIA} }
 .root[data-theme="dark"] { ${DARK} }
 @media (prefers-color-scheme: dark) { .root[data-theme="auto"] { ${DARK} } }
-.root[data-font="sans"] { --body: var(--sans); }
-.root[data-font="legible"] { --body: var(--legible); }
+.root[data-font="sans"] { --body: var(--sans); --head: var(--sans); }
+.root[data-font="legible"] { --body: var(--legible); --head: var(--legible); }
 @media (max-width: 600px) { .root { --narrow: 1.5px; } }
 .root ::selection { background: color-mix(in srgb, var(--accent) 32%, transparent); }
 .root :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
@@ -98,10 +98,10 @@ button { font: inherit; color: inherit; }
 /* ── The article ── */
 .column { font-size: calc(var(--fs) - var(--narrow)); width: min(100% - 32px, 34em); margin: 0 auto; padding: 2.2em 0 0; }
 h1 {
-  margin: 0 0 0.45em; font: 700 clamp(1.55em, 1.05em + 2.2vw, 2.15em)/1.14 var(--display);
+  margin: 0 0 0.45em; font: 700 clamp(1.55em, 1.05em + 2.2vw, 2.15em)/1.14 var(--head);
   letter-spacing: -0.012em; text-wrap: balance;
 }
-.deck { margin: 0 0 0.9em; font: 400 1.08em/1.45 var(--serif); color: var(--muted); text-wrap: pretty; }
+.deck { margin: 0 0 0.9em; font: 400 1.08em/1.45 var(--head); color: var(--muted); text-wrap: pretty; }
 .meta { margin: 0; font: 400 0.74em/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
 .meta .section { color: var(--ink); font-weight: 600; }
 /* Each part (section, byline, date) stays whole; the row only breaks at the separators. */
@@ -114,7 +114,7 @@ h1 {
 .root[data-font="legible"] .content { line-height: 1.7; letter-spacing: 0.005em; }
 .content > :first-child { margin-top: 0; }
 .content p, .content div { margin: 0 0 1.05em; }
-.content h2, .content h3, .content h4 { font-family: var(--serif); line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance; }
+.content h2, .content h3, .content h4 { font-family: var(--head); line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance; }
 .content h2 { font-size: 1.28em; } .content h3 { font-size: 1.12em; } .content h4 { font-size: 1em; }
 .content a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--rule-strong); }
 .content a:hover { text-decoration-color: var(--accent); }
@@ -128,6 +128,24 @@ h1 {
 .content blockquote { margin: 1.7em 0; padding: 0.9em 0 0.2em; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); font-size: 0.94em; }
 .content blockquote > b:first-child { display: block; margin-bottom: 0.55em; font: 700 0.74em/1.3 var(--sans); letter-spacing: 0.04em; text-transform: uppercase; }
 .content blockquote > ul { margin-bottom: 0.9em; }
+/* Social-post cards: quoted posts are part of the story; static, no third-party scripts. */
+.content figure[data-embed] {
+  margin: 1.6em 0; padding: 0.85em 1em; border: 1px solid var(--rule); border-radius: 10px;
+  font: 0.8em/1.5 var(--sans); color: var(--ink);
+}
+.content figure[data-embed] figcaption { margin: 0 0 0.45em; font: inherit; color: var(--muted); }
+.content figure[data-embed] figcaption b { color: var(--ink); }
+.content figure[data-embed] p { margin: 0 0 0.6em; font-size: 1.06em; }
+.content figure[data-embed] a[data-embed-link] { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; text-decoration: none; color: var(--ink); }
+.content figure[data-embed] a[data-embed-link]:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.content figure[data-embed="youtube"] { padding: 0; overflow: hidden; }
+.content figure[data-embed="youtube"] a[data-embed-link] { position: relative; display: block; }
+.content figure[data-embed="youtube"] img { margin: 0; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.content figure[data-embed="youtube"] .play {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%; padding: 10px; border-radius: 50%;
+  color: rgb(255 255 255); background: rgb(0 0 0 / 0.62); fill: currentColor; stroke: none;
+}
+.content figure[data-embed="youtube"] figcaption { margin: 0; padding: 0.7em 1em; }
 .content table { width: 100%; border-collapse: collapse; margin: 1.6em 0; font: 0.78em/1.4 var(--sans); font-variant-numeric: tabular-nums; }
 .content td, .content th { padding: 0.5em 0.6em 0.5em 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
 .content hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }

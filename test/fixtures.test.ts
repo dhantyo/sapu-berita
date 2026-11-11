@@ -35,6 +35,8 @@ const JUNK = [
   /Artikel Kompas\.id/i,
   /Tautan telah disalin/i,
   /Baca berita tanpa iklan/i,
+  /Google News/i,
+  /^\s*Berita Lainnya\s*$/im,
 ];
 
 describe.skipIf(!cases.length)('fixtures', () => {

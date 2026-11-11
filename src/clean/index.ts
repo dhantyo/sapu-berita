@@ -1,16 +1,10 @@
 import type { ResolvedRule, RuleSet } from '../types.ts';
 import { normalizeSummaries } from './summary.ts';
+import { convertEmbeds } from './embeds.ts';
 
 const BLOCKS = 'p, div, li, h2, h3, h4, h5, table, blockquote, section, aside, span, strong';
 const LAZY_SRC_ATTRS = ['data-src', 'data-original', 'data-lazy-src', 'data-srcset'];
 
-/**
- * Remove junk from an extracted body, in place:
- * 1. common + site + adblock selectors
- * 2. blocks whose text matches "Baca juga:" style patterns
- * 3. promote lazy-loaded images, absolutize URLs, drop empty leftovers
- * Sanitizing for safety is a separate step (sanitize.ts).
- */
 /** Plumbing, not distractions: removed silently and never counted in the sweep line. */
 const UNCOUNTED = new Set(['script', 'style', 'noscript', 'form', 'button']);
 
@@ -24,6 +18,8 @@ const UNCOUNTED = new Set(['script', 'style', 'noscript', 'form', 'button']);
  * Returns how many distractions were swept (for the reader-facing sweep line).
  */
 export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet, adblock: string[], baseUrl: URL): number {
+  // First: social posts quoted in the story become static cards (before iframe/blockquote cleanup would drop them).
+  convertEmbeds(container);
   let swept = removeCustomElements(container);
   swept += removeSelectors(container, rules.common.remove.filter((s) => UNCOUNTED.has(s)), false);
   swept += removeSelectors(container, [...rules.common.remove.filter((s) => !UNCOUNTED.has(s)), ...rule.remove, ...adblock]);
