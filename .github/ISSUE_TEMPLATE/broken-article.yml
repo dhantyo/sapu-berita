@@ -1,0 +1,38 @@
+name: Broken article
+description: An article looks wrong, is cut off, or still has ads or "Baca Juga" links.
+labels: ["broken article"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Article link
+      placeholder: https://news.detik.com/berita/d-...
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Used on
+      options:
+        - Android app
+        - iPhone or iPad (Shortcut)
+        - Mac (Shortcut)
+        - Browser extension (Chrome, Brave, Edge)
+    validations:
+      required: true
+  - type: checkboxes
+    id: what
+    attributes:
+      label: What's wrong?
+      options:
+        - label: Sapu Berita doesn't appear at all
+        - label: Part of the article text is missing
+        - label: Ads, "Baca Juga" or other links are still in the article
+        - label: Pages 2, 3 and so on aren't merged
+        - label: Photos or videos are missing
+        - label: The layout looks broken
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Screenshots help a lot. Your Sapu Berita version is at the bottom of the Aa panel. Indonesian is fine too.

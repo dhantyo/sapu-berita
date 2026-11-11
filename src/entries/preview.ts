@@ -1,6 +1,6 @@
 // Dev preview (npm run preview): runs the real pipeline on a saved fixture and draws the overlay,
 // so the design can be checked at any viewport without loading the extension on a live site.
-import bundledRules from 'bacabersih:rules';
+import bundledRules from 'sapuberita:rules';
 import { parseHtml, renderOverlay, run } from '../index.ts';
 import { localStorageStore, normalizeSettings } from '../settings.ts';
 

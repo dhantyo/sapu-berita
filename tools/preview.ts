@@ -20,7 +20,7 @@ async function bundle(): Promise<string> {
     plugins: [{
       name: 'rules',
       setup(b) {
-        b.onResolve({ filter: /^bacabersih:rules$/ }, () => ({ path: 'rules', namespace: 'sb' }));
+        b.onResolve({ filter: /^sapuberita:rules$/ }, () => ({ path: 'rules', namespace: 'sb' }));
         b.onLoad({ filter: /.*/, namespace: 'sb' }, () => ({ contents: JSON.stringify(rules), loader: 'json' }));
       },
     }],

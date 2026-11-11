@@ -2,69 +2,64 @@
 
 # Sapu Berita
 
-**Baca berita Indonesia dengan tenang.** Tanpa iklan, tanpa "Baca Juga" di tengah artikel, dan semua halaman langsung digabung jadi satu.
+**Read Indonesian news in peace.** No ads, no "Baca Juga" link lists in the middle of the story, and multi-page articles merged into one.
 
-*Read Indonesian news in peace: no ads, no "Baca Juga" interruptions, every page merged into one.*
+[Download](../../releases/latest) · [Android](docs/install-android.md) · [iPhone, iPad, Mac](docs/install-apple.md) · [Supported sites](#supported-sites)
 
-[Unduh / Download](../../releases/latest) · [Android](docs/install-android.md) · [iPhone, iPad, Mac](docs/install-apple.md) · [Situs yang didukung](#situs-yang-didukung--supported-sites)
-
-<img src="docs/img/phone-light.png" width="250" alt="Artikel Kompas yang sudah dibersihkan, tema terang"> <img src="docs/img/phone-dark.png" width="250" alt="Artikel yang sama, tema gelap"> <img src="docs/img/phone-settings.png" width="250" alt="Panel pengaturan: ukuran teks, huruf, tema, bahasa">
+<img src="docs/img/phone-light.png" width="250" alt="A cleaned-up Kompas article, light theme"> <img src="docs/img/phone-dark.png" width="250" alt="The same article, dark theme"> <img src="docs/img/phone-settings.png" width="250" alt="Settings panel: text size, font, theme, language">
 
 </div>
 
-> **Beta.** Sapu Berita masih versi awal (0.x). Kalau ada artikel yang tampil aneh, [laporkan di sini](../../issues/new/choose) beserta tautannya.
+> **Beta.** Sapu Berita is still early (0.x). If an article looks wrong, [report it](../../issues/new/choose) with the link.
 
-## Apa yang dilakukan / What it does
+## What it does
 
-- **Membuang gangguan:** iklan, daftar "Baca Juga", tombol bagikan, ajakan Google News dan newsletter.
-- **Menggabung halaman:** artikel yang dipecah jadi 2, 3, 5 halaman tampil utuh dalam satu halaman.
-- **Merapikan ringkasan:** kotak "Ringkasan Berita" atau "Poin Penting" tampil sebagai satu daftar rapi.
-- **Menyimpan yang penting:** foto, keterangan foto, dan unggahan media sosial yang memang bagian dari berita.
-- **Logo media tetap tampil**, diambil langsung dari situsnya, supaya kamu tahu sedang membaca siapa.
-- **Atur sesukamu:** ukuran teks, jenis huruf (serif, sans, ekstra jelas), tema terang, sepia atau gelap, bahasa Indonesia atau Inggris.
+- **Removes the clutter:** ads, "Baca Juga" (read also) link lists, share buttons, Google News and newsletter prompts.
+- **Merges pages:** articles split over 2, 3 or 5 pages appear whole, on one page.
+- **Tidies summaries:** editor summary boxes ("Ringkasan Berita", key points) become one clean list.
+- **Keeps what matters:** photos, captions, and social media posts that are part of the story.
+- **Shows the outlet's logo**, taken from the site itself, so you always know who you're reading.
+- **Your way:** text size, font (serif, sans, extra-legible), light, sepia or dark theme, Indonesian or English interface.
 
-Tombol **Asli** selalu membawamu kembali ke halaman asli media tersebut.
+The **Original** button always takes you back to the publisher's page.
 
-## Pasang / Install
+## Install
 
-| Perangkat | Cara kerja | Panduan |
+| Device | How it works | Guide |
 |---|---|---|
-| **Android** | Aplikasi kecil yang membuka tautan berita dari WhatsApp, Telegram, dan lainnya langsung dalam versi bersih. Browser kamu tetap seperti biasa. | [Panduan Android](docs/install-android.md) |
-| **iPhone, iPad, Mac** | Pintasan (Shortcut) Apple. Buka artikel di Safari, lalu Bagikan → Sapu Berita. | [Panduan Apple](docs/install-apple.md) |
-| **Chrome, Brave, Edge** (komputer) | Ekstensi browser, berjalan otomatis di situs berita. | [Panduan ekstensi](apps/extension/README.md) |
+| **Android** | A small app that opens news links from WhatsApp, Telegram and other apps straight in the clean view. Your browser stays as it is. | [Android guide](docs/install-android.md) |
+| **iPhone, iPad, Mac** | An Apple Shortcut. Open an article in Safari, then Share → Sapu Berita. | [Apple guide](docs/install-apple.md) |
+| **Chrome, Brave, Edge** (desktop) | A browser extension that runs automatically on news sites. | [Extension guide](apps/extension/README.md) |
 
-Semua file ada di halaman [Releases](../../releases/latest).
+All downloads are on the [Releases](../../releases/latest) page. The install guides are in Indonesian, for the people who'll use them.
 
-## Situs yang didukung / Supported sites
+## Supported sites
 
-Detik · Kompas · Tribunnews (termasuk situs daerah) · CNN Indonesia · CNBC Indonesia · Liputan6 · Merdeka · Suara · Okezone · Viva · iNews · JPNN · ANTARA · Republika · Bisnis.com · Tirto
+Detik · Kompas · Tribunnews (including regional sites) · CNN Indonesia · CNBC Indonesia · Liputan6 · Merdeka · Suara · Okezone · Viva · iNews · JPNN · ANTARA · Republika · Bisnis.com · Tirto
 
-**Belum / Not yet:** Tempo (berbayar; Sapu Berita tidak membobol paywall), Kumparan, Sindonews, IDN Times. Mau situs lain? [Usulkan di sini](../../issues/new/choose).
+**Not yet:** Tempo (paywalled; Sapu Berita doesn't bypass paywalls), Kumparan, Sindonews, IDN Times. Want another site? [Suggest it](../../issues/new/choose).
 
-## Privasi / Privacy
+## Updates
 
-Semua berjalan di perangkatmu. Sapu Berita tidak punya server, tidak memakai analitik, dan tidak tahu apa yang kamu baca. Artikel tetap dimuat dari situs aslinya, jadi kunjunganmu tetap tercatat oleh media tersebut seperti biasa.
+Sapu Berita tells you when there's a new version: a small "Sapu Berita X is available · Update" box appears above the article.
 
-Sekali sehari, Sapu Berita mengambil dua file kecil dari GitHub: nomor versi terbaru dan aturan situs terbaru, supaya perbaikan sampai tanpa pasang ulang. Tidak ada data tentangmu atau bacaanmu yang dikirim. Bisa dimatikan di **Aa → Cek pembaruan**.
+- **Site fixes** (when a news site changes its layout) arrive automatically, without updating the app.
+- **Android:** tap **Update** → the new APK downloads → open it → **Update**. Your settings are kept.
+- **iPhone, iPad, Mac:** tap **Update** → the guide with the newest Shortcut link → replace the old Shortcut.
+- **Extension:** tap **Update** → download the new zip, replace the old folder, click ↻.
 
-*Everything runs on your device. No server, no analytics. Articles still load from the publisher's own site. Once a day it downloads the latest version number and site rules from GitHub (nothing about you is sent); turn it off under Aa → Check for updates.*
+## Privacy
 
-## Pembaruan / Updates
+Everything runs on your device. Sapu Berita has no server, no analytics, and doesn't know what you read. Articles still load from the publisher's own site, so your visit counts for them as usual.
 
-Sapu Berita memberi tahu sendiri kalau ada versi baru: muncul kotak **"Sapu Berita … sudah tersedia · Perbarui"** di atas artikel.
-- **Perbaikan situs** (misalnya situs ganti tampilan) sampai otomatis, tanpa perlu memperbarui aplikasi.
-- **Android:** ketuk **Perbarui** → file APK baru terunduh → buka → **Perbarui**. Pengaturanmu tetap tersimpan.
-- **iPhone, iPad, Mac:** ketuk **Perbarui** → panduan berisi tautan pintasan terbaru → **Ganti** pintasan lama.
-- **Ekstensi:** ketuk **Perbarui** → unduh zip baru, timpa folder lama, klik ↻.
+Once a day it downloads two small files from GitHub: the latest version number and the latest site rules. Nothing about you or your reading is sent. You can turn it off under **Aa → Check for updates**.
 
-## Ikut membantu / Contributing
+## Contributing
 
-Situs berita sering ganti tampilan, jadi aturan per situs perlu dirawat. Laporan artikel yang rusak saja sudah sangat membantu: buka **Aa → Laporkan** di artikel yang bermasalah. Yang mau ikut menulis kode atau aturan, baca [CONTRIBUTING.md](CONTRIBUTING.md).
+News sites change their layouts often, so the per-site rules need care. Reporting a broken article already helps a lot: open **Aa → Report it** on that article. To work on code or rules, see [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/DEVELOPING.md](docs/DEVELOPING.md).
 
-*English: see [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/DEVELOPING.md](docs/DEVELOPING.md).*
+## License
 
-## Lisensi / License
+[GPL-3.0](LICENSE). Ad filters and pagination rules are derived from [AdBlockID](https://github.com/realodix/AdBlockID), [ABPindo](https://github.com/ABPindo/indonesianadblockrules) and [AutoAllPage](https://github.com/reforget-id/AutoAllPage) (all GPL-3.0). Sapu Berita is not affiliated with any news outlet; their names and logos belong to their owners.
 
-[GPL-3.0](LICENSE). Penyaring iklan dan aturan halaman diturunkan dari [AdBlockID](https://github.com/realodix/AdBlockID), [ABPindo](https://github.com/ABPindo/indonesianadblockrules), dan [AutoAllPage](https://github.com/reforget-id/AutoAllPage) (semuanya GPL-3.0). Sapu Berita tidak berafiliasi dengan media mana pun; nama dan logo media milik pemiliknya masing-masing.
-
-Bagian dari keluarga **Sapu**, bersama Sapu Buzzer (segera hadir).
+Part of the **Sapu** family, alongside Sapu Buzzer (coming soon).

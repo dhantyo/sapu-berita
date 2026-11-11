@@ -24,16 +24,16 @@ const [OWNER = '', NAME = ''] = REPO.split('/');
 const CHANNEL_URL = process.env.SAPU_CHANNEL_URL ?? (REPO ? `https://${OWNER.toLowerCase()}.github.io/${NAME}/` : '');
 // "Report a problem": a prefilled "Artikel rusak" issue form. update.json can swap in a form that needs no account.
 const REPORT_URL = process.env.SAPU_REPORT_URL ?? (REPO
-  ? `https://github.com/${REPO}/issues/new?template=artikel-rusak.yml&url={url}&details=${encodeURIComponent('Sapu Berita ')}{version}%20(%7Bplatform%7D)`.replace('%7Bplatform%7D', '{platform}')
+  ? `https://github.com/${REPO}/issues/new?template=broken-article.yml&url={url}&details=${encodeURIComponent('Sapu Berita ')}{version}%20(%7Bplatform%7D)`.replace('%7Bplatform%7D', '{platform}')
   : '');
 
 const rules = buildRules();
 
 const rulesPlugin: Plugin = {
-  name: 'bacabersih-rules',
+  name: 'sapuberita-rules',
   setup(b) {
-    b.onResolve({ filter: /^bacabersih:rules$/ }, () => ({ path: 'rules', namespace: 'bacabersih' }));
-    b.onLoad({ filter: /.*/, namespace: 'bacabersih' }, () => ({ contents: JSON.stringify(rules), loader: 'json' }));
+    b.onResolve({ filter: /^sapuberita:rules$/ }, () => ({ path: 'rules', namespace: 'sapuberita' }));
+    b.onLoad({ filter: /.*/, namespace: 'sapuberita' }, () => ({ contents: JSON.stringify(rules), loader: 'json' }));
   },
 };
 

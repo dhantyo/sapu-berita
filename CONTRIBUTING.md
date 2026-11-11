@@ -1,29 +1,29 @@
-# Ikut membantu / Contributing
+# Contributing
 
-Terima kasih! Ada tiga cara membantu, dari yang paling mudah.
+Thanks for helping! Three ways, easiest first.
 
-## 1. Laporkan artikel yang tampil aneh
+## 1. Report an article that looks wrong
 
-Paling mudah: di artikel itu, buka **Aa → Laporkan**. Tautan artikel dan versi Sapu Berita sudah terisi otomatis.
+The quickest way: on that article, open **Aa → Report it**. The article link and your Sapu Berita version are filled in for you.
 
-Atau [buka laporan baru](../../issues/new/choose) → **Artikel rusak**. Sertakan:
-- **tautan artikelnya** (paling penting),
-- perangkat yang dipakai (Android, iPhone, ekstensi),
-- apa yang salah: teks hilang, masih ada iklan atau "Baca Juga", halaman tidak tergabung, dan sebagainya. Tangkapan layar sangat membantu.
+Or [open a report](../../issues/new/choose) → **Broken article**, with:
+- **the article link** (most important),
+- what you used (Android, iPhone, extension),
+- what's wrong: missing text, ads or "Baca Juga" links left in, pages not merged, and so on. Screenshots help a lot.
 
-## 2. Usulkan situs berita baru
+Writing in Indonesian is fine.
 
-[Buka usulan baru](../../issues/new/choose) → **Usul situs baru**, dengan nama situs dan 2 sampai 3 tautan artikel.
+## 2. Suggest a news site
 
-## 3. Tulis atau perbaiki aturan situs (code)
+[Open a suggestion](../../issues/new/choose) → **Suggest a site**, with the site's name and 2 or 3 article links.
 
-*English from here on.*
+## 3. Write or fix a site rule
 
 Most fixes are a few lines of JSON in `rules/sites/<site>.json`. Read [docs/RULES.md](docs/RULES.md) first; the short version:
 
 1. `npm install`, then load the extension (`npm run build`, then *Load unpacked* `apps/extension/` in `chrome://extensions`).
 2. Open the broken article, find the element that wraps the paragraphs in DevTools, and fix `body`, `remove` or `pagination` in the rule.
-3. Add the article as a fixture: `npm run capture -- <url>`.
+3. Add the article as a test fixture: `npm run capture -- <url>`.
 4. `npm run check` must pass. Then open a pull request with the article link in the description.
 
 For a new site, `npm run probe -- https://www.example.com` drafts the rule for you.

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sapu Berita</string>
-    <string name="setup_lead">Berita Indonesia tanpa iklan, tanpa \"Baca Juga\", semua halaman langsung digabung. Browser kamu tetap seperti biasa; hanya tautan berita yang dibuka bersih.</string>
-    <string name="setup_links_title">Buka tautan berita di Sapu Berita</string>
+    <string name="setup_lead">Berita Indonesia tanpa iklan, tanpa \"Baca Juga\", semua halaman langsung digabung. Browser kamu tetap seperti biasa; hanya link berita yang dibuka bersih.</string>
+    <string name="setup_links_title">Buka link berita di Sapu Berita</string>
     <string name="setup_links_none">Belum aktif (0 dari %1$d situs berita).</string>
     <string name="setup_links_some">Aktif untuk %1$d dari %2$d situs berita.</string>
     <string name="setup_links_old_status">%1$d situs berita didukung.</string>
     <string name="setup_links_how">Ketuk tombol di bawah → \"Tambahkan link\" → centang semua situs berita → Tambahkan.</string>
-    <string name="setup_links_how_old">Saat pertama kali membuka tautan berita, ponsel akan bertanya aplikasi mana yang dipakai. Pilih Sapu Berita, lalu \"Selalu\".</string>
-    <string name="setup_links_button">Atur tautan berita</string>
+    <string name="setup_links_how_old">Saat pertama kali membuka link berita, ponsel akan bertanya aplikasi mana yang dipakai. Pilih Sapu Berita, lalu \"Selalu\".</string>
+    <string name="setup_links_button">Atur link berita</string>
     <string name="setup_try_title">Coba</string>
     <string name="setup_try_button">Buka contoh artikel Kompas</string>
     <string name="setup_privacy">Semua berjalan di ponselmu. Sapu Berita tidak punya server dan tidak tahu apa yang kamu baca.</string>

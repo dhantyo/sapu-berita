@@ -1,0 +1,20 @@
+name: Other problem
+description: Installing, settings, updates, or anything else.
+body:
+  - type: dropdown
+    id: device
+    attributes:
+      label: Used on
+      options:
+        - Android app
+        - iPhone or iPad (Shortcut)
+        - Mac (Shortcut)
+        - Browser extension (Chrome, Brave, Edge)
+        - Other
+  - type: textarea
+    id: details
+    attributes:
+      label: What happened?
+      description: What you did, what happened, and what you expected. Indonesian is fine too.
+    validations:
+      required: true

@@ -1,4 +1,4 @@
-import bundledRules from 'bacabersih:rules';
+import bundledRules from 'sapuberita:rules';
 import {
   fetchSameOriginDocument,
   loadRules,

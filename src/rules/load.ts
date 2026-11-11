@@ -1,6 +1,6 @@
 import type { RuleSet } from '../types.ts';
 
-const CACHE_KEY = 'bacabersih:rules';
+const CACHE_KEY = 'sapuberita:rules';
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 interface Cached {
