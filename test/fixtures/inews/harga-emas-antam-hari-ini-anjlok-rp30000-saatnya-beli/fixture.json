@@ -1,0 +1,12 @@
+{
+  "url": "https://www.inews.id/news/nasional/harga-emas-antam-hari-ini-anjlok-rp30000-saatnya-beli",
+  "capturedAt": "2026-11-11T02:29:26.608Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 1253,
+    "title": "Harga Emas Antam Hari Ini Anjlok Rp30.000, Saatnya Beli?"
+  }
+}

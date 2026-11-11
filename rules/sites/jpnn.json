@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "jpnn",
+  "name": "JPNN",
+  "domains": ["jpnn.com"],
+  "articleUrl": "^/[a-z-]+/(\\d+/)?[a-z0-9-]{20,}$",
+  "body": [".page-content"],
+  "remove": [".baca-juga"],
+  "pagination": { "method": "fetch", "pageLinks": ".pagination a, li a[href*=\"page=\"]", "maxPages": 10 },
+  "samples": ["https://m.jpnn.com/news/motogp-2026-peluang-juara-dunia-terbuang-respons-bos-aprilia-di-luar-dugaan"],
+  "verified": "2026-11-11",
+  "notes": "page=all is ignored by JPNN (verified), so pages ?page=2..N are fetched and stitched. Regional subdomains (bali.jpnn.com) share the layout."
+}

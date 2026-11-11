@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "antaranews",
+  "name": "ANTARA",
+  "domains": ["antaranews.com"],
+  "articleUrl": "/berita/\\d+/",
+  "body": [".post-content"],
+  "remove": ["span.baca-juga"],
+  "pagination": { "method": "param", "fullpage": "page=all", "onlyIf": "a[href*=\"page=2\"]" },
+  "samples": ["https://m.antaranews.com/berita/5845135/pln-amankan-pendanaan-29-miliar-dolar-as-untuk-agenda-transisi-energi"],
+  "verified": "2026-11-11",
+  "notes": "'Baca juga:' paragraphs are dropped by the common patterns; span.baca-juga is the label inside them."
+}

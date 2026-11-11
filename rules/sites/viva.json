@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "viva",
+  "name": "VIVA",
+  "domains": ["viva.co.id"],
+  "articleUrl": "/\\d{6,}-[a-z0-9-]+",
+  "body": [".main-content-detail"],
+  "remove": [".recommended-article"],
+  "pagination": { "method": "param", "fullpage": "page=all", "onlyIf": ".pagination a[href*=\"page=2\"]" },
+  "samples": ["https://www.viva.co.id/berita/nasional/1942690-putusan-lengkap-mahkamah-agung-tidak-ditemukan-bukti-gibran-miliki-ijazah-di-luar-negeri"],
+  "verified": "2026-11-11",
+  "notes": "page=all verified: 2,626 -> 5,453 chars (3 pages)."
+}

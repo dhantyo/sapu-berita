@@ -1,0 +1,14 @@
+{
+  "$schema": "../schema.json",
+  "id": "cnbcindonesia",
+  "name": "CNBC Indonesia",
+  "domains": ["cnbcindonesia.com"],
+  "articleUrl": "/\\d{14}-\\d+-\\d+/",
+  "body": [".detail-text", ".detail__body-text"],
+  "remove": ["table.linksisip", ".noncontent", ".sisip_video_ds"],
+  "pagination": { "method": "param", "fullpage": "page=all", "stripPathPage": true, "onlyIf": "a[href*=\"page=2\"]" },
+  "feed": "https://www.cnbcindonesia.com/news/rss",
+  "samples": ["https://www.cnbcindonesia.com/market/20261111081558-17-784091/ihsg-menguat-1-simak-5-saham-pilihan-hari-ini"],
+  "verified": "2026-11-11",
+  "notes": "Same platform as Detik/CNN Indonesia (detail-text, table.linksisip 'Baca:' boxes). page=all from AutoAllPage."
+}

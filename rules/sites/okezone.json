@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "okezone",
+  "name": "Okezone",
+  "domains": ["okezone.com"],
+  "articleUrl": "/read/\\d{4}/\\d{2}/\\d{2}/\\d+/\\d+/",
+  "body": ["#article-box"],
+  "remove": ["#baca-juga"],
+  "pagination": { "method": "param", "fullpage": "page=all", "onlyIf": ".box-nomor a, a[href*=\"page=2\"]" },
+  "samples": ["https://news.okezone.com/read/2026/11/10/337/3253279/gibran-buka-bukaan-pertemuan-2-jam-dengan-prabowo-bahas-ijazah-hingga-keinginan-mundur"],
+  "verified": "2026-11-11",
+  "notes": "page=all verified: 1,567 -> 2,385 chars."
+}

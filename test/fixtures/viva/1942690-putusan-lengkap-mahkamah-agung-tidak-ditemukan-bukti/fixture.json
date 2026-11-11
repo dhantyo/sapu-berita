@@ -1,0 +1,14 @@
+{
+  "url": "https://www.viva.co.id/berita/nasional/1942690-putusan-lengkap-mahkamah-agung-tidak-ditemukan-bukti-gibran-miliki-ijazah-di-luar-negeri",
+  "capturedAt": "2026-11-11T02:29:25.337Z",
+  "pages": {
+    "https://www.viva.co.id/berita/nasional/1942690-putusan-lengkap-mahkamah-agung-tidak-ditemukan-bukti-gibran-miliki-ijazah-di-luar-negeri?page=all": "pages/p2.html"
+  },
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 3,
+    "chars": 5632,
+    "title": "Putusan Lengkap Mahkamah Agung: Tidak Ditemukan Bukti Gibran Miliki Ijazah di Luar Negeri"
+  }
+}

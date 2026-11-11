@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "suara",
+  "name": "Suara.com",
+  "domains": ["suara.com"],
+  "articleUrl": "/\\d{4}/\\d{2}/\\d{2}/\\d+/",
+  "body": [".article-content"],
+  "remove": [".article-read"],
+  "pagination": { "method": "param", "fullpage": "page=all", "onlyIf": "a[href*=\"page=2\"]" },
+  "samples": ["https://www.suara.com/news/2026/11/11/073830/gibran-mau-mundur-tapi-malah-tempuh-ptun-pakar-ugm-saya-bingung-maksudnya-apa"],
+  "verified": "2026-11-11",
+  "notes": "page=all verified: 3,402 -> 4,946 chars. 'Baca Juga' lists are .article-read (li.title-baca)."
+}

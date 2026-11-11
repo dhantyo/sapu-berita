@@ -14,6 +14,7 @@
     "import:adblock": "node tools/import-adblock.ts",
     "import:autoallpage": "node tools/import-autoallpage.ts",
     "capture": "node tools/capture-fixture.ts",
+    "probe": "node tools/probe-site.ts",
     "preview": "node tools/preview.ts",
     "rebaseline": "node tools/rebaseline-fixtures.ts",
     "canary": "node tools/canary.ts",

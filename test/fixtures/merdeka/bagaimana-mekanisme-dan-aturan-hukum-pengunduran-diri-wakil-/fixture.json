@@ -1,0 +1,12 @@
+{
+  "url": "https://www.merdeka.com/peristiwa/read/8332754/bagaimana-mekanisme-dan-aturan-hukum-pengunduran-diri-wakil-presiden",
+  "capturedAt": "2026-11-11T02:29:19.791Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 5,
+    "chars": 8093,
+    "title": "Bagaimana Mekanisme dan Aturan Hukum Pengunduran Diri Wakil Presiden?"
+  }
+}

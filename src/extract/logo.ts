@@ -13,7 +13,8 @@ export interface FoundLogo {
  */
 const NOT_MASTHEAD =
   /(?:^|[^a-z])(?:banner|smartbanner|bapps|smart|app-?promo|cta|footer|foot|ads?|advert|sponsor|partner|widget|wachannel|channel|popup|modal)(?:[^a-z]|$)/i;
-const NOT_LOGO_SRC = /mockup|smartbanner|sprite|favicon|appx?\d|app-?icon|placeholder|blank|pixel|1x1/i;
+// Image names that are never the masthead logo: promos, backgrounds, banners, network strips.
+const NOT_LOGO_SRC = /mockup|smartbanner|sprite|favicon|appx?\d|app-?icon|placeholder|blank|pixel|1x1|(^|[/_-])bg[-_]|background|breaking|banner|network/i;
 const HEADER = /header|masthead|navbar|topbar|brand|site-?logo/i;
 
 /**

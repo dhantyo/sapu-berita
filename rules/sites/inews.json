@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "inews",
+  "name": "iNews",
+  "domains": ["inews.id"],
+  "articleUrl": "^/[a-z-]+/[a-z-]+/[a-z0-9-]{20,}$",
+  "body": [".detail-artikel"],
+  "remove": [".baca-juga-cont", "a.box-bacajuga"],
+  "pagination": { "method": "none" },
+  "samples": ["https://www.inews.id/news/nasional/harga-emas-antam-hari-ini-anjlok-rp30000-saatnya-beli"],
+  "verified": "2026-11-11",
+  "notes": "No article ids in URLs: article = /section/subsection/long-slug."
+}

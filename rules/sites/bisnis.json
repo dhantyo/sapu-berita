@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema.json",
+  "id": "bisnis",
+  "name": "Bisnis.com",
+  "domains": ["bisnis.com"],
+  "articleUrl": "/read/\\d{8}/\\d+/\\d+/",
+  "body": ["article.detailsContent"],
+  "pagination": { "method": "none" },
+  "samples": ["https://ekonomi.bisnis.com/read/20261110/9/2020098/smile-tingkatkan-target-sertifikasi-rspo-menjadi-7000-petani-swadaya"],
+  "noCanary": true,
+  "verified": "2026-11-11",
+  "notes": "Verified in a real browser; the site answers 403 to non-browser requests, so it has no fixture and the daily canary skips it."
+}

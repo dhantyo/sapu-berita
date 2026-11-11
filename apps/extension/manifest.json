@@ -3,17 +3,32 @@
   "name": "Sapu Berita (dev)",
   "version": "0.0.0",
   "description": "Development build of the Sapu Berita overlay. Load unpacked in chrome://extensions after `npm run build`.",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
       "matches": [
-        "https://*.detik.com/*",
+        "https://*.antaranews.com/*",
+        "https://*.bisnis.com/*",
+        "https://*.cnbcindonesia.com/*",
         "https://*.cnnindonesia.com/*",
+        "https://*.detik.com/*",
+        "https://*.inews.id/*",
+        "https://*.jpnn.com/*",
         "https://*.kompas.com/*",
+        "https://*.liputan6.com/*",
+        "https://*.merdeka.com/*",
+        "https://*.okezone.com/*",
+        "https://*.republika.co.id/*",
+        "https://*.suara.com/*",
+        "https://*.tirto.id/*",
         "https://*.tribunnews.com/*",
-        "https://*.liputan6.com/*"
+        "https://*.viva.co.id/*"
       ],
-      "js": ["content.js"],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_end"
     }
   ]

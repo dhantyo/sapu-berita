@@ -1,0 +1,12 @@
+{
+  "url": "https://news.republika.co.id/berita/tob971348/cedera-otot-paha-aleksandar-stankovic-tinggalkan-kamp-timnas-serbia-dan-kembali-ke-markas-inter",
+  "capturedAt": "2026-11-11T02:29:23.708Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 2553,
+    "title": "Cedera Otot Paha, Aleksandar Stankovic Tinggalkan Kamp Timnas Serbia dan Kembali ke Markas Inter"
+  }
+}

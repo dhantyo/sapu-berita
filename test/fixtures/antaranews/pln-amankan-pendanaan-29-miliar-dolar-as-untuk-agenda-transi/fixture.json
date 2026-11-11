@@ -1,0 +1,12 @@
+{
+  "url": "https://m.antaranews.com/berita/5845135/pln-amankan-pendanaan-29-miliar-dolar-as-untuk-agenda-transisi-energi",
+  "capturedAt": "2026-11-11T02:29:22.562Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 3585,
+    "title": "PLN amankan pendanaan 2,9 miliar dolar AS untuk agenda transisi energi"
+  }
+}

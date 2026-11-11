@@ -1,0 +1,14 @@
+{
+  "$schema": "../schema.json",
+  "id": "tirto",
+  "name": "Tirto.id",
+  "domains": ["tirto.id"],
+  "articleUrl": "^/[a-z0-9-]{20,}-[a-zA-Z0-9]{4}$",
+  "body": [".content-text-editor"],
+  "remove": [".baca-holder"],
+  "pagination": { "method": "none" },
+  "samples": ["https://tirto.id/vonis-bupati-sekda-cilacap-serta-temuan-yang-diabaikan-idEb"],
+  "noCanary": true,
+  "verified": "2026-11-11",
+  "notes": "Verified in a real browser; the site answers 403 to non-browser requests, so it has no fixture and the daily canary skips it."
+}

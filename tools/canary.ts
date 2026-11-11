@@ -17,6 +17,10 @@ async function newestFromFeed(feed: string): Promise<string | undefined> {
 }
 
 for (const site of rules.sites) {
+  if (site.noCanary) {
+    console.log(`⏭  ${site.id} skipped (blocks non-browser requests; verified in a browser)`);
+    continue;
+  }
   const fresh = site.feed ? await newestFromFeed(site.feed) : undefined;
   const urls = [...new Set([fresh, ...(site.samples ?? [])].filter((u): u is string => !!u))];
 

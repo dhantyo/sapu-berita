@@ -1,0 +1,12 @@
+{
+  "$schema": "../schema.json",
+  "id": "republika",
+  "name": "Republika",
+  "domains": ["republika.co.id"],
+  "articleUrl": "/berita/[a-z0-9]{6,}/",
+  "body": [".rep-article__body"],
+  "pagination": { "method": "none" },
+  "samples": ["https://news.republika.co.id/berita/tob971348/cedera-otot-paha-aleksandar-stankovic-tinggalkan-kamp-timnas-serbia-dan-kembali-ke-markas-inter"],
+  "verified": "2026-11-11",
+  "notes": "'Baca Juga :' blocks (div.my-3) are dropped by the common text patterns."
+}

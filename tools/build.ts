@@ -50,6 +50,13 @@ writeFileSync(
   `(0,eval)(decodeURIComponent(escape(atob("${b64}"))))`,
 );
 
+// Desktop dev extension: run on every hand-verified domain (generated, so new rules need no manifest edit).
+const manifestPath = join(ROOT, 'apps/extension/manifest.json');
+const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+const domains = [...new Set(rules.sites.flatMap((s) => s.domains))].sort();
+manifest.content_scripts[0].matches = domains.map((d) => `https://*.${d}/*`);
+writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+
 // Android app assets: the WebView script and the list of news hosts the router keeps in-app.
 // Every other link goes straight to the user's normal browser.
 const assets = join(ROOT, 'apps/android/app/src/main/assets');

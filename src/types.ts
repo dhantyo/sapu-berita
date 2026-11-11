@@ -23,6 +23,7 @@ export interface SiteRule extends RuleOverrides {
   pagination: Pagination;
   variants?: Array<RuleOverrides & { when: string }>;
   logo?: string[];
+  noCanary?: boolean;
   feed?: string;
   samples?: string[];
   verified?: string;

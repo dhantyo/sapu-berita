@@ -1,0 +1,12 @@
+{
+  "url": "https://www.cnbcindonesia.com/market/20261111081558-17-784091/ihsg-menguat-1-simak-5-saham-pilihan-hari-ini",
+  "capturedAt": "2026-11-11T02:29:16.707Z",
+  "pages": {},
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 1,
+    "chars": 4955,
+    "title": "IHSG Menguat 1%, Simak 5 Saham Pilihan Hari Ini"
+  }
+}

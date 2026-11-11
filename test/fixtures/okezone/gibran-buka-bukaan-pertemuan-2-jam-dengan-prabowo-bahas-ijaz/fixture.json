@@ -1,0 +1,14 @@
+{
+  "url": "https://news.okezone.com/read/2026/11/10/337/3253279/gibran-buka-bukaan-pertemuan-2-jam-dengan-prabowo-bahas-ijazah-hingga-keinginan-mundur",
+  "capturedAt": "2026-11-11T02:29:33.721Z",
+  "pages": {
+    "https://news.okezone.com/read/2026/11/10/337/3253279/gibran-buka-bukaan-pertemuan-2-jam-dengan-prabowo-bahas-ijazah-hingga-keinginan-mundur?page=all": "pages/p2.html"
+  },
+  "expect": {
+    "ok": true,
+    "source": "rule",
+    "pages": 2,
+    "chars": 2781,
+    "title": "Gibran Buka-bukaan Pertemuan 2 Jam dengan Prabowo, Bahas Ijazah hingga Keinginan Mundur"
+  }
+}
