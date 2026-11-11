@@ -31,6 +31,7 @@ const JUNK = [
   /^\s*baca juga\s*:/im,
   /\bADVERTISEMENT\b/,
   /SCROLL TO CONTINUE/i,
+  /Rekomendasi untuk (anda|kamu)/i,
   /Dukung KOMPAS\.com/i,
   /Artikel Kompas\.id/i,
   /Tautan telah disalin/i,

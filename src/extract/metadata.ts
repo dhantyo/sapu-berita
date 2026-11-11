@@ -17,7 +17,7 @@ export function extractMetadata(doc: Document): ArticleMeta {
     }
   };
 
-  return {
+  return decodeText({
     title:
       str(ld?.headline) ??
       meta('meta[property="og:title"]') ??
@@ -34,7 +34,32 @@ export function extractMetadata(doc: Document): ArticleMeta {
     logo: absolute(imageUrl(publisher?.logo)),
     section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
-  };
+  });
+}
+
+const TEXT_FIELDS = ['title', 'byline', 'siteName', 'section', 'description'] as const;
+
+/** Sites HTML-escape JSON-LD strings, or double-escape meta tags ("&#039;Sindiran&#039;" on Detik). */
+function decodeText(m: ArticleMeta): ArticleMeta {
+  for (const k of TEXT_FIELDS) if (m[k]) m[k] = decodeEntities(m[k]!);
+  return m;
+}
+
+const NAMED: Record<string, string> = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', hellip: '…', ndash: '–', mdash: '—',
+  lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', laquo: '«', raquo: '»', bull: '•', middot: '·',
+};
+
+export function decodeEntities(s: string): string {
+  // Twice, for double-escaped input ("&amp;#039;").
+  for (let i = 0; i < 2 && s.includes('&'); i++) {
+    s = s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (whole, code: string) => {
+      if (code[0] !== '#') return NAMED[code.toLowerCase()] ?? whole;
+      const n = code[1] === 'x' || code[1] === 'X' ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10);
+      return n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : whole;
+    });
+  }
+  return s;
 }
 
 function findArticleJsonLd(doc: Document): Json | undefined {

@@ -9,6 +9,7 @@
     "^(berita|artikel) (lainnya|terkait|populer|pilihan|terbaru|rekomendasi)$",
     "^(baca|ikuti|dapatkan|simak)\\b.{0,120}\\bgoogle news\\b",
     "^baca berita .{0,60}\\blainnya\\b",
+    "^rekomendasi (untuk|buat) (anda|kamu)$",
     "^advertisement$",
     "^iklan$",
     "^scroll to continue( with content)?$",
