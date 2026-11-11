@@ -100,6 +100,12 @@ jobs:
           REPO_URL="https://github.com/$GITHUB_REPOSITORY"
           mkdir channel
           cp builds/dist/rules.json channel/rules.json
+          # Apple: the Shortcut and the Safari bookmark download this core on every run (always the latest).
+          cp builds/dist/shortcut.js channel/sapu-berita.js
+          cp builds/dist/apple-loader.js builds/dist/bookmarklet.txt channel/
+          # Install page.
+          cp -r site/. channel/
+          mkdir -p channel/img && cp docs/img/phone-light.png docs/img/phone-dark.png channel/img/
           cat > channel/update.json <<JSON
           {
             "version": "$V",

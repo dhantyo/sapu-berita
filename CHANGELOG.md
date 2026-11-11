@@ -19,7 +19,8 @@ First public beta.
 
 **Apps**
 - **Android:** app that opens only news-site links (Open by default); every other link still goes to your browser.
-- **iPhone, iPad, Mac:** Apple Shortcut, run from Safari's Share menu.
+- **iPhone, iPad, Mac:** a Safari bookmark (one button on Mac) and an Apple Shortcut, both always running the latest version.
+- **Install page** on GitHub Pages that shows the right steps for your device.
 - **Chrome, Brave, Edge (desktop):** browser extension, loaded unpacked.
 
 **Known limits**

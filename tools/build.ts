@@ -3,6 +3,8 @@
 //   dist/webview.js            Android WebView injection
 //   dist/shortcut.js           iOS Shortcut (minified)
 //   dist/shortcut.b64.js       same, base64-wrapped: no '#' and no whitespace (iOS 17+/18.4 quirks)
+//   dist/apple-loader.js       what goes in the Shortcut: downloads the latest core and runs it
+//   dist/bookmarklet.txt       the same loader as a Safari/Chrome bookmark
 import { build, type Plugin } from 'esbuild';
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -70,6 +72,19 @@ writeFileSync(
   `(0,eval)(decodeURIComponent(escape(atob("${b64}"))))`,
 );
 
+// Apple loader: what actually goes in the Shortcut and the Safari bookmark. It downloads the latest core
+// (dist/shortcut.js, published as sapu-berita.js on the release channel) and runs it, so Apple users never
+// re-add anything. Short, one line, no '#' (Shortcuts quirks); `completion` is Shortcuts' global, absent
+// in a bookmark. Fails visibly (completion reason) rather than silently if the channel is unreachable.
+const CORE_URL = CHANNEL_URL ? new URL('sapu-berita.js', CHANNEL_URL).href : '';
+const loader =
+  `(function(){var c=typeof completion=='function'?completion:function(){};` +
+  `fetch('${CORE_URL}',{cache:'no-cache'}).then(function(r){if(!r.ok)throw r.status;return r.text()})` +
+  `.then(function(s){(0,eval)(s)}).catch(function(e){c({rendered:false,reason:'load '+e})})})();`;
+if (loader.includes('#')) throw new Error('Apple loader must not contain #');
+writeFileSync(join(ROOT, 'dist/apple-loader.js'), loader);
+writeFileSync(join(ROOT, 'dist/bookmarklet.txt'), 'javascript:' + encodeURIComponent(loader));
+
 // Desktop dev extension: run on every hand-verified domain (generated, so new rules need no manifest edit).
 const manifestPath = join(ROOT, 'apps/extension/manifest.json');
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
@@ -112,4 +127,4 @@ writeFileSync(manifestXml, xml);
 
 const kb = (s: string) => `${(Buffer.byteLength(s) / 1024).toFixed(1)} kB`;
 const hashes = (shortcut.match(/#/g) ?? []).length;
-console.log(`shortcut.js ${kb(shortcut)} (contains ${hashes} '#'), shortcut.b64.js ${kb(b64)}`);
+console.log(`shortcut.js ${kb(shortcut)} (contains ${hashes} '#'), shortcut.b64.js ${kb(b64)}, apple loader ${loader.length} chars`);

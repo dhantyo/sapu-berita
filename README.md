@@ -4,7 +4,7 @@
 
 **Read Indonesian news in peace.** No ads, no "Baca Juga" link lists in the middle of the story, and multi-page articles merged into one.
 
-[Download](../../releases/latest) · [Android](docs/install-android.md) · [iPhone, iPad, Mac](docs/install-apple.md) · [Supported sites](#supported-sites)
+[Install page](https://dhantyo.github.io/sapu-berita/) · [Download](../../releases/latest) · [Android](docs/install-android.md) · [iPhone, iPad, Mac](docs/install-apple.md) · [Supported sites](#supported-sites)
 
 <img src="docs/img/phone-light.png" width="250" alt="A cleaned-up Kompas article, light theme"> <img src="docs/img/phone-dark.png" width="250" alt="The same article, dark theme"> <img src="docs/img/phone-settings.png" width="250" alt="Settings panel: text size, font, theme, language">
 
@@ -28,10 +28,11 @@ The **Original** button always takes you back to the publisher's page.
 | Device | How it works | Guide |
 |---|---|---|
 | **Android** | A small app that opens news links from WhatsApp, Telegram and other apps straight in the clean view. Your browser stays as it is. | [Android guide](docs/install-android.md) |
-| **iPhone, iPad, Mac** | An Apple Shortcut. Open an article in Safari, then Share → Sapu Berita. | [Apple guide](docs/install-apple.md) |
-| **Chrome, Brave, Edge** (desktop) | A browser extension that runs automatically on news sites. | [Extension guide](apps/extension/README.md) |
+| **iPhone, iPad** | A Safari bookmark today, an Apple Shortcut (Share → Sapu Berita) soon. Always the latest version. | [Apple guide](docs/install-apple.md) |
+| **Mac** | One button in Safari's Favourites bar. Always the latest version. | [Apple guide](docs/install-apple.md) |
+| **Chrome, Brave, Edge, Firefox** (desktop) | The same one-click bookmark, or an extension that runs automatically. | [Install page](https://dhantyo.github.io/sapu-berita/), [extension guide](apps/extension/README.md) |
 
-All downloads are on the [Releases](../../releases/latest) page.
+The [install page](https://dhantyo.github.io/sapu-berita/) picks the right steps for your device. All downloads are also on the [Releases](../../releases/latest) page.
 
 ## Supported sites
 
@@ -45,7 +46,7 @@ Sapu Berita tells you when there's a new version: a small "Sapu Berita X is avai
 
 - **Site fixes** (when a news site changes its layout) arrive automatically, without updating the app.
 - **Android:** tap **Update** → the new APK downloads → open it → **Update**. Your settings are kept.
-- **iPhone, iPad, Mac:** tap **Update** → the guide with the newest Shortcut link → replace the old Shortcut.
+- **iPhone, iPad, Mac:** nothing to do. The Shortcut and the bookmark always run the newest version.
 - **Extension:** tap **Update** → download the new zip, replace the old folder, click ↻.
 
 ## Privacy

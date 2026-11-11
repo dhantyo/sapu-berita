@@ -5,7 +5,7 @@ One TypeScript core (`src/`) finds the article on a news page, merges its pages,
 | Wrapper | Folder | Built file |
 |---|---|---|
 | Android app (WebView + document-start script) | [apps/android](../apps/android/README.md) | `app/src/main/assets/webview.js` |
-| Apple Shortcut (iPhone, iPad, Mac) | [apps/ios-shortcut](../apps/ios-shortcut/README.md) | `dist/shortcut.b64.js` |
+| Apple Shortcut and Safari bookmark (iPhone, iPad, Mac) | [apps/ios-shortcut](../apps/ios-shortcut/README.md) | `dist/apple-loader.js` (loads `dist/shortcut.js` from the release channel) |
 | Browser extension (Chrome, Brave, Edge) | [apps/extension](../apps/extension/README.md) | `apps/extension/content.js` |
 
 Site knowledge lives in JSON, not code: `rules/sites/*.json` (one per outlet, hand-verified) and `rules/common.json` (junk patterns shared by all sites). Generic page merging for about 20 more outlets is imported from [AutoAllPage](https://github.com/reforget-id/AutoAllPage), ad selectors from AdBlockID and ABPindo.
@@ -39,7 +39,7 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 1. Bump `version` in `package.json` (the extension, the APK and the Shortcut all read it) and add a section to `CHANGELOG.md`.
 2. Commit, then tag and push: `git tag v0.1.0-beta.2 && git push --tags`.
 3. CI builds and signs everything and publishes a GitHub Release with the APK, the extension zip and the Shortcut script. Versions with a `-` suffix are marked pre-release.
-4. CI also publishes the **release channel** to GitHub Pages: `update.json` (latest version and per-platform update links) and `rules.json` (site rules). Installed copies read both once a day: a newer version shows an "update available" bar in the reader; newer rules apply silently, so most site fixes need no app update. For iOS, update the iCloud link in `docs/install-apple.md` before tagging, since `update.json` points Apple users there.
+4. CI also publishes the **release channel** to GitHub Pages: `update.json` (latest version and per-platform update links) and `rules.json` (site rules). Installed copies read both once a day: a newer version shows an "update available" bar in the reader; newer rules apply silently, so most site fixes need no app update. It also carries the Apple core (`sapu-berita.js`), which the Shortcut and the Safari bookmark download on every run, and the install page (`site/`).
 
 One-time setup: Settings → Pages → Source: **GitHub Actions** (needs a public repository on the free plan). Pages URLs don't follow repository renames, so rename before the first release.
 

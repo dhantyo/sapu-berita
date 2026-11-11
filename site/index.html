@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sapu Berita</title>
+<meta name="description" content="Baca berita Indonesia tanpa iklan dan tanpa &quot;Baca Juga&quot;. Semua halaman digabung jadi satu.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b07a12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 4 13 11M11.2 9.2l3.6 3.6M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2M6.8 16.4 9.6 13.6M9 17.6l2.2-2.2'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: rgb(255 255 255); --ink: rgb(18 18 18); --muted: rgb(88 88 88); --rule: rgb(0 0 0 / 0.1);
+  --rule-strong: rgb(0 0 0 / 0.24); --chip: rgb(0 0 0 / 0.045); --accent: rgb(176 122 18); --on-accent: rgb(255 255 255);
+  --serif: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Noto Serif", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: rgb(18 18 18); --ink: rgb(232 232 230); --muted: rgb(170 170 166); --rule: rgb(255 255 255 / 0.12);
+    --rule-strong: rgb(255 255 255 / 0.28); --chip: rgb(255 255 255 / 0.07); --accent: rgb(222 172 70); --on-accent: rgb(18 18 18); }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--sans); }
+::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+a { color: inherit; text-decoration-color: var(--rule-strong); text-underline-offset: 0.2em; }
+a:hover { text-decoration-color: var(--accent); }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+header.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font: 700 19px/1 var(--serif); text-decoration: none; }
+.brand svg { color: var(--accent); }
+.lang { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: 18px; padding: 2px; }
+.lang button { border: 0; background: none; color: var(--muted); font: 600 13px/1 var(--sans); padding: 8px 12px; border-radius: 14px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--chip); color: var(--ink); }
+
+.hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; padding: 40px 0 64px; }
+h1 { font: 700 clamp(2.4rem, 6vw, 4.2rem)/1.04 var(--serif); letter-spacing: -0.02em; margin: 0 0 20px; text-wrap: balance; }
+.lead { font: 400 clamp(1.1rem, 2.2vw, 1.3rem)/1.5 var(--serif); color: var(--muted); margin: 0 0 28px; max-width: 34ch; text-wrap: pretty; }
+.cta { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; border-radius: 26px; background: var(--accent); color: var(--on-accent); font: 600 17px/1 var(--sans); text-decoration: none; border: 0; cursor: pointer; transition: transform 200ms var(--ease); }
+.cta:hover { transform: translateY(-1px); }
+.cta:active { transform: none; }
+.shots { position: relative; height: 540px; }
+.shots img { position: absolute; width: 240px; height: auto; border-radius: 28px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 18px 40px -12px rgb(0 0 0 / 0.28); border: 1px solid var(--rule); }
+.shots img:first-child { left: 0; top: 0; }
+.shots img:last-child { right: 0; top: 56px; }
+
+section { padding: 56px 0; border-top: 1px solid var(--rule); }
+h2 { font: 700 clamp(1.7rem, 3.6vw, 2.4rem)/1.15 var(--serif); letter-spacing: -0.01em; margin: 0 0 24px; }
+
+.devices { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; }
+.devices button { border: 1px solid var(--rule-strong); background: none; color: var(--ink); font: 600 15px/1 var(--sans); padding: 12px 18px; border-radius: 22px; cursor: pointer; }
+.devices button[aria-selected="true"] { border-color: var(--accent); background: var(--chip); }
+.panel[hidden], [data-when][hidden] { display: none; }
+.panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
+.panel h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 6px; }
+.panel .why { color: var(--muted); margin: 0 0 18px; }
+ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+ol.steps li { counter-increment: s; position: relative; padding: 0 0 16px 40px; }
+ol.steps li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 13px; background: var(--accent); color: var(--on-accent); font: 700 13px/26px var(--sans); text-align: center; }
+ol.steps b { font-weight: 650; }
+.action { margin: 4px 0 22px; }
+.bookmarklet { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 20px; border-radius: 23px; border: 2px dashed var(--accent); color: var(--ink); font: 700 16px/1 var(--sans); text-decoration: none; cursor: grab; background: var(--chip); }
+.bookmarklet svg { color: var(--accent); }
+.ghost { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 22px; border: 1px solid var(--rule-strong); background: none; color: var(--ink); font: 600 15px/1 var(--sans); text-decoration: none; cursor: pointer; }
+.ghost[aria-disabled="true"] { color: var(--muted); cursor: default; }
+.note { font-size: 15px; color: var(--muted); margin: 10px 0 0; }
+.toast { min-height: 1.6em; font-size: 15px; color: var(--accent); margin: 8px 0 0; }
+
+.swept { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; margin: 0; }
+.swept div { padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.swept dt { font-weight: 650; }
+.swept dd { margin: 2px 0 0; color: var(--muted); }
+.sites { color: var(--muted); max-width: 70ch; }
+.privacy { max-width: 62ch; }
+footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 16px; }
+  .shots { height: 390px; max-width: 360px; }
+  .shots img { width: 170px; border-radius: 20px; }
+  .shots img:last-child { top: 40px; }
+  .panel { grid-template-columns: 1fr; gap: 8px; }
+  .swept { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .cta { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4 13 11M11.2 9.2l3.6 3.6M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2M6.8 16.4 9.6 13.6M9 17.6l2.2-2.2"/></svg>
+      Sapu Berita
+    </a>
+    <div class="lang" role="group" aria-label="Bahasa / Language">
+      <button type="button" data-lang="id" aria-pressed="true">ID</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1 data-t="h1">Baca beritanya. Sapu sisanya.</h1>
+      <p class="lead" data-t="lead">Berita dari Detik, Kompas, Tribun, dan 13 situs lain, tanpa iklan, tanpa "Baca Juga", dan semua halaman langsung digabung jadi satu.</p>
+      <a class="cta" href="#pasang" data-t="cta">Pasang gratis</a>
+    </div>
+    <div class="shots" aria-hidden="true">
+      <img src="img/phone-light.png" alt="" width="390" height="780">
+      <img src="img/phone-dark.png" alt="" width="390" height="780">
+    </div>
+  </div>
+</div>
+
+<section id="pasang">
+  <div class="wrap">
+    <h2 data-t="install">Pasang di perangkatmu</h2>
+    <div class="devices" role="tablist" aria-label="Perangkat">
+      <button type="button" role="tab" data-device="android" aria-selected="false">Android</button>
+      <button type="button" role="tab" data-device="iphone" aria-selected="false">iPhone &amp; iPad</button>
+      <button type="button" role="tab" data-device="mac" aria-selected="false">Mac</button>
+      <button type="button" role="tab" data-device="desktop" aria-selected="false" data-t="desktopTab">Windows &amp; lainnya</button>
+    </div>
+
+    <div class="panel" role="tabpanel" data-panel="android" hidden>
+      <div>
+        <h3 data-t="androidTitle">Aplikasi Android</h3>
+        <p class="why" data-t="androidWhy">Link berita dari WhatsApp, Telegram, dan lainnya langsung terbuka bersih. Browser kamu tetap seperti biasa.</p>
+        <p class="action"><a class="cta" data-link="android" href="https://github.com/dhantyo/sapu-berita/releases/latest" data-t="androidButton">Download APK</a></p>
+      </div>
+      <ol class="steps">
+        <li data-t="android1">Buka file yang sudah di-download. Kalau ditanya, izinkan <b>Instal aplikasi tidak dikenal</b>.</li>
+        <li data-t="android2">Buka <b>Sapu Berita</b> dan ikuti 3 langkahnya. Aplikasi menunjukkan persis apa yang harus diketuk.</li>
+        <li data-t="android3">Selesai. Buka link berita seperti biasa.</li>
+      </ol>
+    </div>
+
+    <div class="panel" role="tabpanel" data-panel="iphone" hidden>
+      <div data-when="shortcut">
+        <h3 data-t="iosTitle">Shortcut di Safari</h3>
+        <p class="why" data-t="iosWhy">Buka artikel di Safari, ketuk Bagikan, lalu Sapu Berita. Selalu versi terbaru, tidak perlu update.</p>
+        <p class="action"><a class="cta" data-link="shortcut" href="#" aria-disabled="true" data-t="iosButton">Tambahkan Shortcut</a></p>
+        <ol class="steps">
+          <li data-t="ios1">Ketuk <b>Tambahkan Shortcut</b>.</li>
+          <li data-t="ios2"><b>Pengaturan → Apps → Shortcuts → Lanjutan</b> → nyalakan <b>Izinkan Menjalankan Skrip</b>.</li>
+          <li data-t="ios3">Di artikel: <b>Bagikan → Sapu Berita</b>. Pertama kali di tiap situs, pilih <b>Izinkan Selalu</b>.</li>
+        </ol>
+      </div>
+      <div>
+        <h3 data-t="bmTitle">Atau: bookmark</h3>
+        <p class="why" data-t="bmWhy" data-when="no-shortcut">Satu bookmark di Safari. Selalu versi terbaru, tidak perlu update. (Shortcut-nya segera hadir.)</p>
+        <ol class="steps">
+          <li data-t="bm1">Ketuk tombol ini untuk menyalin kodenya: <br><button type="button" class="ghost" data-copy="bookmarklet" data-t="copy">Salin kode bookmark</button><span class="toast" role="status" aria-live="polite"></span></li>
+          <li data-t="bm2">Di Safari, buat bookmark halaman mana saja (<b>Bagikan → Tambah Bookmark</b>), beri nama <b>Sapu Berita</b>.</li>
+          <li data-t="bm3">Buka <b>Bookmark → Edit</b>, ketuk bookmark tadi, hapus alamatnya dan tempel kodenya.</li>
+          <li data-t="bm4">Di artikel: ketuk kolom alamat, ketik <b>Sapu</b>, lalu pilih bookmark <b>Sapu Berita</b>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" data-panel="mac" hidden>
+      <div>
+        <h3 data-t="macTitle">Satu tombol di Safari</h3>
+        <p class="why" data-t="macWhy">Seret tombol di bawah ke bar Favorit. Selalu versi terbaru, tanpa pengaturan tambahan.</p>
+        <p class="action"><a class="bookmarklet" data-link="bookmarklet" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4 13 11M11.2 9.2l3.6 3.6M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2M6.8 16.4 9.6 13.6M9 17.6l2.2-2.2"/></svg>Sapu Berita</a></p>
+        <p class="toast" data-drag-hint role="status" aria-live="polite"></p>
+      </div>
+      <ol class="steps">
+        <li data-t="mac1">Kalau bar Favorit belum terlihat: menu <b>Tampilan → Tampilkan Bar Favorit</b> (⇧⌘B).</li>
+        <li data-t="mac2">Seret tombol <b>Sapu Berita</b> ke bar Favorit.</li>
+        <li data-t="mac3">Di artikel berita, klik <b>Sapu Berita</b> di bar Favorit.</li>
+      </ol>
+    </div>
+
+    <div class="panel" role="tabpanel" data-panel="desktop" hidden>
+      <div>
+        <h3 data-t="deskTitle">Chrome, Brave, Edge, Firefox</h3>
+        <p class="why" data-t="deskWhy">Paling gampang: seret tombol ini ke bar bookmark, lalu klik di artikel berita.</p>
+        <p class="action"><a class="bookmarklet" data-link="bookmarklet" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4 13 11M11.2 9.2l3.6 3.6M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2M6.8 16.4 9.6 13.6M9 17.6l2.2-2.2"/></svg>Sapu Berita</a></p>
+        <p class="toast" data-drag-hint role="status" aria-live="polite"></p>
+      </div>
+      <div>
+        <ol class="steps">
+          <li data-t="desk1">Kalau bar bookmark belum terlihat: tekan <b>Ctrl+Shift+B</b>.</li>
+          <li data-t="desk2">Seret tombol <b>Sapu Berita</b> ke bar bookmark.</li>
+          <li data-t="desk3">Di artikel berita, klik <b>Sapu Berita</b>.</li>
+        </ol>
+        <p class="note"><span data-t="extNote">Mau otomatis tanpa klik? Pasang ekstensinya untuk Chrome, Brave, dan Edge:</span> <a href="https://github.com/dhantyo/sapu-berita/blob/master/apps/extension/README.md" data-t="extLink">panduan ekstensi</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-t="sweptTitle">Yang disapu, yang disimpan</h2>
+    <dl class="swept">
+      <div><dt data-t="s1t">Iklan dan pop-up</dt><dd data-t="s1d">Termasuk iklan layar penuh yang muncul belakangan.</dd></div>
+      <div><dt data-t="s2t">"Baca Juga" di tengah artikel</dt><dd data-t="s2d">Daftar link yang memotong paragraf hilang.</dd></div>
+      <div><dt data-t="s3t">Halaman 2, 3, 4…</dt><dd data-t="s3d">Digabung jadi satu halaman utuh.</dd></div>
+      <div><dt data-t="s4t">Tombol share dan ajakan</dt><dd data-t="s4d">Google News, newsletter, aplikasi, dan sejenisnya.</dd></div>
+      <div><dt data-t="s5t">Foto dan keterangannya</dt><dd data-t="s5d">Tetap ada, ukurannya pas.</dd></div>
+      <div><dt data-t="s6t">Posting media sosial yang dikutip</dt><dd data-t="s6d">Tetap ada, sebagai kartu link ke X, Instagram, TikTok, atau YouTube.</dd></div>
+    </dl>
+    <p class="sites"><span data-t="sitesLabel">Situs yang didukung:</span> Detik, Kompas, Tribunnews, CNN Indonesia, CNBC Indonesia, Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com, Tirto.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-t="privTitle">Privasi</h2>
+    <p class="privacy" data-t="privText">Semua jalan di perangkatmu. Sapu Berita tidak punya server, tidak memakai analitik, dan tidak tahu apa yang kamu baca. Sekali sehari ia mengambil nomor versi terbaru dan aturan situs dari GitHub; tidak ada data tentangmu yang dikirim.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <a href="https://github.com/dhantyo/sapu-berita">GitHub</a>
+    <a href="https://github.com/dhantyo/sapu-berita/issues/new/choose" data-t="report">Laporkan masalah</a>
+    <span data-version></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  // Set once the Shortcut exists: Shortcuts app → share → Copy iCloud Link.
+  var ICLOUD_SHORTCUT = '';
+
+  var EN = {
+    h1: 'Read the news. Sweep the rest.',
+    lead: 'News from Detik, Kompas, Tribun and 13 other sites, without ads, without "Baca Juga" link lists, and with every page merged into one.',
+    cta: 'Install for free', install: 'Install on your device', desktopTab: 'Windows & others',
+    androidTitle: 'Android app', androidWhy: 'News links from WhatsApp, Telegram and other apps open clean. Your browser stays as it is.',
+    androidButton: 'Download the APK',
+    android1: 'Open the downloaded file. If asked, allow <b>Install unknown apps</b>.',
+    android2: 'Open <b>Sapu Berita</b> and follow its 3 steps. It shows exactly what to tap.',
+    android3: 'Done. Open news links as usual.',
+    iosTitle: 'Shortcut in Safari', iosWhy: 'Open an article in Safari, tap Share, then Sapu Berita. Always the latest version, nothing to update.',
+    iosButton: 'Add the Shortcut',
+    ios1: 'Tap <b>Add the Shortcut</b>.',
+    ios2: '<b>Settings → Apps → Shortcuts → Advanced</b> → turn on <b>Allow Running Scripts</b>.',
+    ios3: 'On an article: <b>Share → Sapu Berita</b>. The first time on each site, choose <b>Always Allow</b>.',
+    bmTitle: 'Or: a bookmark', bmTitleOnly: 'A bookmark in Safari',
+    bmWhy: 'One bookmark in Safari. Always the latest version, nothing to update. (The Shortcut is coming soon.)',
+    bm1: 'Tap this button to copy the code: <br><button type="button" class="ghost" data-copy="bookmarklet">Copy bookmark code</button><span class="toast" role="status" aria-live="polite"></span>',
+    bm2: 'In Safari, bookmark any page (<b>Share → Add Bookmark</b>) and name it <b>Sapu Berita</b>.',
+    bm3: 'Open <b>Bookmarks → Edit</b>, tap that bookmark, delete its address and paste the code.',
+    bm4: 'On an article: tap the address bar, type <b>Sapu</b>, and pick the <b>Sapu Berita</b> bookmark.',
+    macTitle: 'One button in Safari', macWhy: 'Drag the button below to your Favourites bar. Always the latest version, no extra settings.',
+    mac1: 'If the Favourites bar isn\'t showing: <b>View → Show Favourites Bar</b> (⇧⌘B).',
+    mac2: 'Drag the <b>Sapu Berita</b> button to the Favourites bar.',
+    mac3: 'On a news article, click <b>Sapu Berita</b> in the Favourites bar.',
+    deskTitle: 'Chrome, Brave, Edge, Firefox', deskWhy: 'Easiest: drag this button to your bookmarks bar, then click it on a news article.',
+    desk1: 'If the bookmarks bar isn\'t showing: press <b>Ctrl+Shift+B</b>.',
+    desk2: 'Drag the <b>Sapu Berita</b> button to the bookmarks bar.',
+    desk3: 'On a news article, click <b>Sapu Berita</b>.',
+    extNote: 'Want it automatic, without clicking? Install the extension for Chrome, Brave and Edge:', extLink: 'extension guide',
+    sweptTitle: 'What gets swept, what stays',
+    s1t: 'Ads and pop-ups', s1d: 'Including full-screen ads that load later.',
+    s2t: '"Baca Juga" in the middle of the story', s2d: 'Link lists that cut paragraphs in half are gone.',
+    s3t: 'Pages 2, 3, 4…', s3d: 'Merged into one whole page.',
+    s4t: 'Share buttons and prompts', s4d: 'Google News, newsletters, apps and the like.',
+    s5t: 'Photos and captions', s5d: 'Kept, at a sensible size.',
+    s6t: 'Social posts the story quotes', s6d: 'Kept, as link cards to X, Instagram, TikTok or YouTube.',
+    sitesLabel: 'Supported sites:', privTitle: 'Privacy',
+    privText: 'Everything runs on your device. Sapu Berita has no server, no analytics, and doesn\'t know what you read. Once a day it downloads the latest version number and site rules from GitHub; nothing about you is sent.',
+    report: 'Report a problem', copied: 'Copied. Now make the bookmark (step 2).', copyFail: 'Couldn\'t copy. Long-press the button below and copy the link instead.',
+    dragHint: 'Drag this button to your bar, don\'t click it here.', version: 'Version '
+  };
+  var ID = {};
+  document.querySelectorAll('[data-t]').forEach(function (el) { ID[el.dataset.t] = el.innerHTML; });
+  ID.copied = 'Tersalin. Sekarang buat bookmark-nya (langkah 2).';
+  ID.copyFail = 'Gagal menyalin. Tekan lama tombol di bawah, lalu salin link-nya.';
+  ID.dragHint = 'Seret tombol ini ke bar, jangan diklik di sini.';
+  ID.version = 'Versi ';
+  ID.bmTitleOnly = 'Bookmark di Safari';
+
+  var lang = 'id';
+  try { lang = localStorage.getItem('sapu-lang') || (navigator.language || '').slice(0, 2) === 'en' && 'en' || 'id'; } catch (e) {}
+  var t = function (k) { return (lang === 'en' ? EN : ID)[k] || ID[k] || ''; };
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.innerHTML = t(el.dataset.t); });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+    wire();
+    if (version) document.querySelector('[data-version]').textContent = t('version') + version;
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { lang = b.dataset.lang; try { localStorage.setItem('sapu-lang', lang); } catch (e) {} applyLang(); });
+  });
+
+  // Device tabs, preselected from the visitor's device.
+  var ua = navigator.userAgent;
+  var iPadOS = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+  var guess = /Android/.test(ua) ? 'android' : /iPhone|iPad|iPod/.test(ua) || iPadOS ? 'iphone' : /Macintosh/.test(ua) ? 'mac' : 'desktop';
+  function pick(d) {
+    document.querySelectorAll('.devices button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.device === d)); });
+    document.querySelectorAll('.panel').forEach(function (p) { p.hidden = p.dataset.panel !== d; });
+  }
+  document.querySelectorAll('.devices button').forEach(function (b) { b.addEventListener('click', function () { pick(b.dataset.device); }); });
+  pick(guess);
+
+  // Live links from the release channel (same site): APK of the latest release, the bookmark code.
+  var bookmarklet = '', version = '';
+  function wire() {
+    document.querySelectorAll('[data-link="bookmarklet"]').forEach(function (a) {
+      if (bookmarklet) a.href = bookmarklet;
+      a.onclick = function (e) { e.preventDefault(); var h = a.closest('.panel').querySelector('[data-drag-hint]'); if (h) h.textContent = t('dragHint'); };
+    });
+    document.querySelectorAll('[data-copy="bookmarklet"]').forEach(function (b) {
+      b.onclick = function () {
+        var out = b.parentNode.querySelector('.toast');
+        var done = function (ok) { if (out) out.textContent = ok ? ' ' + t('copied') : ' ' + t('copyFail'); };
+        if (navigator.clipboard && bookmarklet) navigator.clipboard.writeText(bookmarklet).then(function () { done(true); }, function () { done(false); });
+        else done(false);
+      };
+    });
+    var sc = document.querySelector('[data-link="shortcut"]');
+    if (ICLOUD_SHORTCUT) { sc.href = ICLOUD_SHORTCUT; sc.removeAttribute('aria-disabled'); }
+    else sc.onclick = function (e) { e.preventDefault(); };
+    document.querySelectorAll('[data-when]').forEach(function (el) {
+      el.hidden = (el.dataset.when === 'shortcut') !== !!ICLOUD_SHORTCUT;
+    });
+    var bmTitle = document.querySelector('[data-t="bmTitle"]');
+    if (bmTitle && !ICLOUD_SHORTCUT) bmTitle.textContent = t('bmTitleOnly');
+  }
+  fetch('bookmarklet.txt').then(function (r) { return r.ok ? r.text() : ''; }).then(function (s) { bookmarklet = s.trim(); wire(); }, function () {});
+  fetch('update.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (m) {
+    if (!m) return;
+    version = m.version;
+    if (m.android) document.querySelector('[data-link="android"]').href = m.android;
+    document.querySelector('[data-version]').textContent = t('version') + version;
+  }, function () {});
+  applyLang();
+})();
+</script>
+</body>
+</html>

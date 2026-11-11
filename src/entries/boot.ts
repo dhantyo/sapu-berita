@@ -32,6 +32,8 @@ export interface BootOptions {
   forceOpen?: boolean;
   /** Which wrapper is running: picks the update link and labels bug reports. */
   platform?: Platform;
+  /** This code was just downloaded from the release channel (Apple loader): never offer an update. */
+  selfUpdating?: boolean;
 }
 
 /**
@@ -48,6 +50,7 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
   const checkForUpdates = async (shown: OverlayHandle) => {
     if (!CHANNEL) return;
     refreshRulesIfStale(new URL('rules.json', CHANNEL).href);
+    if (options.selfUpdating) return;
     const offer = offerFor(await latestManifest(CHANNEL), VERSION, platform);
     if (offer && !isSnoozed(offer.version)) shown.offerUpdate(offer);
   };
