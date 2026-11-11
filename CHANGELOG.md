@@ -2,6 +2,11 @@
 
 Versions follow [semver](https://semver.org). Every tag `vX.Y.Z` publishes a GitHub Release built from this file.
 
+## [0.1.0-beta.3] - 2026-11-11
+
+- Install page: the browser extension gets its own tab with a direct download and step-by-step install and update instructions.
+- Install page and README say plainly that Sapu Berita is built with AI.
+
 ## [0.1.0-beta.2] - 2026-11-11
 
 - **New look:** a modernist sans, Geist, is now Sapu Berita's voice for headlines, text and labels, the same on every device. It's built in, so it shows instantly and offline.
