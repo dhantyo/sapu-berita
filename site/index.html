@@ -67,6 +67,9 @@ ol.steps b { font-weight: 650; }
 .ghost { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 22px; border: 1px solid var(--rule-strong); background: none; color: var(--ink); font: 600 15px/1 var(--sans); text-decoration: none; cursor: pointer; }
 .ghost[aria-disabled="true"] { color: var(--muted); cursor: default; }
 .note { font-size: 15px; color: var(--muted); margin: 10px 0 0; }
+.note.span { grid-column: 1 / -1; }
+.linkish { border: 0; background: none; padding: 0; color: var(--ink); font: inherit; font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 0.2em; cursor: pointer; }
+.panel h3.sub { margin-top: 18px; }
 .toast { min-height: 1.6em; font-size: 15px; color: var(--accent); margin: 8px 0 0; }
 
 .swept { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; margin: 0; }
@@ -123,6 +126,7 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
       <button type="button" role="tab" data-device="iphone" aria-selected="false">iPhone &amp; iPad</button>
       <button type="button" role="tab" data-device="mac" aria-selected="false">Mac</button>
       <button type="button" role="tab" data-device="desktop" aria-selected="false" data-t="desktopTab">Windows &amp; lainnya</button>
+      <button type="button" role="tab" data-device="extension" aria-selected="false" data-t="extTab">Ekstensi browser</button>
     </div>
 
     <div class="panel" role="tabpanel" data-panel="android" hidden>
@@ -173,6 +177,7 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
         <li data-t="mac2">Seret tombol <b>Sapu Berita</b> ke bar Favorit.</li>
         <li data-t="mac3">Di artikel berita, klik <b>Sapu Berita</b> di bar Favorit.</li>
       </ol>
+      <p class="note span"><span data-t="macExt">Pakai Chrome, Brave, atau Edge di Mac? Ekstensinya jalan otomatis tanpa klik.</span> <button type="button" class="linkish" data-goto="extension" data-t="seeExt">Lihat cara pasang ekstensi</button></p>
     </div>
 
     <div class="panel" role="tabpanel" data-panel="desktop" hidden>
@@ -188,7 +193,31 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
           <li data-t="desk2">Seret tombol <b>Sapu Berita</b> ke bar bookmark.</li>
           <li data-t="desk3">Di artikel berita, klik <b>Sapu Berita</b>.</li>
         </ol>
-        <p class="note"><span data-t="extNote">Mau otomatis tanpa klik? Pasang ekstensinya untuk Chrome, Brave, dan Edge:</span> <a href="https://github.com/dhantyo/sapu-berita/blob/master/apps/extension/README.md" data-t="extLink">panduan ekstensi</a>.</p>
+        <p class="note"><span data-t="extNote">Mau otomatis tanpa klik? Pasang ekstensinya untuk Chrome, Brave, dan Edge.</span> <button type="button" class="linkish" data-goto="extension" data-t="seeExt">Lihat cara pasang ekstensi</button></p>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" data-panel="extension" id="ekstensi" hidden>
+      <div>
+        <h3 data-t="extTitle">Otomatis di Chrome, Brave, dan Edge</h3>
+        <p class="why" data-t="extWhy">Pasang sekali, lalu setiap artikel dari situs yang didukung langsung terbuka bersih, tanpa klik apa pun. Jalan di Windows, Mac, dan Linux.</p>
+        <p class="action"><a class="cta" data-link="extension" href="https://github.com/dhantyo/sapu-berita/releases/latest" data-t="extButton">Download ekstensi (.zip)</a></p>
+        <p class="note" data-t="extWhyManual">Selama beta, ekstensinya belum ada di Chrome Web Store, jadi dipasang manual. Sekali saja, sekitar satu menit.</p>
+        <p class="note" data-t="extDevNote">Chrome kadang menampilkan pemberitahuan soal ekstensi mode developer saat dibuka. Itu normal untuk ekstensi yang dipasang dengan cara ini; klik saja tutup.</p>
+      </div>
+      <div>
+        <ol class="steps">
+          <li data-t="ext1">Buka file <b>.zip</b> yang sudah di-download dan ekstrak (klik kanan → <b>Extract All</b> di Windows, klik dua kali di Mac). Simpan foldernya di tempat yang tidak akan kamu hapus, misalnya Documents.</li>
+          <li data-t="ext2">Ketik <b>chrome://extensions</b> di kolom alamat (Brave: <b>brave://extensions</b>, Edge: <b>edge://extensions</b>) lalu tekan Enter.</li>
+          <li data-t="ext3">Nyalakan <b>Developer mode</b> (<i>Mode pengembang</i>) di pojok kanan atas.</li>
+          <li data-t="ext4">Klik <b>Load unpacked</b> (<i>Muat yang belum dibuka</i>) dan pilih folder hasil ekstrak tadi.</li>
+          <li data-t="ext5">Buka artikel dari Detik, Kompas, atau situs lain yang didukung. Sapu Berita langsung jalan.</li>
+        </ol>
+        <h3 class="sub" data-t="extUpdTitle">Kalau ada versi baru</h3>
+        <ol class="steps">
+          <li data-t="extUpd1">Di atas artikel muncul kotak <b>"Sapu Berita … sudah tersedia"</b>. Ketuk <b>Update</b> untuk download zip barunya.</li>
+          <li data-t="extUpd2">Ekstrak dan timpa isi folder yang lama.</li>
+          <li data-t="extUpd3">Di <b>chrome://extensions</b>, klik ↻ di kartu Sapu Berita. Pengaturanmu tetap tersimpan.</li>
+        </ol>
       </div>
     </div>
   </div>
@@ -254,11 +283,28 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     mac1: 'If the Favourites bar isn\'t showing: <b>View → Show Favourites Bar</b> (⇧⌘B).',
     mac2: 'Drag the <b>Sapu Berita</b> button to the Favourites bar.',
     mac3: 'On a news article, click <b>Sapu Berita</b> in the Favourites bar.',
+    extTab: 'Browser extension',
+    macExt: 'Using Chrome, Brave or Edge on your Mac? The extension runs automatically, no clicking.',
+    seeExt: 'See how to install the extension',
+    extTitle: 'Automatic in Chrome, Brave and Edge',
+    extWhy: 'Install it once, and every article from a supported site opens clean on its own, no clicking. Works on Windows, Mac and Linux.',
+    extButton: 'Download the extension (.zip)',
+    extWhyManual: 'During the beta it isn\'t in the Chrome Web Store yet, so it\'s installed by hand. Once, about a minute.',
+    extDevNote: 'Chrome sometimes shows a notice about developer-mode extensions when it starts. That\'s normal for extensions installed this way; just close it.',
+    ext1: 'Open the downloaded <b>.zip</b> and extract it (right-click → <b>Extract All</b> on Windows, double-click on Mac). Keep the folder somewhere you won\'t delete, like Documents.',
+    ext2: 'Type <b>chrome://extensions</b> in the address bar (Brave: <b>brave://extensions</b>, Edge: <b>edge://extensions</b>) and press Enter.',
+    ext3: 'Turn on <b>Developer mode</b> in the top-right corner.',
+    ext4: 'Click <b>Load unpacked</b> and pick the folder you extracted.',
+    ext5: 'Open an article on Detik, Kompas or another supported site. Sapu Berita runs straight away.',
+    extUpdTitle: 'When there\'s a new version',
+    extUpd1: 'A <b>"Sapu Berita … is available"</b> box appears above articles. Tap <b>Update</b> to download the new zip.',
+    extUpd2: 'Extract it over the old folder.',
+    extUpd3: 'In <b>chrome://extensions</b>, click ↻ on the Sapu Berita card. Your settings are kept.',
     deskTitle: 'Chrome, Brave, Edge, Firefox', deskWhy: 'Easiest: drag this button to your bookmarks bar, then click it on a news article.',
     desk1: 'If the bookmarks bar isn\'t showing: press <b>Ctrl+Shift+B</b>.',
     desk2: 'Drag the <b>Sapu Berita</b> button to the bookmarks bar.',
     desk3: 'On a news article, click <b>Sapu Berita</b>.',
-    extNote: 'Want it automatic, without clicking? Install the extension for Chrome, Brave and Edge:', extLink: 'extension guide',
+    extNote: 'Want it automatic, without clicking? Install the extension for Chrome, Brave and Edge.',
     sweptTitle: 'What gets swept, what stays',
     s1t: 'Ads and pop-ups', s1d: 'Including full-screen ads that load later.',
     s2t: '"Baca Juga" in the middle of the story', s2d: 'Link lists that cut paragraphs in half are gone.',
@@ -303,7 +349,14 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     document.querySelectorAll('.panel').forEach(function (p) { p.hidden = p.dataset.panel !== d; });
   }
   document.querySelectorAll('.devices button').forEach(function (b) { b.addEventListener('click', function () { pick(b.dataset.device); }); });
-  pick(guess);
+  // In-page links to another tab ("see how to install the extension"), and #ekstensi from outside.
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest && e.target.closest('[data-goto]');
+    if (!go) return;
+    pick(go.dataset.goto);
+    document.getElementById('pasang').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  pick(location.hash === '#ekstensi' ? 'extension' : guess);
 
   // Live links from the release channel (same site): APK of the latest release, the bookmark code.
   var bookmarklet = '', version = '';
@@ -334,6 +387,8 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     if (!m) return;
     version = m.version;
     if (m.android) document.querySelector('[data-link="android"]').href = m.android;
+    var repo = (m.notes || '').split('/releases/')[0];
+    if (repo && version) document.querySelector('[data-link="extension"]').href = repo + '/releases/download/v' + version + '/sapu-berita-extension-' + version + '.zip';
     document.querySelector('[data-version]').textContent = t('version') + version;
   }, function () {});
   applyLang();
