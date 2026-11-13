@@ -21,6 +21,7 @@ A site rule is one JSON file in `rules/sites/`. It tells the core where the arti
 | `domains` | ✅ | registrable domains; subdomains match automatically |
 | `articleUrl` | ✅ | regex on the URL path that identifies article pages |
 | `body` | ✅ | selectors for the article body, tried in order |
+| `lead` | | selectors for blocks that belong at the top but sit outside the body: an editor's summary box (Bisnis `.bisnisai`), a photo gallery (foto.bisnis `.fotoslider`). Copied in front of the body when present |
 | `bodyAll` | | `true` = join every match (sites that inline all pages) |
 | `remove` | | selectors deleted inside the body ("Baca Juga" boxes, video embeds) |
 | `dropParagraphs` | | extra text regexes; matching paragraphs are deleted |

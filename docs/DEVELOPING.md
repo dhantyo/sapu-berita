@@ -34,6 +34,14 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 | `npm run fixtures:pull` / `fixtures:push` | Restore or back up the saved news pages. They're the outlets' copyrighted work, so they live in a private repository (`sapu-berita-fixtures`), not here; without them the tests that need a saved page are skipped. |
 | `npm run rebaseline` | Recomputes fixture expectations after a deliberate cleaning change. |
 | `npm run canary` | Checks every site live, like the daily CI job. |
+| `npm run inspect -- <url> … [--dark] [--desktop] [--shot <folder>]` | Opens real links in your installed Chrome and runs the built reader on them, exactly as the Apple bookmark does: reports the logo it chose, meta row, summary box, leftover link lists, image count and first paragraph. Works on sites that block plain downloads (Bisnis, Tirto). Run `npm run build` first; `CHROME_PATH` picks another Chromium browser. |
+
+### Fixing a site from a bug report
+
+1. Reproduce: `npm run build && npm run inspect -- <the link> --shot shots`.
+2. Decide where the fix belongs, most general first: a shared pattern in `rules/common.json`, a general rule in `src/` that describes how news sites behave (never `if site === …`), or the site's own JSON in `rules/sites/`.
+3. Add a regression test with the real markup in miniature (`test/regressions.test.ts` has examples), and a fixture with `npm run capture` when the site allows it.
+4. `npm run check`, then `npm run inspect` again on the same link.
 
 ## Versions
 

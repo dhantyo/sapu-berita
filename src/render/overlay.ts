@@ -484,7 +484,7 @@ export function startsWithImage(content: Element, textBudget = 200): boolean {
 }
 
 /** A title as text nodes, with `<i>…</i>` (from titleMarkup) as real italics. Never parsed as HTML. */
-function titleNodes(doc: Document, title: string): Array<Node | string> {
+export function titleNodes(doc: Document, title: string): Array<Node | string> {
   return title.split(/(<i>[\s\S]*?<\/i>)/i).filter(Boolean).map((part) => {
     const m = /^<i>([\s\S]*?)<\/i>$/i.exec(part);
     return m ? h(doc, 'i', {}, m[1]!) : part.replace(/<\/?i>/gi, '');
@@ -495,7 +495,7 @@ function titleNodes(doc: Document, title: string): Array<Node | string> {
  * Outlets write dates as ISO with an offset, or as "2026/11/13 14:59:46" / "2026-11-11 08:00:01" with
  * no zone at all, which is Jakarta time. Read those as WIB, not as the reader's own time zone.
  */
-function parseNewsDate(value: string): Date {
+export function parseNewsDate(value: string): Date {
   const local = /^(\d{4})[-/](\d{2})[-/](\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/.exec(value.trim());
   if (local) {
     const [, y, mo, d, hh, mm, ss = '00'] = local;
