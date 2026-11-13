@@ -4,6 +4,10 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
+## [0.2.5] - 2026-11-13
+
+- **Detik's newer layout** (wolipop.detik.com and other sections moving to it): the article is read from its own text block again, so the author credit no longer shows as the first paragraph.
+
 ## [0.2.4] - 2026-11-13
 
 - **Bisnis.com:** the "Executive Brief" summary shows as a summary box; the related-links list in the middle of articles is gone; foto.bisnis.com photo stories open, photos included.

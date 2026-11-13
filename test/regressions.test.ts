@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { findLogo, logoAlternates } from '../src/extract/logo.ts';
 import { clean } from '../src/clean/index.ts';
 import { findRule } from '../src/rules/match.ts';
+import { extractByRule } from '../src/extract/content.ts';
 import { parseNewsDate, titleNodes } from '../src/render/overlay.ts';
 import { assembleRuleSet } from '../tools/lib/rules.ts';
 import { documentFromHtml } from '../tools/lib/dom.ts';
@@ -98,5 +99,19 @@ describe('italic words in titles (Tirto)', () => {
     expect(h1.querySelector('i')?.textContent).toBe('Giveaway');
     expect(h1.querySelector('b')).toBeNull();
     expect(h1.textContent).toBe('Label Wapres Giveaway <b>x</b>');
+  });
+});
+
+describe("Detik's newer layout (wolipop.detik.com)", () => {
+  it('takes the text from .detail__body.itp_bodycontent, not the whole article with its author credit', () => {
+    const url = 'https://wolipop.detik.com/entertainment-news/d-8748928/gaya-nagita';
+    const doc = documentFromHtml(
+      '<main><article><div class="flex"><div class="text-xs">Vina Oktiani - Wolipop</div></div>' +
+        '<div class="detail__body itp_bodycontent"><strong>Jakarta</strong> - <p>Penampilan Nagita Slavina memang kerap mencuri perhatian.</p></div></article></main>',
+      url,
+    );
+    const body = extractByRule(doc, findRule(rules, new URL(url))!)!;
+    expect(body.textContent).not.toContain('Vina Oktiani');
+    expect(body.textContent).toContain('Penampilan Nagita Slavina');
   });
 });

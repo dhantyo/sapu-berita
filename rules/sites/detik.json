@@ -4,7 +4,7 @@
   "name": "detikcom",
   "domains": ["detik.com"],
   "articleUrl": "/d-\\d+/",
-  "body": [".detail__body-text"],
+  "body": [".detail__body-text", ".detail__body.itp_bodycontent"],
   "remove": [
     "table.linksisip",
     ".noncontent",
