@@ -60,3 +60,15 @@ describe('masthead logo detection', () => {
     expect(findLogo(doc)).toBeUndefined();
   });
 });
+
+describe('inline SVG mastheads (Tirto)', () => {
+  it('turns a home-linked <svg> logo into an image', () => {
+    const doc = documentFromHtml(
+      '<header><a href="/" class="logo"><svg viewBox="0 0 386 100"><title>tirto.id</title><path d="M0 0h10v10z" fill="#fff"/></svg></a></header>',
+      'https://tirto.id/some-article-abcd',
+    );
+    const found = findLogo(doc);
+    expect(found?.src).toMatch(/^data:image\/svg\+xml/);
+    expect(decodeURIComponent(found!.src)).toContain('<path');
+  });
+});

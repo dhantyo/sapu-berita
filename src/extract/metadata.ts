@@ -23,10 +23,14 @@ export function extractMetadata(doc: Document): ArticleMeta {
       meta('meta[property="og:title"]') ??
       doc.title.trim(),
     byline: authorNames(ld?.author) ?? meta('meta[name="author"]'),
+    editor: authorNames(ld?.editor),
     published:
       str(ld?.datePublished) ??
       meta('meta[property="article:published_time"]') ??
-      meta('meta[name="publishdate"]'),
+      meta('meta[name="publishdate"]') ??
+      // Tirto publishes no publish date at all; its "modified" time is the publish time on first release.
+      str(ld?.dateModified) ??
+      meta('meta[property="article:modified_time"]'),
     image: imageUrl(ld?.image) ?? meta('meta[property="og:image"]'),
     // publisher.name is the outlet's real name; og:site_name is sometimes a section ("nasional" on CNN Indonesia).
     siteName: str(publisher?.name) ?? meta('meta[property="og:site_name"]'),
@@ -37,12 +41,24 @@ export function extractMetadata(doc: Document): ArticleMeta {
   });
 }
 
-const TEXT_FIELDS = ['title', 'byline', 'siteName', 'section', 'description'] as const;
+const TEXT_FIELDS = ['title', 'byline', 'editor', 'siteName', 'section', 'description'] as const;
 
-/** Sites HTML-escape JSON-LD strings, or double-escape meta tags ("&#039;Sindiran&#039;" on Detik). */
+/**
+ * Sites HTML-escape JSON-LD strings, or double-escape meta tags ("&#039;Sindiran&#039;" on Detik), and
+ * some put markup in them (Tirto: "Label Wapres <i>Giveaway</i>"). Decode, then keep text only; a title's
+ * italics survive separately in titleMarkup.
+ */
 function decodeText(m: ArticleMeta): ArticleMeta {
   for (const k of TEXT_FIELDS) if (m[k]) m[k] = decodeEntities(m[k]!);
+  if (m.title && /<(i|em)>/i.test(m.title)) {
+    m.titleMarkup = m.title.replace(/<(?!\/?(?:i|em)>)[^>]*>/gi, '').replace(/<(\/?)em>/gi, '<$1i>');
+  }
+  for (const k of TEXT_FIELDS) if (m[k]) m[k] = stripTags(m[k]!);
   return m;
+}
+
+function stripTags(s: string): string {
+  return s.replace(/<\/?[a-z][^>]*>/gi, '').replace(/\s+/g, ' ').trim();
 }
 
 const NAMED: Record<string, string> = {

@@ -83,6 +83,10 @@ export interface ArticleMeta {
   logoGround?: string;
   section?: string;
   description?: string;
+  /** The editor, when the outlet names one (Tribun's NewsArticle.editor). */
+  editor?: string;
+  /** The title with its italics kept (`<i>…</i>` only), when the outlet marks words in italic. */
+  titleMarkup?: string;
 }
 
 export interface Article {

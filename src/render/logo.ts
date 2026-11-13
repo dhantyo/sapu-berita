@@ -24,6 +24,7 @@ const cache = new Map<string, LogoAnalysis | undefined>();
  * The extra parameter keeps a non-CORS copy already in the page's cache from tainting the read.
  */
 export function corsLogoUrl(src: string): string {
+  if (src.startsWith('data:')) return src; // inline SVG logos are already local
   return src + (src.includes('?') ? '&' : '?') + 'sapu=1';
 }
 

@@ -26,10 +26,10 @@ Tip: in the Share sheet, scroll to the bottom → **Edit Actions** (*Edit Tindak
 
 ### Option 2: a bookmark (works today)
 
-1. On the [install page](https://dhantyo.github.io/sapu-berita/#pasang), tap **Copy bookmark code**.
-2. In Safari, bookmark any page: **Share → Add Bookmark** (*Tambah Bookmark*), name it **Sapu Berita**, **Save**.
-3. Open **Bookmarks → Edit** (*Edit*), tap the **Sapu Berita** bookmark, delete its address and paste the code. **Done**.
-4. On a news article: tap the address bar, type **Sapu**, and pick the **Sapu Berita** bookmark.
+1. **Copy the link:** on the [install page](https://dhantyo.github.io/sapu-berita/#pasang), tap **Copy the Sapu Berita link**.
+2. **Save that page as a bookmark:** open Safari's toolbar (tap **•••** at the bottom), then **Add Bookmark** (*Tambah Bookmark*) → **Save**. If it isn't there, tap **Share** first.
+3. **Change that bookmark:** open your bookmarks (the book icon) → **Edit** → tap the bookmark you just saved. Change its title to **Sapu Berita**, delete the address that's there, and paste the link you copied. **Done**.
+4. On a news article: open your bookmarks (the book icon) and tap **Sapu Berita**. Don't run it from the address bar: iPhone refuses it there with "Cannot Run Script". It also doesn't run in Private browsing.
 
 ## Use
 

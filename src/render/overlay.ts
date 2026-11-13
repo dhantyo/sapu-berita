@@ -185,7 +185,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
   const articleView = (t: Strings) => {
     const m = article.meta;
     const head = h(doc, 'header');
-    head.append(h(doc, 'h1', {}, m.title));
+    head.append(h(doc, 'h1', {}, ...titleNodes(doc, m.titleMarkup ?? m.title)));
     const deck = deckText(m.description, article.content);
     if (deck) head.append(h(doc, 'p', { class: 'deck' }, deck));
 
@@ -200,6 +200,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       });
       meta.append(by);
     }
+    if (m.editor && m.editor !== m.byline) meta.append(h(doc, 'span', { class: 'name' }, `${t.editor} ${m.editor}`));
     const date = formatDate(m.published, t);
     if (date) meta.append(h(doc, 'span', { class: 'date' }, date));
     if (meta.childNodes.length) head.append(meta);
@@ -471,9 +472,30 @@ export function startsWithImage(content: Element, textBudget = 200): boolean {
   return false;
 }
 
+/** A title as text nodes, with `<i>…</i>` (from titleMarkup) as real italics. Never parsed as HTML. */
+function titleNodes(doc: Document, title: string): Array<Node | string> {
+  return title.split(/(<i>[\s\S]*?<\/i>)/i).filter(Boolean).map((part) => {
+    const m = /^<i>([\s\S]*?)<\/i>$/i.exec(part);
+    return m ? h(doc, 'i', {}, m[1]!) : part.replace(/<\/?i>/gi, '');
+  });
+}
+
+/**
+ * Outlets write dates as ISO with an offset, or as "2026/11/13 14:59:46" / "2026-11-11 08:00:01" with
+ * no zone at all, which is Jakarta time. Read those as WIB, not as the reader's own time zone.
+ */
+function parseNewsDate(value: string): Date {
+  const local = /^(\d{4})[-/](\d{2})[-/](\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/.exec(value.trim());
+  if (local) {
+    const [, y, mo, d, hh, mm, ss = '00'] = local;
+    return new Date(`${y}-${mo}-${d}T${hh}:${mm}:${ss}+07:00`);
+  }
+  return new Date(value);
+}
+
 function formatDate(iso: string | undefined, t: Strings): string | undefined {
   if (!iso) return undefined;
-  const d = new Date(iso);
+  const d = parseNewsDate(iso);
   if (Number.isNaN(d.getTime())) return iso;
   const s = d.toLocaleString(t.dateLocale, {
     day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta',
