@@ -4,7 +4,10 @@ type Json = Record<string, unknown>;
 
 /** Title/author/date/image from JSON-LD NewsArticle (SEO-critical, so stable), falling back to OpenGraph/meta. */
 export function extractMetadata(doc: Document): ArticleMeta {
-  const ld = findArticleJsonLd(doc);
+  const nodes = jsonLdNodes(doc);
+  const ld = nodes.find((n) => /Article|Posting/i.test(([] as unknown[]).concat(n['@type']).join(',')));
+  // Some outlets (Merdeka) name their logo only on a separate Organization node, not on the article.
+  const org = nodes.find((n) => /Organization/i.test(([] as unknown[]).concat(n['@type']).join(',')) && n.logo);
   const meta = (sel: string) => doc.querySelector<HTMLMetaElement>(sel)?.content?.trim() || undefined;
 
   const publisher = (ld?.publisher ?? undefined) as Json | undefined;
@@ -35,7 +38,7 @@ export function extractMetadata(doc: Document): ArticleMeta {
     // publisher.name is the outlet's real name; og:site_name is sometimes a section ("nasional" on CNN Indonesia).
     siteName: str(publisher?.name) ?? meta('meta[property="og:site_name"]'),
     // Every supported outlet ships its official logo in NewsArticle.publisher.logo (verified 2026-11-11).
-    logo: absolute(imageUrl(publisher?.logo)),
+    logo: absolute(imageUrl(publisher?.logo)) ?? absolute(imageUrl(org?.logo)),
     section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
   });
@@ -78,7 +81,7 @@ export function decodeEntities(s: string): string {
   return s;
 }
 
-function findArticleJsonLd(doc: Document): Json | undefined {
+function jsonLdNodes(doc: Document): Json[] {
   const nodes: Json[] = [];
   const walk = (v: unknown): void => {
     if (Array.isArray(v)) v.forEach(walk);
@@ -95,7 +98,7 @@ function findArticleJsonLd(doc: Document): Json | undefined {
       // Malformed JSON-LD is common; skip it.
     }
   }
-  return nodes.find((n) => /Article|Posting/i.test(([] as unknown[]).concat(n['@type']).join(',')));
+  return nodes;
 }
 
 function str(v: unknown): string | undefined {

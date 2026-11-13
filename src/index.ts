@@ -1,7 +1,7 @@
 import type { Article, ArticleMeta, Context, ResolvedRule, RunResult } from './types.ts';
 import { adblockSelectors, findRule } from './rules/match.ts';
 import { extractMetadata } from './extract/metadata.ts';
-import { findLogo, groundForSrc } from './extract/logo.ts';
+import { findLogo, groundForSrc, logoAlternates } from './extract/logo.ts';
 import { extractByRule } from './extract/content.ts';
 import { extractWithReadability } from './extract/fallback.ts';
 import { assessQuality } from './extract/quality.ts';
@@ -33,7 +33,13 @@ export async function run(ctx: Context, onProgress?: ProgressCallback): Promise<
     // The site's own masthead logo (auto-detected, carries regional brands) beats the generic JSON-LD one.
     const masthead = findLogo(ctx.doc, rule.logo);
     const meta = masthead
-      ? { ...extracted, logo: masthead.src, logoGround: masthead.darkGround }
+      ? {
+          ...extracted,
+          logo: masthead.src,
+          logoGround: masthead.darkGround,
+          logoFallbacks: [...logoAlternates(ctx.doc, masthead.src), extracted.logo]
+            .filter((u, i, all): u is string => !!u && u !== masthead.src && all.indexOf(u) === i),
+        }
       : { ...extracted, logoGround: extracted.logo ? groundForSrc(ctx.doc, extracted.logo) : undefined };
     const q = ctx.rules.common.quality;
 

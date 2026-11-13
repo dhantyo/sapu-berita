@@ -83,6 +83,11 @@ export interface ArticleMeta {
   logoGround?: string;
   section?: string;
   description?: string;
+  /**
+   * The outlet's other logos on the page (footer, JSON-LD), in order. Tried when the masthead logo's server
+   * forbids reading its pixels (no CORS), before falling back to a plate. Merdeka: footer logo is readable.
+   */
+  logoFallbacks?: string[];
   /** The editor, when the outlet names one (Tribun's NewsArticle.editor). */
   editor?: string;
   /** The title with its italics kept (`<i>…</i>` only), when the outlet marks words in italic. */

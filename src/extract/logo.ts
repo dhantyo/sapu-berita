@@ -79,6 +79,28 @@ function scoreCandidate(doc: Document, img: Element, live: boolean): number {
 }
 
 /**
+ * Other copies of the outlet's logo on the page: images that call themselves a logo and link home, in
+ * the footer too (unlike the masthead search). Used only as stand-ins when the masthead logo can't be read.
+ */
+export function logoAlternates(doc: Document, except: string | undefined): string[] {
+  const out: string[] = [];
+  for (const img of doc.querySelectorAll('img')) {
+    const src = img.getAttribute('src') || img.getAttribute('data-src') || '';
+    if (!src || src.startsWith('data:') || NOT_LOGO_SRC.test(src)) continue;
+    const own = `${src} ${img.getAttribute('alt') ?? ''} ${img.getAttribute('class') ?? ''}`;
+    const home = img.closest('a');
+    if (!/logo/i.test(own) || !home || !isHomeLink(doc, home.getAttribute('href'))) continue;
+    try {
+      const abs = new URL(src, doc.baseURI).href;
+      if (abs !== except && !out.includes(abs)) out.push(abs);
+    } catch {
+      // ignore malformed src
+    }
+  }
+  return out.slice(0, 3);
+}
+
+/**
  * For a logo URL from elsewhere (JSON-LD), find the same image on the page and read its ground there.
  * Unknown when the page never shows it.
  */

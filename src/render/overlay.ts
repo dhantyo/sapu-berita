@@ -126,7 +126,8 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
    * Hidden until settled so it never jumps.
    */
   const logoMark = (src: string, name: string, outlet: HTMLElement) => {
-    // One download for display and analysis: CORS mode. If the server refuses CORS, reload plainly as a plate.
+    // One download for display and analysis: CORS mode. If the server refuses CORS, try the outlet's other
+    // official logo (it may live on a server that allows it: Merdeka); failing that, reload plainly as a plate.
     const img = doc.createElement('img');
     img.alt = name;
     img.crossOrigin = 'anonymous';
@@ -152,10 +153,20 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       img.replaceWith(shown);
     };
 
-    img.addEventListener('error', plate, { once: true });
+    const others = [...(article.meta.logoFallbacks ?? [])];
+    const fail = () => {
+      const other = mark.dataset.state === 'pending' ? others.shift() : undefined;
+      if (other) {
+        img.src = corsLogoUrl(other);
+        return;
+      }
+      plate();
+    };
+    img.addEventListener('error', fail);
     img.addEventListener('load', () => {
+      if (mark.dataset.state !== 'pending') return;
       const a = analyzeLoadedLogo(img);
-      if (!a) return plate();
+      if (!a) return fail();
       const aspect = a.box.w / a.box.h;
       const square = aspect < 1.6;
       const height = square ? 30 : opticalHeight(aspect);
@@ -177,7 +188,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
         img.alt = '';
         showName();
       }
-    }, { once: true });
+    });
     img.src = corsLogoUrl(src);
     return mark;
   };
