@@ -8,7 +8,8 @@ import {
   type OverlayHandle,
   type RunResult,
 } from '../index.ts';
-import { localStorageStore, normalizeSettings, type SettingsStore } from '../settings.ts';
+import { normalizeSettings, outletDomain, outletStore, type SettingsStore } from '../settings.ts';
+import type { RuleSet } from '../types.ts';
 import { ensureFonts } from '../render/fonts.ts';
 import { cachedManifest, isSnoozed, latestManifest, offerFor, reportLink, snoozeOffer, type Platform } from '../update.ts';
 
@@ -29,7 +30,7 @@ export interface BootResult {
 
 export interface BootOptions {
   debug?: boolean;
-  /** Where reader settings live. Defaults to localStorage (per site, best effort). */
+  /** Where reader settings live. Defaults to a cookie shared by the outlet's subdomains plus localStorage (best effort). */
   store?: SettingsStore;
   /** Ignore the "open automatically" setting (the user explicitly asked, e.g. via the iOS Shortcut). */
   forceOpen?: boolean;
@@ -57,7 +58,7 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
     const offer = offerFor(await latestManifest(CHANNEL), VERSION, platform);
     if (offer && !isSnoozed(offer.version)) shown.offerUpdate(offer);
   };
-  const store = options.store ?? localStorageStore;
+  const store = options.store ?? outletStore(outletDomain(url.hostname, (bundledRules as RuleSet).sites.flatMap((s) => s.domains)));
   const settingsReady = store.load().then(normalizeSettings, () => normalizeSettings(undefined));
   let overlay: OverlayHandle | null = null;
   let pending: Promise<void> = Promise.resolve();

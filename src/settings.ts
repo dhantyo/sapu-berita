@@ -69,6 +69,53 @@ export const localStorageStore: SettingsStore = {
   },
 };
 
+/**
+ * The bookmark's store: localStorage belongs to one subdomain (news.detik.com and hot.detik.com each start
+ * from the defaults), so settings are also kept in a cookie on the outlet's main domain, which every
+ * subdomain shares. The cookie wins when both exist: it holds the latest change made anywhere on the outlet.
+ * Different outlets can't share anything: browsers keep each site's storage apart.
+ */
+export function outletStore(domain: string | undefined, doc: Document = document): SettingsStore {
+  const name = 'sapuberita';
+  const readCookie = (): Partial<Settings> | undefined => {
+    try {
+      const raw = doc.cookie.split('; ').find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1);
+      return raw ? (JSON.parse(decodeURIComponent(raw)) as Partial<Settings>) : undefined;
+    } catch {
+      return undefined;
+    }
+  };
+  const writeCookie = (settings: Partial<Settings>) => {
+    if (!domain) return;
+    try {
+      // 400 days is the longest browsers keep a cookie; Safari caps script-set cookies at 7 days,
+      // so it is rewritten every time the reader opens.
+      const secure = doc.location?.protocol === 'https:' ? '; Secure' : '';
+      doc.cookie = `${name}=${encodeURIComponent(JSON.stringify(settings))}; Domain=${domain}; Path=/; Max-Age=34560000; SameSite=Lax${secure}`;
+    } catch {
+      // Cookies blocked: the per-subdomain copy still works.
+    }
+  };
+  return {
+    async load() {
+      const settings = (domain && readCookie()) || (await localStorageStore.load());
+      if (settings) writeCookie(settings); // renew, and share settings saved before this existed
+      return settings;
+    },
+    async save(settings) {
+      await localStorageStore.save(settings);
+      writeCookie(settings);
+    },
+  };
+}
+
+/** The outlet's main domain for a host, from the site rules (shortest listed domain the host belongs to). */
+export function outletDomain(host: string, siteDomains: string[]): string | undefined {
+  return siteDomains
+    .filter((d) => host === d || host.endsWith(`.${d}`))
+    .sort((a, b) => a.length - b.length)[0];
+}
+
 const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
   allowed.includes(value as T) ? (value as T) : fallback;
 

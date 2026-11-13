@@ -23,6 +23,7 @@ export function findRule(rules: RuleSet, url: URL): ResolvedRule | null {
       name: generic.id,
       body: [],
       lead: [],
+      trail: [],
       bodyAll: false,
       remove: [],
       dropParagraphs: [],
@@ -41,6 +42,7 @@ function resolve(site: SiteRule, path: string, rules: RuleSet): ResolvedRule {
     name: site.name,
     body: variant?.body ?? site.body,
     lead: variant?.lead ?? site.lead ?? [],
+    trail: variant?.trail ?? site.trail ?? [],
     bodyAll: variant?.bodyAll ?? site.bodyAll ?? false,
     remove: [...(site.remove ?? []), ...(variant?.remove ?? [])],
     dropParagraphs: [

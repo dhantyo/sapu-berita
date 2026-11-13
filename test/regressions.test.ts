@@ -115,3 +115,14 @@ describe("Detik's newer layout (wolipop.detik.com)", () => {
     expect(body.textContent).toContain('Penampilan Nagita Slavina');
   });
 });
+
+describe('bookmark settings shared across an outlet (news.detik.com ↔ hot.detik.com)', () => {
+  it('keys the cookie on the outlet main domain from the rules', async () => {
+    const { outletDomain } = await import('../src/settings.ts');
+    const domains = rules.sites.flatMap((s) => s.domains);
+    expect(outletDomain('hot.detik.com', domains)).toBe('detik.com');
+    expect(outletDomain('rekomendit.detik.com', domains)).toBe('detik.com');
+    expect(outletDomain('jogja.tribunnews.com', domains)).toBe('tribunnews.com');
+    expect(outletDomain('example.org', domains)).toBeUndefined();
+  });
+});

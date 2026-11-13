@@ -53,6 +53,13 @@
       },
       "description": "Selectors for blocks that belong at the top of the article but sit outside the body element, such as an editor's summary box or a photo gallery. Each is copied in front of the body when present."
     },
+    "trail": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Selectors for blocks that continue the article after the body but sit outside the body element, such as a photo slider that follows a one-line intro. Each is copied after the body when present."
+    },
     "bodyAll": {
       "type": "boolean",
       "default": false,
@@ -101,6 +108,13 @@
               "type": "string"
             },
             "description": "Selectors for blocks that belong at the top of the article but sit outside the body element, such as an editor's summary box or a photo gallery. Each is copied in front of the body when present."
+          },
+          "trail": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Selectors for blocks that continue the article after the body but sit outside the body element. Each is copied after the body when present."
           },
           "bodyAll": {
             "type": "boolean"

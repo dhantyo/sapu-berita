@@ -10,6 +10,8 @@ export interface RuleOverrides {
   body?: string[];
   /** Blocks that belong at the top of the article but sit outside the body (an editor's summary, a photo gallery). */
   lead?: string[];
+  /** Blocks that continue the article after the body but sit outside it (a photo slider after the intro). */
+  trail?: string[];
   bodyAll?: boolean;
   remove?: string[];
   dropParagraphs?: string[];
@@ -65,6 +67,7 @@ export interface ResolvedRule {
   name: string;
   body: string[];
   lead: string[];
+  trail: string[];
   bodyAll: boolean;
   remove: string[];
   dropParagraphs: string[];

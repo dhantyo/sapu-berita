@@ -30,6 +30,8 @@ const core = readFileSync(corePath, 'utf8');
 if (shotDir) mkdirSync(shotDir, { recursive: true });
 
 const PHONE_UA = 'Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36';
+// Headless Chrome announces itself as "HeadlessChrome", and some outlets (Tribun) serve it a different page.
+const DESKTOP_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36';
 // Your installed Chrome; set CHROME_PATH to use another Chromium browser (Brave, Edge).
 const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: 'chrome' });
 
@@ -37,7 +39,7 @@ let n = 0;
 for (const url of urls) {
   const context = await browser.newContext(
     flag('--desktop')
-      ? { viewport: { width: 1280, height: 900 }, colorScheme: flag('--dark') ? 'dark' : 'light' }
+      ? { viewport: { width: 1280, height: 900 }, userAgent: DESKTOP_UA, colorScheme: flag('--dark') ? 'dark' : 'light' }
       : { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: PHONE_UA, colorScheme: flag('--dark') ? 'dark' : 'light' },
   );
   const page = await context.newPage();
