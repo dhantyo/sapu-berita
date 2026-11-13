@@ -29,7 +29,8 @@ export function normalizeSummaries(root: HTMLElement, headingPatterns: string[])
     const heading = headingOf(box);
     if (!heading) continue;
     // Work on the innermost matching container, not every wrapper around it.
-    if ([...box.querySelectorAll(CONTAINERS)].some((d) => headingOf(d))) continue;
+    // (A wrapper holding only the heading, like Bisnis's "Executive Brief" header div, doesn't count.)
+    if ([...box.querySelectorAll(CONTAINERS)].some((d) => { const hd = headingOf(d); return hd && summaryItems(d, hd).length; })) continue;
 
     const items = summaryItems(box, heading);
     if (!items.length) continue;

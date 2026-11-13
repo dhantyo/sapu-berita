@@ -4,6 +4,12 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
+## [0.2.4] - 2026-11-13
+
+- **Bisnis.com:** the "Executive Brief" summary shows as a summary box; the related-links list in the middle of articles is gone; foto.bisnis.com photo stories open, photos included.
+- **Author** shows on detikHot and foto.bisnis.com articles whose page data lists the author as "-" or blank.
+- Gallery counters ("1 / 4") no longer show as text.
+
 ## [0.2.3] - 2026-11-13
 
 Fixes from testing on real phones.

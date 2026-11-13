@@ -19,6 +19,16 @@ export function extractByRule(doc: Document, rule: ResolvedRule): HTMLElement | 
       // Move children rather than the wrapper so per-page wrappers don't nest.
       for (const child of el.childNodes) container.append(child.cloneNode(true));
     }
+    // Lead blocks (summary box, photo gallery) go first, in rule order, when the page has them.
+    for (const sel of [...rule.lead].reverse()) {
+      let lead: Element | null = null;
+      try {
+        lead = doc.querySelector(sel);
+      } catch {
+        // invalid selector in a (remote) rule
+      }
+      if (lead && !matches.some((m) => m.contains(lead!) || lead!.contains(m))) container.prepend(lead.cloneNode(true));
+    }
     return container;
   }
   return null;

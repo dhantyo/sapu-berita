@@ -78,6 +78,9 @@ function dropMatchingBlocks(root: HTMLElement, patterns: string[]): number {
     if (!attached(el, root)) continue;
     const text = (el.textContent ?? '').replace(/\s+/g, ' ').trim();
     if (!regexes.some((r) => r.test(text))) continue;
+    // A photo whose only text is a label like "1 / 4" (a gallery counter): keep the photo, a deeper
+    // match removes the label itself. Link lists with thumbnails always carry far more text than this.
+    if (text.length <= 20 && el.querySelector('img, picture, video')) continue;
     // Short blocks go. Long blocks only if they're mostly links (a "Baca Juga" list),
     // never a real paragraph that merely starts with similar words.
     if (text.length <= 400 || linkDensity(el, text.length) > 0.5) {

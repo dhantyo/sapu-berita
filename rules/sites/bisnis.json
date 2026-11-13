@@ -2,12 +2,35 @@
   "$schema": "../schema.json",
   "id": "bisnis",
   "name": "Bisnis.com",
-  "domains": ["bisnis.com"],
-  "articleUrl": "/read/\\d{8}/\\d+/\\d+/",
-  "body": ["article.detailsContent"],
-  "pagination": { "method": "none" },
-  "samples": ["https://ekonomi.bisnis.com/read/20261110/9/2020098/smile-tingkatkan-target-sertifikasi-rspo-menjadi-7000-petani-swadaya"],
+  "domains": [
+    "bisnis.com"
+  ],
+  "articleUrl": "/(?:read/\\d{8}/\\d+/\\d+|view/\\d{8}/\\d+)/",
+  "body": [
+    "article.detailsContent"
+  ],
+  "lead": [
+    ".bisnisai"
+  ],
+  "remove": [
+    ".baca-juga-box"
+  ],
+  "variants": [
+    {
+      "when": "^/view/",
+      "lead": [
+        ".fotoslider"
+      ]
+    }
+  ],
+  "pagination": {
+    "method": "none"
+  },
+  "samples": [
+    "https://ekonomi.bisnis.com/read/20261110/9/2020098/smile-tingkatkan-target-sertifikasi-rspo-menjadi-7000-petani-swadaya",
+    "https://foto.bisnis.com/view/20261113/2021207/mpr-jadwalkan-pemilihan-wapres-pengganti-gibran"
+  ],
   "noCanary": true,
-  "verified": "2026-11-11",
-  "notes": "Verified in a real browser; the site answers 403 to non-browser requests, so it has no fixture and the daily canary skips it."
+  "verified": "2026-11-13",
+  "notes": "Verified in a real browser; the site answers 403 to non-browser requests, so it has no fixture and the daily canary skips it. The AI 'Executive Brief' (.bisnisai) sits before the article and is pulled in as a lead; in-article related links are .baca-juga-box. foto.bisnis.com stories (/view/) put their photos in .fotoslider before the text. Verified 2026-11-13."
 }

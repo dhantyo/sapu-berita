@@ -64,3 +64,18 @@ describe('heading followed by a list (Suara "BACA 10 DETIK")', () => {
     expect([...root.querySelectorAll('ul')].every((ul) => ul.parentElement === box)).toBe(true);
   });
 });
+
+describe('summary box whose heading sits in its own wrapper (Bisnis "Executive Brief")', () => {
+  it('builds the box from the outer container', () => {
+    const root = document.createElement('div');
+    root.innerHTML =
+      '<div class="bisnisai"><div class="bisnisaiHeader"><div class="bisnisaiHeaderContent">Executive Brief</div></div>' +
+      '<div class="bisnisaiBody"><ul><li>Satu poin.</li><li>Dua poin.</li></ul></div>' +
+      '<div class="bisnisaiFooter"><p>* Executive Brief ini dibantu dengan menggunakan AI</p></div></div><p>Isi.</p>';
+    normalizeSummaries(root, ['^(ringkasan berita|executive brief)\\s*:?']);
+    const box = root.querySelector('blockquote');
+    expect(box?.querySelector('b')?.textContent).toBe('Executive Brief');
+    expect([...(box?.querySelectorAll('li') ?? [])].map((li) => li.textContent)).toEqual(['Satu poin.', 'Dua poin.']);
+    expect(root.querySelector('p')?.textContent).toBe('Isi.');
+  });
+});

@@ -8,6 +8,8 @@ export type Pagination =
 
 export interface RuleOverrides {
   body?: string[];
+  /** Blocks that belong at the top of the article but sit outside the body (an editor's summary, a photo gallery). */
+  lead?: string[];
   bodyAll?: boolean;
   remove?: string[];
   dropParagraphs?: string[];
@@ -62,6 +64,7 @@ export interface ResolvedRule {
   id: string;
   name: string;
   body: string[];
+  lead: string[];
   bodyAll: boolean;
   remove: string[];
   dropParagraphs: string[];

@@ -109,7 +109,8 @@ function authorNames(v: unknown): string | undefined {
   const names = ([] as unknown[])
     .concat(v ?? [])
     .map((a) => (typeof a === 'string' ? a : str((a as Json)?.name)))
-    .filter((n): n is string => !!n);
+    // A name needs letters: detikHot writes "-" and foto.bisnis.com "" when the author is elsewhere.
+    .filter((n): n is string => !!n && /\p{L}/u.test(n));
   return names.length ? names.join(', ') : undefined;
 }
 

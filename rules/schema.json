@@ -5,19 +5,33 @@
   "description": "How to find, merge and clean an article on one news site (or one shared platform). See docs/RULES.md.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "name", "domains", "articleUrl", "body", "pagination"],
+  "required": [
+    "id",
+    "name",
+    "domains",
+    "articleUrl",
+    "body",
+    "pagination"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "id": {
       "type": "string",
       "pattern": "^[a-z0-9-]+$",
       "description": "Stable identifier; also the file name."
     },
-    "name": { "type": "string" },
+    "name": {
+      "type": "string"
+    },
     "domains": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string", "pattern": "^[a-z0-9.-]+\\.[a-z]+$" },
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9.-]+\\.[a-z]+$"
+      },
       "description": "Registrable domains. Subdomains match automatically (news.detik.com matches detik.com)."
     },
     "articleUrl": {
@@ -27,8 +41,17 @@
     "body": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "CSS selectors for the article body, tried in order. First selector that matches wins."
+    },
+    "lead": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Selectors for blocks that belong at the top of the article but sit outside the body element, such as an editor's summary box or a photo gallery. Each is copied in front of the body when present."
     },
     "bodyAll": {
       "type": "boolean",
@@ -37,35 +60,74 @@
     },
     "remove": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "CSS selectors removed from inside the body (Baca Juga boxes, embedded videos, promos)."
     },
     "dropParagraphs": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Extra regexes (case-insensitive) on a block's text; matching <p>/<div> blocks are removed. Added to rules/common.json patterns."
     },
-    "pagination": { "$ref": "#/definitions/pagination" },
+    "pagination": {
+      "$ref": "#/definitions/pagination"
+    },
     "variants": {
       "type": "array",
       "description": "Overrides for sections with a different layout (e.g. liputan6.com/bola). First variant whose pathname regex matches is merged over the base rule.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["when"],
+        "required": [
+          "when"
+        ],
         "properties": {
-          "when": { "type": "string", "description": "Regex on URL pathname." },
-          "body": { "type": "array", "items": { "type": "string" } },
-          "bodyAll": { "type": "boolean" },
-          "remove": { "type": "array", "items": { "type": "string" } },
-          "dropParagraphs": { "type": "array", "items": { "type": "string" } },
-          "pagination": { "$ref": "#/definitions/pagination" }
+          "when": {
+            "type": "string",
+            "description": "Regex on URL pathname."
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lead": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Selectors for blocks that belong at the top of the article but sit outside the body element, such as an editor's summary box or a photo gallery. Each is copied in front of the body when present."
+          },
+          "bodyAll": {
+            "type": "boolean"
+          },
+          "remove": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dropParagraphs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pagination": {
+            "$ref": "#/definitions/pagination"
+          }
         }
       }
     },
     "logo": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Escape hatch only: CSS selectors for the header logo <img> when automatic detection picks the wrong image. Leave unset normally; the logo and its background are detected from the live page."
     },
     "noCanary": {
@@ -80,7 +142,10 @@
     },
     "samples": {
       "type": "array",
-      "items": { "type": "string", "format": "uri" },
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
       "description": "Real article URLs used by tests/canary. Include a multi-page one if the site paginates."
     },
     "verified": {
@@ -88,7 +153,9 @@
       "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
       "description": "Date the selectors were last checked against the live site."
     },
-    "notes": { "type": "string" }
+    "notes": {
+      "type": "string"
+    }
   },
   "definitions": {
     "pagination": {
@@ -97,25 +164,42 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["method"],
-          "properties": { "method": { "const": "none" } }
+          "required": [
+            "method"
+          ],
+          "properties": {
+            "method": {
+              "const": "none"
+            }
+          }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["method"],
+          "required": [
+            "method"
+          ],
           "properties": {
-            "method": { "const": "inline" },
-            "notes": { "type": "string" }
+            "method": {
+              "const": "inline"
+            },
+            "notes": {
+              "type": "string"
+            }
           },
           "description": "All pages are already in the DOM. Use with bodyAll."
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["method", "fullpage"],
+          "required": [
+            "method",
+            "fullpage"
+          ],
           "properties": {
-            "method": { "const": "param" },
+            "method": {
+              "const": "param"
+            },
             "fullpage": {
               "type": "string",
               "pattern": "^[a-z_]+=[a-z0-9_]+$",
@@ -136,14 +220,24 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["method", "pageLinks"],
+          "required": [
+            "method",
+            "pageLinks"
+          ],
           "properties": {
-            "method": { "const": "fetch" },
+            "method": {
+              "const": "fetch"
+            },
             "pageLinks": {
               "type": "string",
               "description": "CSS selector for numbered page links. Links whose text is a number > 1 are fetched in order and their bodies appended."
             },
-            "maxPages": { "type": "integer", "minimum": 2, "maximum": 30, "default": 15 }
+            "maxPages": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 30,
+              "default": 15
+            }
           },
           "description": "No working full-page URL: download each page and stitch the bodies."
         }

@@ -43,3 +43,13 @@ describe('metadata from real outlet quirks', () => {
     expect(m.published).toBe('2026-11-11 08:00:01');
   });
 });
+
+describe('placeholder authors', () => {
+  it('treats "-" and empty names as missing and falls back to meta author (detikHot)', () => {
+    document.head.innerHTML =
+      '<script type="application/ld+json">{"@type":"NewsArticle","headline":"X","author":{"@type":"Person","name":"-"}}</script>' +
+      '<meta name="author" content="Mauludi Rismoyo">';
+    expect(extractMetadata(document).byline).toBe('Mauludi Rismoyo');
+    document.head.innerHTML = '';
+  });
+});

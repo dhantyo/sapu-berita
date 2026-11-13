@@ -10,6 +10,7 @@
     "^(baca|ikuti|dapatkan|simak)\\b.{0,120}\\bgoogle news\\b",
     "^baca berita .{0,60}\\blainnya\\b",
     "^rekomendasi (untuk|buat) (anda|kamu)$",
+    "^\\d{1,3}\\s*/\\s*\\d{1,3}$",
     "^advertisement$",
     "^iklan$",
     "^scroll to continue( with content)?$",
@@ -18,7 +19,7 @@
     "^ikuti (kami|berita) (di|on)\\b"
   ],
   "summaryHeadings": [
-    "^(ringkasan berita|ringkasan|poin penting|intisari berita|rangkuman berita|baca 10 detik)\\s*:?"
+    "^(ringkasan berita|ringkasan|poin penting|intisari berita|rangkuman berita|baca 10 detik|executive brief)\\s*:?"
   ],
   "remove": [
     "script",
