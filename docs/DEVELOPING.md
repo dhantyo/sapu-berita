@@ -35,10 +35,24 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 | `npm run rebaseline` | Recomputes fixture expectations after a deliberate cleaning change. |
 | `npm run canary` | Checks every site live, like the daily CI job. |
 
+## Versions
+
+[Semantic Versioning](https://semver.org): **MAJOR.MINOR.PATCH**.
+
+| Bump | When | Example |
+|---|---|---|
+| PATCH | Fixes only: a wrong logo, a broken site, a typo, install-page or docs changes | 0.2.2 → 0.2.3 |
+| MINOR | Something users notice: new sites, new settings, a redesign | 0.2.3 → 0.3.0 |
+| MAJOR | The public launch (1.0.0), and later only for big breaking changes | 0.x → 1.0.0 |
+
+- While MAJOR is 0, the app is in beta; no `-beta` suffix is used.
+- Site-rule fixes alone don't need a release: `rules.json` reaches installed copies daily.
+- Android's `versionCode` is derived from the version (`app/build.gradle.kts`) and must keep rising, so never reuse or lower a version.
+
 ## Releasing
 
 1. Bump `version` in `package.json` (the extension, the APK and the Shortcut all read it) and add a section to `CHANGELOG.md`.
-2. Commit, then tag and push: `git tag v0.1.0-beta.2 && git push --tags`.
+2. Commit, then tag and push: `git tag -a v0.2.3 -m "Sapu Berita 0.2.3" && git push origin v0.2.3` (push tags one at a time: GitHub starts no build when more than three tags are pushed together).
 3. CI builds and signs everything and publishes a GitHub Release with the APK, the extension zip and the Shortcut script. Versions with a `-` suffix are marked pre-release.
 4. CI also publishes the **release channel** to GitHub Pages: `update.json` (latest version and per-platform update links) and `rules.json` (site rules). Installed copies read both once a day: a newer version shows an "update available" bar in the reader; newer rules apply silently, so most site fixes need no app update. It also carries the Apple core (`sapu-berita.js`), which the Shortcut and the Safari bookmark download on every run, and the install page (`site/`).
 

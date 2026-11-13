@@ -7,7 +7,7 @@ Character cards for the people we build for, then every way they reach an articl
 - ❌ doesn't work today
 - ❓ unknown, needs checking
 
-Written 2026-11-11, at version 0.1.0-beta.1, before the first release.
+Written 2026-11-11, at version 0.1.0 (then called 0.1.0-beta.1), before the first release.
 
 ---
 

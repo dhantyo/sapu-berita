@@ -1,23 +1,43 @@
 # Changelog
 
-Versions follow [semver](https://semver.org). Every tag `vX.Y.Z` publishes a GitHub Release built from this file.
+Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the version starts with 0, Sapu Berita is in beta; 1.0.0 is the public launch. Every tag `vX.Y.Z` publishes a GitHub Release built from this file.
 
-## [0.1.0-beta.4] - 2026-11-13
+The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
+
+## [0.2.3] - 2026-11-13
+
+Fixes from testing on real phones.
+
+- **Logos:** each outlet shows its own logo again. On phones, Detik and Tribun put a screen-tall ad above the header, which hid the real logo from the finder; regional sites (detikKalimantan, detikJabar, Tribun Jogja) showed Detik's "20D" anniversary image or Tribun's video logo instead. Logos drawn as inline SVG (Tirto, Viva) are now used too, and when a logo's server doesn't allow reading it (Merdeka), the outlet's other logo on the page is tried before falling back to a plate.
+- **Editor** shown when the outlet names one (Tribun, Kompas, ANTARA).
+- **Datelines** ("Banjarmasin -") run into the first paragraph instead of sitting on their own line (Detik).
+- **Tirto:** italic words in titles show as italics, not as `<i>` tags; the publish date shows.
+- **iPhone bookmark:** run it from the Bookmarks list; from the address bar Safari refuses with "Cannot Run Script". Install page and Apple guide updated.
+
+## [0.2.2] - 2026-11-13
+
+*Published as 0.1.0-beta.4.*
 
 - Install page, after testing with a first-time iPhone user: Android offers two options (the app, or a Chrome bookmark with nothing to install); the iPhone bookmark setup is three plain steps (copy the link, save this page as a bookmark, edit it); a separate guide explains how to use the bookmark (only on an article page, from the address bar, Asli goes back).
 
-## [0.1.0-beta.3] - 2026-11-11
+## [0.2.1] - 2026-11-11
+
+*Published as 0.1.0-beta.3.*
 
 - Install page: the browser extension gets its own tab with a direct download and step-by-step install and update instructions.
 - Install page and README say plainly that Sapu Berita is built with AI.
 
-## [0.1.0-beta.2] - 2026-11-11
+## [0.2.0] - 2026-11-11
+
+*Published as 0.1.0-beta.2.*
 
 - **New look:** a modernist sans, Geist, is now Sapu Berita's voice for headlines, text and labels, the same on every device. It's built in, so it shows instantly and offline.
 - **Aa → Serif** is now Merriweather and **Aa → Jelas** is Fira Sans (a humanist sans in the tradition of German public signage); both download only when chosen.
 - Install page and Android setup use the same type.
 
-## [0.1.0-beta.1] - 2026-11-11
+## [0.1.0] - 2026-11-11
+
+*Published as 0.1.0-beta.1.*
 
 First public beta.
 
