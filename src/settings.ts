@@ -18,6 +18,12 @@ export interface Settings {
   sweepLine: boolean;
   /** Once a day, fetch update.json and the latest site rules from the release channel. */
   updates: boolean;
+  /** Links inside the article are clickable; off = they read as plain text. */
+  links: boolean;
+  /** Editors' summary boxes (Ringkasan Berita, Executive Brief) are shown. */
+  summaries: boolean;
+  /** Quoted social posts play in the article (official embeds); off = a card with a link. */
+  embeds: boolean;
 }
 
 export const SIZE_STEPS = 5;
@@ -31,6 +37,9 @@ export const DEFAULT_SETTINGS: Settings = {
   autoOpen: true,
   sweepLine: true,
   updates: true,
+  links: true,
+  summaries: true,
+  embeds: true,
 };
 
 /** Storage adapter. Wrappers pick the most durable one they have (extension storage, else localStorage). */
@@ -78,5 +87,8 @@ export function normalizeSettings(raw: Partial<Settings> | undefined): Settings 
     autoOpen: bool(r.autoOpen, d.autoOpen),
     sweepLine: bool(r.sweepLine, d.sweepLine),
     updates: bool(r.updates, d.updates),
+    links: bool(r.links, d.links),
+    summaries: bool(r.summaries, d.summaries),
+    embeds: bool(r.embeds, d.embeds),
   };
 }

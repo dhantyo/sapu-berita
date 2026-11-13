@@ -5,6 +5,7 @@ import { analyzeLoadedLogo, corsLogoUrl, opticalHeight, recolourNeeds } from './
 import { PLATFORM_NAMES, type Platform } from '../clean/embeds.ts';
 import { OVERLAY_CSS } from './styles.ts';
 import type { UpdateOffer } from '../update.ts';
+import { heightFromMessage, playerFor } from './players.ts';
 
 declare const __SAPU_VERSION__: string | undefined;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
@@ -78,6 +79,9 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     const top = root.scrollTop;
     root.dataset.theme = settings.theme;
     root.dataset.font = settings.font;
+    root.dataset.links = settings.links ? 'on' : 'off';
+    root.dataset.summaries = settings.summaries ? 'on' : 'off';
+    root.dataset.embeds = settings.embeds ? 'on' : 'off';
     opts.loadFonts?.(settings.font);
     root.style.setProperty('--fs', `${SIZES[settings.size]}px`);
     root.setAttribute('lang', settings.lang);
@@ -97,7 +101,8 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
   const masthead = (t: Strings, progress: HTMLElement) => {
     const name = article.meta.siteName ?? doc.location?.hostname ?? '';
-    const outlet = h(doc, 'a', { class: 'outlet', href: opts.originalUrl ?? '', title: t.readOriginal, 'aria-label': `${name}: ${t.readOriginal}` });
+    const home = homepageOf(opts.originalUrl);
+    const outlet = h(doc, 'a', { class: 'outlet', href: home ?? '', title: t.home(name), 'aria-label': t.home(name) });
     if (article.meta.logo) {
       outlet.append(logoMark(article.meta.logo, name, outlet));
     } else {
@@ -222,6 +227,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
     article.content.classList.add('content');
     localizeEmbeds(article.content, t);
+    if (settings.embeds) livenEmbeds(article.content, isDark());
     const parts: Node[] = [head, article.content];
     if (updateOffer) parts.unshift(updateBar(t, updateOffer));
     if (loading) parts.push(h(doc, 'p', { class: 'status', role: 'status' }, h(doc, 'span', { class: 'spinner', 'aria-hidden': 'true' }), t.loadingMore));
@@ -240,6 +246,25 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     }
     return h(doc, 'main', { class: 'column' }, ...parts);
   };
+
+  const isDark = () =>
+    settings.theme === 'dark' || (settings.theme === 'auto' && !!doc.defaultView?.matchMedia?.('(prefers-color-scheme: dark)').matches);
+
+  // Embedded players ask for their height by message; grow the matching frame to fit the post.
+  doc.defaultView?.addEventListener('message', (e) => {
+    const height = heightFromMessage(e.data);
+    if (!height) return;
+    for (const frame of root.querySelectorAll<HTMLIFrameElement>('iframe.player')) {
+      if (frame.contentWindow === e.source && !frame.style.aspectRatio) frame.style.height = `${height}px`;
+    }
+  });
+  // A site whose security policy forbids frames from the platform: drop that player, the card shows again.
+  doc.addEventListener('securitypolicyviolation', (e) => {
+    if (!/frame-src|child-src|default-src/.test(e.effectiveDirective)) return;
+    for (const frame of root.querySelectorAll<HTMLIFrameElement>('iframe.player')) {
+      if (e.blockedURI && frame.src.startsWith(e.blockedURI)) frame.remove();
+    }
+  });
 
   const updateBar = (t: Strings, offer: UpdateOffer) => {
     const later = h(doc, 'button', { type: 'button', class: 'later' }, t.dismiss);
@@ -305,6 +330,9 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       switchRow(t.hero, undefined, settings.hero, (v) => change({ hero: v }, '[data-switch="hero"]'), 'hero'),
       switchRow(t.autoOpen, t.autoOpenHint, settings.autoOpen, (v) => change({ autoOpen: v }, '[data-switch="autoOpen"]'), 'autoOpen'),
       switchRow(t.sweepLine, undefined, settings.sweepLine, (v) => change({ sweepLine: v }, '[data-switch="sweepLine"]'), 'sweepLine'),
+      switchRow(t.links, t.linksHint, settings.links, (v) => change({ links: v }, '[data-switch="links"]'), 'links'),
+      switchRow(t.summaries, t.summariesHint, settings.summaries, (v) => change({ summaries: v }, '[data-switch="summaries"]'), 'summaries'),
+      switchRow(t.embeds, t.embedsHint, settings.embeds, (v) => change({ embeds: v }, '[data-switch="embeds"]'), 'embeds'),
       switchRow(t.updates, t.updatesHint, settings.updates, (v) => change({ updates: v }, '[data-switch="updates"]'), 'updates'),
     );
     panel.append(toggles);
@@ -438,6 +466,41 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       host.remove();
     },
   };
+}
+
+/**
+ * Turn each social-post card into the platform's own player, once (the article body is reused across renders,
+ * so a player keeps playing when settings change). The card stays underneath: switching embeds off shows it again.
+ */
+function livenEmbeds(content: Element, dark: boolean): void {
+  const doc = content.ownerDocument;
+  for (const fig of content.querySelectorAll<HTMLElement>('figure[data-embed]')) {
+    if (fig.querySelector('iframe.player')) continue;
+    const href = fig.querySelector('a[data-embed-link]')?.getAttribute('href');
+    const player = href && playerFor(fig.dataset.embed as Platform, href, dark);
+    if (!player) continue;
+    const frame = doc.createElement('iframe');
+    frame.className = 'player';
+    frame.src = player.src;
+    frame.title = PLATFORM_NAMES[fig.dataset.embed as Platform] ?? 'Media';
+    frame.loading = 'lazy';
+    frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin'; // YouTube refuses to play without a referrer
+    if (player.aspect) frame.style.aspectRatio = player.aspect;
+    else frame.style.height = `${player.height ?? 500}px`;
+    fig.prepend(frame);
+  }
+}
+
+/** The outlet's homepage: the root of the site the article is on (regional sites stay regional). */
+function homepageOf(articleUrl: string | undefined): string | undefined {
+  if (!articleUrl) return undefined;
+  try {
+    return new URL('/', articleUrl).href;
+  } catch {
+    return undefined;
+  }
 }
 
 /** Social-post cards (clean/embeds.ts): link labels in the reader's language, a play mark on video thumbnails. */

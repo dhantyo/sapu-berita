@@ -148,6 +148,14 @@ h1 {
   font: 0.8em/1.5 var(--sans); color: var(--ink);
 }
 .content figure[data-embed] figcaption { margin: 0 0 0.45em; font: inherit; color: var(--muted); }
+/* Embedded players: the platform's own post, edge to edge in the column; the card underneath waits for "off". */
+.content iframe.player { display: block; width: 100%; border: 0; border-radius: 10px; background: var(--chip); }
+.root[data-embeds="on"] .content figure[data-embed]:has(iframe.player) { padding: 0; border: 0; }
+.root[data-embeds="on"] .content figure[data-embed]:has(iframe.player) > :not(iframe) { display: none; }
+.root[data-embeds="off"] .content iframe.player { display: none; }
+/* Reader switches: links as plain text, summary boxes hidden. Social-post links always work. */
+.root[data-links="off"] .content a:not([data-embed-link]) { color: inherit; text-decoration: none; pointer-events: none; cursor: text; }
+.root[data-summaries="off"] .content blockquote[data-summary] { display: none; }
 .content figure[data-embed] figcaption b { color: var(--ink); }
 .content figure[data-embed] p { margin: 0 0 0.6em; font-size: 1.06em; }
 .content figure[data-embed] a[data-embed-link] { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; text-decoration: none; color: var(--ink); }

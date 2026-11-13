@@ -4,8 +4,12 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
-## [0.2.5] - 2026-11-13
+## [0.3.0] - 2026-11-13
 
+- **Videos and posts play in the article:** YouTube, Instagram, TikTok, X and Facebook posts a story quotes now play inside the reader, using each platform's own player. Turn off "Putar media di artikel" in settings to get the old link card back.
+- **New settings:** "Tampilkan link" (off: links inside the article read as plain text) and "Kotak ringkasan" (off: hides the outlet's summary boxes such as Ringkasan Berita and Executive Brief).
+- **The outlet logo opens the outlet's homepage** (the regional site for regional articles). "Asli" still opens the original article.
+- **detik Rekomendit** (rekomendit.detik.com) product guides open in the reader, without the shopping cards.
 - **Detik's newer layout** (wolipop.detik.com and other sections moving to it): the article is read from its own text block again, so the author credit no longer shows as the first paragraph.
 
 ## [0.2.4] - 2026-11-13

@@ -85,6 +85,7 @@ function isBuilt(el: Element): boolean {
 
 function buildBox(doc: Document, heading: string, items: string[]): HTMLElement {
   const quote = doc.createElement('blockquote');
+  quote.setAttribute('data-summary', '');
   const title = doc.createElement('b');
   title.textContent = heading.replace(/\s*:\s*$/, '').trim();
   const list = doc.createElement('ul');

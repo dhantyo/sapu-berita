@@ -2,10 +2,11 @@
 // Apple bookmark does, and report what it extracted. Works on sites that block plain downloads (Bisnis, Tirto).
 //
 //   npm run build
-//   npm run inspect -- <url> [<url> …] [--dark] [--desktop] [--shot <folder>]
+//   npm run inspect -- <url> [<url> …] [--dark] [--desktop] [--shot <folder>] [--blocks]
 //
 // Prints per link: rendered or not, the logo it chose (and how it's drawn), the meta row, the summary box,
-// leftover link lists, image count, and the first paragraph. --shot saves a phone screenshot per link.
+// leftover link lists, image count, and the first paragraph. --shot saves a phone screenshot per link;
+// --blocks lists every block of the extracted article (what a reader would scroll through).
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright-core';
@@ -63,11 +64,18 @@ for (const url of urls) {
         summaryPoints: root.querySelectorAll('.content blockquote li').length,
         linkLists: [...root.querySelectorAll('.content ul')].filter((u) => u.querySelectorAll('a').length >= 2).length,
         images: root.querySelectorAll('.content img').length,
+        players: [...root.querySelectorAll<HTMLIFrameElement>('.content iframe.player')].map((f) => new URL(f.src).hostname).join(', '),
+        cards: root.querySelectorAll('.content figure[data-embed]').length,
         firstParagraph: text('.content p')?.slice(0, 120),
+        blocks: [...(root.querySelector('.content')?.children ?? [])].map(
+          (b) => `${b.tagName.toLowerCase()}${b.querySelector('img') ? '+img' : ''}${b.querySelector('a') ? '+link' : ''}: ${(b.textContent ?? '').replace(/\s+/g, ' ').trim().slice(0, 100)}`,
+        ),
       };
     }, core);
     console.log(`\n${url}`);
-    for (const [k, v] of Object.entries(report)) if (v !== undefined && v !== '') console.log(`  ${k.padEnd(15)} ${v}`);
+    const { blocks, ...summary } = report as typeof report & { blocks?: string[] };
+    for (const [k, v] of Object.entries(summary)) if (v !== undefined && v !== '') console.log(`  ${k.padEnd(15)} ${v}`);
+    if (flag('--blocks') && blocks) blocks.forEach((b, i) => console.log(`  ${String(i + 1).padStart(3)}. ${b}`));
     if (shotDir) {
       const file = join(shotDir, `inspect-${++n}${flag('--dark') ? '-dark' : ''}.png`);
       await page.screenshot({ path: file });

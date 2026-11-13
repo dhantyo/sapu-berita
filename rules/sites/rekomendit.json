@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema.json",
+  "id": "rekomendit",
+  "name": "detik Rekomendit",
+  "domains": [
+    "rekomendit.detik.com"
+  ],
+  "articleUrl": "^/[a-z0-9-]+/\\d+/[a-z0-9-]+",
+  "body": [
+    ".rekomendit-body-placeholder"
+  ],
+  "dropParagraphs": [
+    "^foto: ",
+    "^pertanyaan yang sering ditanyakan$"
+  ],
+  "pagination": {
+    "method": "none"
+  },
+  "samples": [
+    "https://rekomendit.detik.com/olahraga/6031/sepatu-lari-ringan-dipakai-harian-ke-kampus-dan-kantor-ini-5-aturannya"
+  ],
+  "verified": "2026-11-13",
+  "notes": "Detik's product-recommendation section. Layout uses utility classes only (no stable body hook), so the body comes from generic extraction; the shopping cards drop out there. The lead photo is the page image (shown as the hero), so its caption line is dropped here; FAQ answers sit in collapsed accordions that extraction skips, so the bare FAQ heading is dropped too."
+}

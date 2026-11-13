@@ -90,7 +90,9 @@ writeFileSync(join(ROOT, 'dist/bookmarklet.txt'), 'javascript:' + encodeURICompo
 const manifestPath = join(ROOT, 'apps/extension/manifest.json');
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const domains = [...new Set(rules.sites.flatMap((s) => s.domains))].sort();
-manifest.content_scripts[0].matches = domains.map((d) => `https://*.${d}/*`);
+// A domain under another listed domain (rekomendit.detik.com under detik.com) is already covered by its wildcard.
+const covered = (d: string) => domains.some((e) => e !== d && d.endsWith(`.${e}`));
+manifest.content_scripts[0].matches = domains.filter((d) => !covered(d)).map((d) => `https://*.${d}/*`);
 // One version for every wrapper, from package.json. Chrome wants dotted numbers; the label goes in version_name.
 const { version } = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string };
 manifest.version = version.split('-')[0];
@@ -118,7 +120,7 @@ const manifestXml = join(ROOT, 'apps/android/app/src/main/AndroidManifest.xml');
 // for sites that publish articles there (tirto.id/…), judged from each rule's sample articles.
 const apexArticles = new Set(rules.sites.flatMap((s) =>
   (s.samples ?? []).map((u) => new URL(u).hostname).filter((h) => s.domains.includes(h))));
-const hosts = domains.flatMap((d) => (apexArticles.has(d) ? [d, `*.${d}`] : [`*.${d}`]));
+const hosts = domains.filter((d) => !covered(d)).flatMap((d) => (apexArticles.has(d) ? [d, `*.${d}`] : [`*.${d}`]));
 const xml = readFileSync(manifestXml, 'utf8').replace(
   /(<!-- sapu:hosts:start[^>]*-->)[\s\S]*?(\s*<!-- sapu:hosts:end -->)/,
   (_m, start: string, end: string) =>
