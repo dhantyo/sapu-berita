@@ -67,7 +67,13 @@ ol.steps b { font-weight: 650; }
 .ghost { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 22px; border: 1px solid var(--rule-strong); background: none; color: var(--ink); font: 600 15px/1 var(--sans); text-decoration: none; cursor: pointer; }
 .ghost[aria-disabled="true"] { color: var(--muted); cursor: default; }
 .note { font-size: 15px; color: var(--muted); margin: 10px 0 0; }
-.note.span { grid-column: 1 / -1; }
+.note.span, .panel .span, .howto { grid-column: 1 / -1; }
+.option { margin: 0 0 4px; font: 600 12px/1.3 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.option-b { padding-top: 28px; border-top: 1px solid var(--rule); }
+ol.steps.option-b { padding-top: 28px; }
+.howto { margin-top: 12px; padding: 22px 24px 8px; border-radius: 16px; background: var(--chip); }
+.howto h3 { margin-top: 0; }
+.howto .note { margin: 0 0 16px; }
 .linkish { border: 0; background: none; padding: 0; color: var(--ink); font: inherit; font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 0.2em; cursor: pointer; }
 .panel h3.sub { margin-top: 18px; }
 .toast { min-height: 1.6em; font-size: 15px; color: var(--accent); margin: 8px 0 0; }
@@ -131,7 +137,8 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
 
     <div class="panel" role="tabpanel" data-panel="android" hidden>
       <div>
-        <h3 data-t="androidTitle">Aplikasi Android</h3>
+        <p class="option" data-t="optA">Pilihan 1</p>
+        <h3 data-t="androidTitle">Aplikasi Android (otomatis)</h3>
         <p class="why" data-t="androidWhy">Link berita dari WhatsApp, Telegram, dan lainnya langsung terbuka bersih. Browser kamu tetap seperti biasa.</p>
         <p class="action"><a class="cta" data-link="android" href="https://github.com/dhantyo/sapu-berita/releases/latest" data-t="androidButton">Download APK</a></p>
       </div>
@@ -140,10 +147,30 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
         <li data-t="android2">Buka <b>Sapu Berita</b> dan ikuti 3 langkahnya. Aplikasi menunjukkan persis apa yang harus diketuk.</li>
         <li data-t="android3">Selesai. Buka link berita seperti biasa.</li>
       </ol>
+      <div class="option-b">
+        <p class="option" data-t="optB">Pilihan 2</p>
+        <h3 data-t="abmTitle">Bookmark di Chrome (tanpa install)</h3>
+        <p class="why" data-t="abmWhy">Kamu menyalin satu link khusus dan menyimpannya sebagai bookmark di Chrome. Bedanya dengan aplikasi: kamu perlu mengetuk bookmark-nya di setiap artikel.</p>
+      </div>
+      <ol class="steps option-b">
+        <li data-t="abm1"><b>Salin link-nya:</b><br><button type="button" class="ghost" data-copy="bookmarklet" data-t="copy">Salin link Sapu Berita</button><span class="toast" role="status" aria-live="polite"></span></li>
+        <li data-t="abm2"><b>Simpan halaman ini sebagai bookmark:</b> di Chrome, ketuk <b>⋮</b> di pojok kanan atas, lalu ketuk ikon bintang <b>☆</b>.</li>
+        <li data-t="abm3"><b>Ubah bookmark itu:</b> ketuk <b>⋮ → Bookmark</b>, ketuk <b>⋮</b> di samping bookmark yang baru disimpan → <b>Edit</b>. Ganti namanya jadi <b>Sapu Berita</b>, hapus alamat (URL) yang ada, lalu tempel link yang tadi disalin. Ketuk panah kembali untuk menyimpan.</li>
+      </ol>
+      <div class="howto">
+        <h3 data-t="useTitle">Cara pakai bookmark-nya</h3>
+        <p class="why" data-t="useWhat">Bookmark ini bukan alamat web biasa: isinya program kecil yang dijalankan di halaman yang sedang kamu buka. Ia mencari teks artikelnya, membuang iklan dan "Baca Juga", menggabung semua halaman, lalu menampilkan versi bersihnya di atas halaman itu.</p>
+        <ol class="steps">
+          <li data-t="use1">Buka <b>satu artikel berita</b>, misalnya dari link yang dibagikan di WhatsApp. Harus halaman artikelnya, bukan halaman depan situs.</li>
+          <li data-t="use2android">Buka artikelnya di <b>Chrome</b>, ketuk kolom alamat, ketik <b>Sapu</b>, lalu pilih bookmark <b>Sapu Berita</b> dari saran yang muncul. (Chrome hanya menjalankannya dari kolom alamat, tidak dari daftar bookmark.)</li>
+          <li data-t="use3">Artikelnya langsung tampil bersih. Ketuk <b>Asli</b> kalau mau kembali ke halaman aslinya.</li>
+        </ol>
+        <p class="note" data-t="useLimit">Hanya jalan di artikel dari 16 situs yang didukung (Detik, Kompas, Tribun, dan lainnya). Di halaman lain tidak terjadi apa-apa.</p>
+      </div>
     </div>
 
     <div class="panel" role="tabpanel" data-panel="iphone" hidden>
-      <div data-when="shortcut">
+      <div data-when="shortcut" class="span">
         <h3 data-t="iosTitle">Shortcut di Safari</h3>
         <p class="why" data-t="iosWhy">Buka artikel di Safari, ketuk Bagikan, lalu Sapu Berita. Selalu versi terbaru, tidak perlu update.</p>
         <p class="action"><a class="cta" data-link="shortcut" href="#" aria-disabled="true" data-t="iosButton">Tambahkan Shortcut</a></p>
@@ -155,13 +182,22 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
       </div>
       <div>
         <h3 data-t="bmTitle">Atau: bookmark</h3>
-        <p class="why" data-t="bmWhy" data-when="no-shortcut">Satu bookmark di Safari. Selalu versi terbaru, tidak perlu update. (Shortcut-nya segera hadir.)</p>
+        <p class="why" data-t="bmWhy" data-when="no-shortcut">Tidak perlu memasang apa pun: kamu menyalin satu link khusus dan menyimpannya sebagai bookmark di Safari. Selalu versi terbaru. (Shortcut-nya segera hadir.)</p>
+      </div>
+      <ol class="steps">
+        <li data-t="bm1"><b>Salin link-nya:</b><br><button type="button" class="ghost" data-copy="bookmarklet" data-t="copy">Salin link Sapu Berita</button><span class="toast" role="status" aria-live="polite"></span></li>
+        <li data-t="bm2"><b>Simpan halaman ini sebagai bookmark:</b> buka toolbar Safari (ketuk <b>•••</b> di bawah layar), lalu ketuk <b>Tambah Bookmark</b> → <b>Simpan</b>. Kalau tidak ada, ketuk <b>Bagikan</b> dulu (kotak dengan panah ke atas).</li>
+        <li data-t="bm3"><b>Ubah bookmark itu:</b> buka daftar bookmark (ikon buku) → <b>Edit</b> → ketuk bookmark yang baru disimpan. Ganti judulnya jadi <b>Sapu Berita</b>, hapus alamat yang ada, lalu tempel link yang tadi disalin. Ketuk <b>Selesai</b>.</li>
+      </ol>
+      <div class="howto">
+        <h3 data-t="useTitle">Cara pakai bookmark-nya</h3>
+        <p class="why" data-t="useWhat">Bookmark ini bukan alamat web biasa: isinya program kecil yang dijalankan di halaman yang sedang kamu buka. Ia mencari teks artikelnya, membuang iklan dan "Baca Juga", menggabung semua halaman, lalu menampilkan versi bersihnya di atas halaman itu.</p>
         <ol class="steps">
-          <li data-t="bm1">Ketuk tombol ini untuk menyalin kodenya: <br><button type="button" class="ghost" data-copy="bookmarklet" data-t="copy">Salin kode bookmark</button><span class="toast" role="status" aria-live="polite"></span></li>
-          <li data-t="bm2">Di Safari, buat bookmark halaman mana saja (<b>Bagikan → Tambah Bookmark</b>), beri nama <b>Sapu Berita</b>.</li>
-          <li data-t="bm3">Buka <b>Bookmark → Edit</b>, ketuk bookmark tadi, hapus alamatnya dan tempel kodenya.</li>
-          <li data-t="bm4">Di artikel: ketuk kolom alamat, ketik <b>Sapu</b>, lalu pilih bookmark <b>Sapu Berita</b>.</li>
+          <li data-t="use1">Buka <b>satu artikel berita</b>, misalnya dari link yang dibagikan di WhatsApp. Harus halaman artikelnya, bukan halaman depan situs.</li>
+          <li data-t="use2ios">Buka artikelnya di <b>Safari</b>, ketuk kolom alamat, ketik <b>Sapu</b>, lalu pilih bookmark <b>Sapu Berita</b> dari saran yang muncul. Bisa juga lewat daftar bookmark (ikon buku).</li>
+          <li data-t="use3">Artikelnya langsung tampil bersih. Ketuk <b>Asli</b> kalau mau kembali ke halaman aslinya.</li>
         </ol>
+        <p class="note" data-t="useLimit">Hanya jalan di artikel dari 16 situs yang didukung (Detik, Kompas, Tribun, dan lainnya). Di halaman lain tidak terjadi apa-apa.</p>
       </div>
     </div>
 
@@ -263,7 +299,20 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     h1: 'Read the news.<br>Sweep the rest.',
     lead: 'News from Detik, Kompas, Tribun and 13 other sites, without ads, without "Baca Juga" link lists, and with every page merged into one.',
     cta: 'Install for free', install: 'Install on your device', desktopTab: 'Windows & others',
-    androidTitle: 'Android app', androidWhy: 'News links from WhatsApp, Telegram and other apps open clean. Your browser stays as it is.',
+    optA: 'Option 1', optB: 'Option 2',
+    abmTitle: 'A bookmark in Chrome (nothing to install)',
+    abmWhy: 'You copy one special link and save it as a bookmark in Chrome. The difference from the app: you tap the bookmark on each article.',
+    abm1: '<b>Copy the link:</b><br><button type="button" class="ghost" data-copy="bookmarklet">Copy the Sapu Berita link</button><span class="toast" role="status" aria-live="polite"></span>',
+    abm2: '<b>Save this page as a bookmark:</b> in Chrome, tap <b>⋮</b> in the top-right corner, then the star <b>☆</b>.',
+    abm3: '<b>Change that bookmark:</b> tap <b>⋮ → Bookmarks</b>, tap <b>⋮</b> next to the bookmark you just saved → <b>Edit</b>. Rename it <b>Sapu Berita</b>, delete the address (URL) that\'s there, and paste the link you copied. Tap the back arrow to save.',
+    useTitle: 'How to use the bookmark',
+    useWhat: 'This bookmark isn\'t a normal web address: it holds a small program that runs on the page you have open. It finds the article text, removes ads and "Baca Juga" lists, merges every page, and shows the clean version on top of that page.',
+    use1: 'Open <b>a single news article</b>, for example from a link shared on WhatsApp. It has to be the article page, not the site\'s homepage.',
+    use2ios: 'With the article open in <b>Safari</b>, tap the address bar, type <b>Sapu</b>, and pick the <b>Sapu Berita</b> bookmark from the suggestions. You can also open it from your bookmarks list (the book icon).',
+    use2android: 'With the article open in <b>Chrome</b>, tap the address bar, type <b>Sapu</b>, and pick the <b>Sapu Berita</b> bookmark from the suggestions. (Chrome only runs it from the address bar, not from the bookmarks list.)',
+    use3: 'The article appears clean straight away. Tap <b>Asli</b> to go back to the original page.',
+    useLimit: 'It only works on articles from the 16 supported sites (Detik, Kompas, Tribun and others). On any other page nothing happens.',
+    androidTitle: 'Android app (automatic)', androidWhy: 'News links from WhatsApp, Telegram and other apps open clean. Your browser stays as it is.',
     androidButton: 'Download the APK',
     android1: 'Open the downloaded file. If asked, allow <b>Install unknown apps</b>.',
     android2: 'Open <b>Sapu Berita</b> and follow its 3 steps. It shows exactly what to tap.',
@@ -274,11 +323,10 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     ios2: '<b>Settings → Apps → Shortcuts → Advanced</b> → turn on <b>Allow Running Scripts</b>.',
     ios3: 'On an article: <b>Share → Sapu Berita</b>. The first time on each site, choose <b>Always Allow</b>.',
     bmTitle: 'Or: a bookmark', bmTitleOnly: 'A bookmark in Safari',
-    bmWhy: 'One bookmark in Safari. Always the latest version, nothing to update. (The Shortcut is coming soon.)',
-    bm1: 'Tap this button to copy the code: <br><button type="button" class="ghost" data-copy="bookmarklet">Copy bookmark code</button><span class="toast" role="status" aria-live="polite"></span>',
-    bm2: 'In Safari, bookmark any page (<b>Share → Add Bookmark</b>) and name it <b>Sapu Berita</b>.',
-    bm3: 'Open <b>Bookmarks → Edit</b>, tap that bookmark, delete its address and paste the code.',
-    bm4: 'On an article: tap the address bar, type <b>Sapu</b>, and pick the <b>Sapu Berita</b> bookmark.',
+    bmWhy: 'Nothing to install: you copy one special link and save it as a bookmark in Safari. Always the latest version. (The Shortcut is coming soon.)',
+    bm1: '<b>Copy the link:</b><br><button type="button" class="ghost" data-copy="bookmarklet">Copy the Sapu Berita link</button><span class="toast" role="status" aria-live="polite"></span>',
+    bm2: '<b>Save this page as a bookmark:</b> open Safari\'s toolbar (tap <b>•••</b> at the bottom of the screen), then tap <b>Add Bookmark</b> → <b>Save</b>. If it isn\'t there, tap <b>Share</b> first (the square with an arrow).',
+    bm3: '<b>Change that bookmark:</b> open your bookmarks (the book icon) → <b>Edit</b> → tap the bookmark you just saved. Change its title to <b>Sapu Berita</b>, delete the address that\'s there, and paste the link you copied. Tap <b>Done</b>.',
     macTitle: 'One button in Safari', macWhy: 'Drag the button below to your Favourites bar. Always the latest version, no extra settings.',
     mac1: 'If the Favourites bar isn\'t showing: <b>View → Show Favourites Bar</b> (⇧⌘B).',
     mac2: 'Drag the <b>Sapu Berita</b> button to the Favourites bar.',
@@ -315,12 +363,12 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     sitesLabel: 'Supported sites:', privTitle: 'Privacy',
     privText: 'Everything runs on your device. Sapu Berita has no server, no analytics, and doesn\'t know what you read. Once a day it downloads the latest version number and site rules from GitHub; nothing about you is sent.',
     aiNote: 'Built with AI (Anthropic\'s Claude); tested and released by its maintainer.',
-    report: 'Report a problem', copied: 'Copied. Now make the bookmark (step 2).', copyFail: 'Couldn\'t copy. Long-press the button below and copy the link instead.',
+    report: 'Report a problem', copied: 'Copied. Go on to step 2.', copyFail: 'Couldn\'t copy. Long-press the button below and copy the link instead.',
     dragHint: 'Drag this button to your bar, don\'t click it here.', version: 'Version '
   };
   var ID = {};
   document.querySelectorAll('[data-t]').forEach(function (el) { ID[el.dataset.t] = el.innerHTML; });
-  ID.copied = 'Tersalin. Sekarang buat bookmark-nya (langkah 2).';
+  ID.copied = 'Tersalin. Lanjut ke langkah 2.';
   ID.copyFail = 'Gagal menyalin. Tekan lama tombol di bawah, lalu salin link-nya.';
   ID.dragHint = 'Seret tombol ini ke bar, jangan diklik di sini.';
   ID.version = 'Versi ';
