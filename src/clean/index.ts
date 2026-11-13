@@ -1,6 +1,7 @@
 import type { ResolvedRule, RuleSet } from '../types.ts';
 import { normalizeSummaries } from './summary.ts';
 import { convertEmbeds } from './embeds.ts';
+import { joinDatelines } from './dateline.ts';
 
 const BLOCKS = 'p, div, li, h2, h3, h4, h5, table, blockquote, section, aside, span, strong';
 const LAZY_SRC_ATTRS = ['data-src', 'data-original', 'data-lazy-src', 'data-srcset'];
@@ -25,6 +26,7 @@ export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet
   swept += removeSelectors(container, [...rules.common.remove.filter((s) => !UNCOUNTED.has(s)), ...rule.remove, ...adblock]);
   swept += dropMatchingBlocks(container, rule.dropParagraphs.length ? rule.dropParagraphs : rules.common.dropParagraphs);
   normalizeSummaries(container, rules.common.summaryHeadings ?? []);
+  joinDatelines(container);
   fixMedia(container, baseUrl);
   removeEmpty(container);
   return swept;
