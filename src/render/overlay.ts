@@ -4,6 +4,7 @@ import { strings, type Strings } from './i18n.ts';
 import { analyzeLoadedLogo, corsLogoUrl, opticalHeight, recolourNeeds } from './logo.ts';
 import { PLATFORM_NAMES, type Platform } from '../clean/embeds.ts';
 import { OVERLAY_CSS } from './styles.ts';
+import { attachGallery, GALLERY_CSS } from './gallery.ts';
 import type { UpdateOffer } from '../update.ts';
 import { heightFromMessage, playerFor } from './players.ts';
 
@@ -64,7 +65,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
   const IDLE_HOST = 'position:fixed;top:0;left:0;width:0;height:0;margin:0;padding:0;border:0;overflow:visible;z-index:2147483647';
   const shadow = host.attachShadow({ mode: 'open' });
   const style = h(doc, 'style');
-  style.textContent = OVERLAY_CSS;
+  style.textContent = GALLERY_CSS + OVERLAY_CSS;
 
   const root = h(doc, 'div', { class: 'root', role: 'dialog', 'aria-modal': 'true' });
   const reopen = h(doc, 'button', { type: 'button', class: 'reopen' });
@@ -392,6 +393,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
   };
 
   root.addEventListener('click', () => panelOpen && setPanel(false));
+  attachGallery(root, () => strings(settings.lang));
   root.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && panelOpen) {
       e.stopPropagation();

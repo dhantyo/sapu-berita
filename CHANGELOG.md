@@ -7,6 +7,8 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 ## [0.3.0] - 2026-11-13
 
 - **Videos and posts play in the article:** YouTube, Instagram, TikTok, X and Facebook posts a story quotes now play inside the reader, using each platform's own player. Turn off "Putar media di artikel" in settings to get the old link card back.
+- **Photo viewer:** tap a photo to see it full screen with its caption; swipe between the article's photos, pinch or double-tap to zoom, swipe down or tap ✕ to close. Built on [PhotoSwipe](https://photoswipe.com) (MIT).
+- **Photo captions** that outlets write as a line under the photo ("… (Foto: dok Instagram …)", set as a heading on Detik) now show as captions instead of headings.
 - **New settings:** "Tampilkan link" (off: links inside the article read as plain text) and "Kotak ringkasan" (off: hides the outlet's summary boxes such as Ringkasan Berita and Executive Brief).
 - **The outlet logo opens the outlet's homepage** (the regional site for regional articles). "Asli" still opens the original article.
 - **detik Rekomendit** (rekomendit.detik.com) product guides open in the reader, without the shopping cards.

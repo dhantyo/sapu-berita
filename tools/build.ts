@@ -48,6 +48,7 @@ const common = {
     __CHANNEL_URL__: JSON.stringify(CHANNEL_URL),
     __REPORT_URL__: JSON.stringify(REPORT_URL),
     __GEIST__: JSON.stringify(readFileSync(join(ROOT, 'fonts/geist.woff2')).toString('base64')),
+    __PSWP_CSS__: JSON.stringify(readFileSync(join(ROOT, 'node_modules/photoswipe/dist/photoswipe.css'), 'utf8')),
     __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
   },
   legalComments: 'eof' as const,
