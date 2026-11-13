@@ -2,6 +2,10 @@
 
 Versions follow [semver](https://semver.org). Every tag `vX.Y.Z` publishes a GitHub Release built from this file.
 
+## [0.1.0-beta.4] - 2026-11-13
+
+- Install page, after testing with a first-time iPhone user: Android offers two options (the app, or a Chrome bookmark with nothing to install); the iPhone bookmark setup is three plain steps (copy the link, save this page as a bookmark, edit it); a separate guide explains how to use the bookmark (only on an article page, from the address bar, Asli goes back).
+
 ## [0.1.0-beta.3] - 2026-11-11
 
 - Install page: the browser extension gets its own tab with a direct download and step-by-step install and update instructions.
