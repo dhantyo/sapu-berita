@@ -10,6 +10,8 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 
 - **The original page goes quiet:** videos the news page plays by itself (video.tribunnews.com's player, autoplaying clips) are paused while the clean view is open, including ones that start later.
 - **Video stories:** the "Download aplikasi …" text no longer shows under the title.
+- **Video stories on video.tribunnews.com/view/** show their video too (found from the page's main image, which is the video's thumbnail).
+- **Photo viewer:** no arrows when there's only one photo, and none on phones, where you swipe.
 
 ## [0.3.1] - 2026-11-14
 

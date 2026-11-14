@@ -41,7 +41,9 @@ export function extractMetadata(doc: Document): ArticleMeta {
     logo: absolute(imageUrl(publisher?.logo)) ?? absolute(imageUrl(org?.logo)),
     section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
-    video: mainVideo(nodes, ld, str(ld?.headline) ?? meta('meta[property="og:title"]')),
+    video:
+      mainVideo(nodes, ld, str(ld?.headline) ?? meta('meta[property="og:title"]')) ??
+      videoFromThumbnail(imageUrl(ld?.image) ?? meta('meta[property="og:image"]')),
   });
 }
 
@@ -51,6 +53,15 @@ export function extractMetadata(doc: Document): ArticleMeta {
  * outside the article text). Tribun also lists its house promo for another story as the article's video;
  * that one carries the other story's name, so it doesn't count.
  */
+/**
+ * A page whose main image is a YouTube video's thumbnail is that video's page (video.tribunnews.com/view/
+ * names no video in its data; its player is built by script from the same id).
+ */
+function videoFromThumbnail(image: string | undefined): string | undefined {
+  const id = image && /^https?:\/\/(?:img\.youtube\.com|i\d?\.ytimg\.com)\/vi(?:_webp)?\/([\w-]{6,})\//.exec(image)?.[1];
+  return id ? `https://www.youtube.com/embed/${id}` : undefined;
+}
+
 function mainVideo(nodes: Json[], ld: Json | undefined, headline: string | undefined): string | undefined {
   const key = (t: unknown) => (typeof t === 'string' ? t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().slice(0, 40) : '');
   const want = key(headline);

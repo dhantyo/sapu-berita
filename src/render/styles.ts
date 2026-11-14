@@ -145,6 +145,9 @@ h1 {
 .pswp .pswp__button--arrow--prev { left: max(16px, env(safe-area-inset-left)); }
 .pswp .pswp__button--arrow--next { right: max(16px, env(safe-area-inset-right)); left: auto; }
 .pswp .pswp__button--arrow .pswp__icn { width: 22px; height: 22px; }
+/* Arrows only with more than one photo, and only for a mouse: on touch screens you swipe. */
+.pswp.pswp--one-slide .pswp__button--arrow { display: none; }
+@media (hover: none), (pointer: coarse) { .pswp .pswp__button--arrow { display: none; } }
 .pswp__counter { order: -1; margin: 0 auto 0 0; height: 32px; padding: 0 12px; border-radius: 16px; border: 1px solid rgb(255 255 255 / 0.22);
   background: rgb(22 22 22 / 0.62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   font: 600 13px/30px var(--sans); font-variant-numeric: tabular-nums; color: rgb(245 245 245); text-shadow: none; opacity: 1; }

@@ -188,3 +188,14 @@ describe('video story description that is an app ad (video.tribunnews.com)', () 
     expect(deckText('Presiden memuji Kapolri baru dan bercerita soal cara memilihnya di depan kader Muhammadiyah.', content)).toBeDefined();
   });
 });
+
+describe('video pages that only show the video as their main image (video.tribunnews.com/view/)', () => {
+  it('takes the video from a YouTube thumbnail used as the page image', async () => {
+    const { extractMetadata } = await import('../src/extract/metadata.ts');
+    const doc = documentFromHtml(
+      '<meta property="og:image" content="https://img.youtube.com/vi/UVKBT1S8Jtw/maxresdefault.jpg"><script type="application/ld+json">{"@type":"NewsArticle","headline":"Roy Suryo Sindir Gibran"}</script>',
+      'https://video.tribunnews.com/view/974547/x',
+    );
+    expect(extractMetadata(doc).video).toBe('https://www.youtube.com/embed/UVKBT1S8Jtw');
+  });
+});
