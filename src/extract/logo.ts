@@ -1,5 +1,6 @@
 // Find the outlet's own masthead logo on the live page, and the colour it sits on there.
 // Fully automatic: no per-site lists, so a redesigned header or a new logo is picked up as is.
+import { safeQuery } from '../dom.ts';
 
 export interface FoundLogo {
   src: string;
@@ -207,10 +208,3 @@ function parseRgb(value: string): [number, number, number, number] | undefined {
   return [Number(m[1]), Number(m[2]), Number(m[3]), m[4] === undefined ? 1 : Number(m[4])];
 }
 
-function safeQuery(doc: Document, sel: string): Element | null {
-  try {
-    return doc.querySelector(sel);
-  } catch {
-    return null;
-  }
-}

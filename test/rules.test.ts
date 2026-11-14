@@ -48,6 +48,6 @@ describe('matching', () => {
   it('applies liputan6 bola variant', () => {
     const r = findRule(rules, new URL('https://www.liputan6.com/bola/read/8332705/x'));
     expect(r?.pagination.method).toBe('fetch');
-    expect(findRule(rules, new URL('https://www.liputan6.com/news/read/8332591/x'))?.pagination.method).toBe('inline');
+    expect(findRule(rules, new URL('https://www.liputan6.com/news/read/8332591/x'))?.pagination.method).toBe('none');
   });
 });

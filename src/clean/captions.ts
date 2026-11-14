@@ -6,6 +6,8 @@
 //   <p><img></p><h3>Gaya Shania … (Foto: dok Instagram)</h3>
 //   → <figure><p><img></p><figcaption>Gaya Shania … (Foto: dok Instagram)</figcaption></figure>
 
+import { collapse } from '../dom.ts';
+
 const CREDIT = /^\s*(foto|dok(\.|umentasi)?|ilustrasi)\s*:|\(\s*(foto|dok(\.|umentasi)?|ilustrasi)\b[^)]*\)\s*$/i;
 const MAX_CAPTION = 400;
 
@@ -24,7 +26,7 @@ export function joinCaptions(root: HTMLElement): number {
     }
     const next = block.nextElementSibling;
     if (!next || next.querySelector('img, iframe, video') || /^(UL|OL|TABLE|BLOCKQUOTE|FIGURE)$/.test(next.tagName)) continue;
-    const text = (next.textContent ?? '').replace(/\s+/g, ' ').trim();
+    const text = collapse(next.textContent);
     if (!text || text.length > MAX_CAPTION || !CREDIT.test(text)) continue;
 
     const figure = doc.createElement('figure');

@@ -6,7 +6,7 @@ import { extractByRule } from './extract/content.ts';
 import { extractWithReadability } from './extract/fallback.ts';
 import { assessQuality } from './extract/quality.ts';
 import { needsNetwork, paginate, type Extractor } from './paginate/index.ts';
-import { clean } from './clean/index.ts';
+import { clean, dropPatterns, isDroppedText } from './clean/index.ts';
 import { sanitize } from './clean/sanitize.ts';
 import { prependMainVideo } from './clean/embeds.ts';
 
@@ -42,6 +42,8 @@ export async function run(ctx: Context, onProgress?: ProgressCallback): Promise<
             .filter((u, i, all): u is string => !!u && u !== masthead.src && all.indexOf(u) === i),
         }
       : { ...extracted, logoGround: extracted.logo ? groundForSrc(ctx.doc, extracted.logo) : undefined };
+    // A description that is itself a line the rules drop (Tribun's video pages: an app ad) is no description.
+    if (meta.description && isDroppedText(meta.description, dropPatterns(rule, ctx.rules))) meta.description = undefined;
     const q = ctx.rules.common.quality;
 
     const byRule: Extractor = (doc) => extractByRule(doc, rule);

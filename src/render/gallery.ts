@@ -6,6 +6,7 @@
 import PhotoSwipe from 'photoswipe';
 import type { SlideData } from 'photoswipe';
 import type { Strings } from './i18n.ts';
+import { collapse } from '../dom.ts';
 
 /** PhotoSwipe's stylesheet, inlined at build time (tools/build.ts); absent in unit tests. */
 declare const __PSWP_CSS__: string | undefined;
@@ -39,7 +40,7 @@ export function largestSource(img: HTMLImageElement): string {
 
 function captionOf(img: HTMLImageElement): string {
   const cap = img.closest('figure')?.querySelector('figcaption');
-  return (cap?.textContent ?? '').replace(/\s+/g, ' ').trim();
+  return collapse(cap?.textContent);
 }
 
 /** Open the viewer on taps on article photos. `root` is the reader's scroll container (it outlives re-renders). */
@@ -121,16 +122,15 @@ function show(root: HTMLElement, photos: HTMLImageElement[], index: number, t: S
     });
   });
 
-  // Photos still loading (lazy) get their real size as soon as they arrive.
-  slides.forEach((slide, i) => {
-    if (photos[i]!.naturalWidth) return;
-    const probe = new Image();
-    probe.onload = () => {
-      slide.width = probe.naturalWidth;
-      slide.height = probe.naturalHeight;
-      if (pswp.isOpen) pswp.refreshSlideContent(i);
-    };
-    probe.src = slide.src!;
+  // Photos the article hadn't loaded yet (lazy) start with a guessed size; the real one is set when the
+  // viewer itself loads them (only the open photo and its neighbours, not the whole gallery).
+  pswp.on('loadComplete', ({ content, slide }) => {
+    const img = content.element as HTMLImageElement | undefined;
+    const data = slides[slide.index];
+    if (!img?.naturalWidth || !data || (data.width === img.naturalWidth && data.height === img.naturalHeight)) return;
+    data.width = img.naturalWidth;
+    data.height = img.naturalHeight;
+    pswp.refreshSlideContent(slide.index);
   });
 
   // The photo being viewed is hidden in the article, so it isn't seen twice while the viewer opens and

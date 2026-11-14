@@ -3,21 +3,25 @@
 //
 //   npm run build
 //   npm run inspect -- <url> [<url> …] [--dark] [--desktop] [--shot <folder>] [--blocks]
+//   npm run inspect -- --all-sites            every site rule's first sample: a quick check of all outlets
 //
-// Prints per link: rendered or not, the logo it chose (and how it's drawn), the meta row, the summary box,
-// leftover link lists, image count, and the first paragraph. --shot saves a phone screenshot per link;
-// --blocks lists every block of the extracted article (what a reader would scroll through).
+// Prints per link: rendered or not, the logo it chose (and how it's drawn), the meta row (byline, editor,
+// date), the intro under the title, the summary box, players and post cards, leftover link lists, image
+// count, the end note and the first paragraph. --shot saves a phone screenshot per link; --blocks lists
+// every block of the extracted article (what a reader would scroll through).
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright-core';
-import { ROOT } from './lib/rules.ts';
+import { ROOT, assembleRuleSet } from './lib/rules.ts';
 
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(name);
 const shotDir = args.includes('--shot') ? args[args.indexOf('--shot') + 1] : undefined;
-const urls = args.filter((a, i) => /^https?:\/\//.test(a) && args[i - 1] !== '--shot');
+const urls = flag('--all-sites')
+  ? assembleRuleSet().sites.flatMap((s) => s.samples?.slice(0, 1) ?? [])
+  : args.filter((a, i) => /^https?:\/\//.test(a) && args[i - 1] !== '--shot');
 if (!urls.length) {
-  console.error('usage: npm run inspect -- <url> [<url> …] [--dark] [--desktop] [--shot <folder>]');
+  console.error('usage: npm run inspect -- <url> [<url> …] | --all-sites  [--dark] [--desktop] [--shot <folder>] [--blocks]');
   process.exit(1);
 }
 
@@ -46,7 +50,7 @@ for (const url of urls) {
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
     await page.waitForTimeout(2500); // let the page's own scripts settle, like a reader would
-    const report = await page.evaluate(async (code) => {
+    const report = await page.evaluate(async ({ code, withBlocks }) => {
       (0, eval)(code);
       for (let i = 0; i < 80 && !document.querySelector('.sapuberita-overlay'); i++) await new Promise((r) => setTimeout(r, 100));
       await new Promise((r) => setTimeout(r, 2500)); // logo analysis, extra pages
@@ -62,22 +66,24 @@ for (const url of urls) {
         meta: [...root.querySelectorAll('.meta > span')].map((s) => s.textContent?.trim()).join(' · '),
         logo: src.startsWith('data:') ? '(inline SVG from the page)' : src.replace(/[?&]sapu=1$/, ''),
         logoDrawn: logo ? `${logo.dataset.state}${logo.dataset.onDark ? `, on dark: ${logo.dataset.onDark}` : ''}` : text('.outlet-name') ? 'name only' : 'none',
+        intro: text('.deck'),
         summary: text('.content blockquote > b'),
         summaryPoints: root.querySelectorAll('.content blockquote li').length,
         linkLists: [...root.querySelectorAll('.content ul')].filter((u) => u.querySelectorAll('a').length >= 2).length,
         images: root.querySelectorAll('.content img').length,
         players: [...root.querySelectorAll<HTMLIFrameElement>('.content iframe.player')].map((f) => new URL(f.src).hostname).join(', '),
         cards: root.querySelectorAll('.content figure[data-embed]').length,
+        endNote: text('.sweep'),
         firstParagraph: text('.content p')?.slice(0, 120),
-        blocks: [...(root.querySelector('.content')?.children ?? [])].map(
+        blocks: !withBlocks ? undefined : [...(root.querySelector('.content')?.children ?? [])].map(
           (b) => `${b.tagName.toLowerCase()}${b.querySelector('img') ? '+img' : ''}${b.querySelector('a') ? '+link' : ''}: ${(b.textContent ?? '').replace(/\s+/g, ' ').trim().slice(0, 100)}`,
         ),
       };
-    }, core);
+    }, { code: core, withBlocks: flag('--blocks') });
     console.log(`\n${url}`);
-    const { blocks, ...summary } = report as typeof report & { blocks?: string[] };
+    const { blocks, ...summary } = report;
     for (const [k, v] of Object.entries(summary)) if (v !== undefined && v !== '') console.log(`  ${k.padEnd(15)} ${v}`);
-    if (flag('--blocks') && blocks) blocks.forEach((b, i) => console.log(`  ${String(i + 1).padStart(3)}. ${b}`));
+    if (blocks) blocks.forEach((b, i) => console.log(`  ${String(i + 1).padStart(3)}. ${b}`));
     if (shotDir) {
       const file = join(shotDir, `inspect-${++n}${flag('--dark') ? '-dark' : ''}.png`);
       await page.screenshot({ path: file });

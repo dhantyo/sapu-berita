@@ -1,5 +1,5 @@
 import type { Article } from '../types.ts';
-import { SIZE_STEPS, type Font, type Lang, type Settings, type Theme } from '../settings.ts';
+import { SIZE_STEPS, type Font, type Lang, type Settings, type Switch, type Theme } from '../settings.ts';
 import { strings, type Strings } from './i18n.ts';
 import { analyzeLoadedLogo, corsLogoUrl, opticalHeight, recolourNeeds } from './logo.ts';
 import { PLATFORM_NAMES, type Platform } from '../clean/embeds.ts';
@@ -8,6 +8,7 @@ import { attachGallery, GALLERY_CSS } from './gallery.ts';
 import type { UpdateOffer } from '../update.ts';
 import { heightFromMessage, playerFor } from './players.ts';
 import { quietPage } from './quiet.ts';
+import { textKey } from '../dom.ts';
 
 declare const __SAPU_VERSION__: string | undefined;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
@@ -265,12 +266,13 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     settings.theme === 'dark' || (settings.theme === 'auto' && !!doc.defaultView?.matchMedia?.('(prefers-color-scheme: dark)').matches);
 
   // Embedded players ask for their height by message; grow the matching frame to fit the post.
+  // Most messages on a news page come from ad frames: find the sending player before reading anything.
   doc.defaultView?.addEventListener('message', (e) => {
+    if (!e.source) return;
+    const frame = [...root.querySelectorAll<HTMLIFrameElement>('iframe.player')].find((f) => f.contentWindow === e.source);
+    if (!frame || frame.style.aspectRatio) return;
     const height = heightFromMessage(e.data);
-    if (!height) return;
-    for (const frame of root.querySelectorAll<HTMLIFrameElement>('iframe.player')) {
-      if (frame.contentWindow === e.source && !frame.style.aspectRatio) frame.style.height = `${height}px`;
-    }
+    if (height) frame.style.height = `${height}px`;
   });
   // A site whose security policy forbids frames from the platform: drop that player, the card shows again.
   doc.addEventListener('securitypolicyviolation', (e) => {
@@ -342,26 +344,17 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
     // Switches. How Sapu Berita behaves first; then what shows in the article, in the order it appears
     // on the page (photo under the headline, summary box, links and media in the text, the end note).
-    const toggle = (key: 'hero' | 'autoOpen' | 'sweepLine' | 'links' | 'summaries' | 'embeds' | 'updates', label: string, hint?: string) =>
-      switchRow(label, hint, settings[key], (v) => change({ [key]: v }, `[data-switch="${key}"]`), key);
-    const rows = (...items: HTMLElement[]) => h(doc, 'div', {}, ...items);
+    const rows = (...keys: Switch[]) => h(doc, 'div', {}, ...keys.map(toggle));
     // "General" only lists what this build can change (the bookmark has neither switch).
     const general = () => {
-      const items = [
-        ...(opts.autoOpenSetting === false ? [] : [toggle('autoOpen', t.autoOpen, t.autoOpenHint)]),
-        ...(opts.updatesSetting === false ? [] : [toggle('updates', t.updates, t.updatesHint)]),
-      ];
-      return items.length ? [group(t.general, rows(...items))] : [];
+      const keys: Switch[] = [];
+      if (opts.autoOpenSetting !== false) keys.push('autoOpen');
+      if (opts.updatesSetting !== false) keys.push('updates');
+      return keys.length ? [group(t.general, rows(...keys))] : [];
     };
     panel.append(
       ...general(),
-      group(t.inArticle, rows(
-        toggle('hero', t.hero, t.heroHint),
-        toggle('summaries', t.summaries, t.summariesHint),
-        toggle('links', t.links, t.linksHint),
-        toggle('embeds', t.embeds, t.embedsHint),
-        toggle('sweepLine', t.sweepLine, t.sweepLineHint),
-      )),
+      group(t.inArticle, rows('hero', 'summaries', 'links', 'embeds', 'sweepLine')),
     );
     const report = opts.reportUrl?.(article);
     if (report) {
@@ -391,11 +384,14 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     return seg;
   }
 
-  function switchRow(label: string, hint: string | undefined, on: boolean, onToggle: (v: boolean) => void, key: string) {
-    const text = h(doc, 'span', { class: 'text' }, label);
-    if (hint) text.append(h(doc, 'span', { class: 'hint' }, hint));
+  /** One on/off row; its label and hint come from the strings named after the switch. */
+  function toggle(key: Switch) {
+    const t = strings(settings.lang);
+    const label = t[key];
+    const text = h(doc, 'span', { class: 'text' }, label, h(doc, 'span', { class: 'hint' }, t[`${key}Hint`]));
+    const on = settings[key];
     const sw = h(doc, 'button', { type: 'button', class: 'switch', role: 'switch', 'aria-checked': String(on), 'aria-label': label, 'data-switch': key });
-    sw.addEventListener('click', () => onToggle(!on));
+    sw.addEventListener('click', () => change({ [key]: !on }, `[data-switch="${key}"]`));
     return h(doc, 'div', { class: 'switch-row' }, text, sw);
   }
 
@@ -557,15 +553,11 @@ function localizeEmbeds(content: Element, t: Strings): void {
 /** The description as a deck, unless it just repeats the first lines of the article (common on Indonesian sites). */
 export function deckText(description: string | undefined, content: Element): string | undefined {
   if (!description || description.length < 40) return undefined;
-  const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-  const d = norm(description).slice(0, 60);
-  // The opening paragraphs, not a video card or photo caption that may come first.
+  // The opening paragraphs, not a video card or photo caption that may come first. (A description that is
+  // junk, like an app ad, is dropped earlier by the site rules; see run() in index.ts.)
   const paragraphs = [...content.querySelectorAll('p')].filter((p) => !p.closest('figure, blockquote'));
-  const opening = norm(paragraphs.map((p) => p.textContent ?? '').join(' ').slice(0, 600) || (content.textContent ?? '').slice(0, 600));
-  // Also when junk sits in front of the repeat ("Download aplikasi … TRIBUN-VIDEO.COM - Wakil…").
-  // The repeat can be cut short ("…baruTRIBUN-VIDEO.COM - Gibran…"): the article's first 20 characters are enough.
-  const start = opening.slice(0, 20);
-  return opening.includes(d) || (start.length >= 20 && norm(description).includes(start)) ? undefined : description;
+  const opening = textKey(paragraphs.map((p) => p.textContent ?? '').join(' ').slice(0, 600) || (content.textContent ?? '').slice(0, 600));
+  return opening.includes(textKey(description).slice(0, 60)) ? undefined : description;
 }
 
 /**
@@ -630,31 +622,24 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
  * light side), with the same 1px ring as the other swatches on top of both.
  */
 function splitSwatch(): SVGSVGElement {
-  const svg = document.createElementNS(SVG_NS, 'svg');
-  for (const [k, v] of Object.entries({ width: '18', height: '18', viewBox: '0 0 18 18', 'aria-hidden': 'true' })) svg.setAttribute(k, v);
-  const shape = (tag: string, attrs: Record<string, string>) => {
-    const el = document.createElementNS(SVG_NS, tag);
-    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
-    svg.append(el);
-  };
   // Circle of radius 8.5 around (9, 9); the diagonal runs from bottom-left (2.99, 15.01) to top-right (15.01, 2.99).
-  shape('path', { d: 'M2.99 15.01A8.5 8.5 0 0 1 15.01 2.99Z', fill: 'rgb(255 255 255)' });
-  shape('path', { d: 'M15.01 2.99A8.5 8.5 0 0 1 2.99 15.01Z', fill: 'rgb(18 18 18)' });
-  shape('circle', { cx: '9', cy: '9', r: '8.5', fill: 'none', class: 'ring' });
-  return svg;
+  return svgEl('svg', { width: '18', height: '18', viewBox: '0 0 18 18', 'aria-hidden': 'true' },
+    svgEl('path', { d: 'M2.99 15.01A8.5 8.5 0 0 1 15.01 2.99Z', fill: 'rgb(255 255 255)' }),
+    svgEl('path', { d: 'M15.01 2.99A8.5 8.5 0 0 1 2.99 15.01Z', fill: 'rgb(18 18 18)' }),
+    svgEl('circle', { cx: '9', cy: '9', r: '8.5', fill: 'none', class: 'ring' }));
 }
+function svgEl<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string>, ...children: SVGElement[]): SVGElementTagNameMap[K] {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  el.append(...children);
+  return el;
+}
+
 function icon(size: number, paths: string[]): SVGSVGElement {
-  const svg = document.createElementNS(SVG_NS, 'svg');
-  for (const [k, v] of Object.entries({
+  return svgEl('svg', {
     width: String(size), height: String(size), viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
     'stroke-width': '1.6', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true',
-  })) svg.setAttribute(k, v);
-  for (const d of paths) {
-    const p = document.createElementNS(SVG_NS, 'path');
-    p.setAttribute('d', d);
-    svg.append(p);
-  }
-  return svg;
+  }, ...paths.map((d) => svgEl('path', { d })));
 }
 /** The Sapu mark: a sapu lidi, handle up-right, bristles fanning down-left. Shared with Sapu Buzzer. */
 const broom = (size: number) =>

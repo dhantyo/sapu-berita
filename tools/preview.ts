@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { ROOT, assembleRuleSet } from './lib/rules.ts';
+import { sharedDefines } from './lib/defines.ts';
 
 const PORT = Number(process.env.PORT ?? 5178);
 
@@ -14,10 +15,8 @@ async function bundle(): Promise<string> {
     bundle: true, format: 'iife', write: false, target: ['safari15', 'chrome100'],
     define: {
       __CHANNEL_URL__: '""',
-      __GEIST__: JSON.stringify(readFileSync(join(ROOT, 'fonts/geist.woff2')).toString('base64')),
-      __PSWP_CSS__: JSON.stringify(readFileSync(join(ROOT, 'node_modules/photoswipe/dist/photoswipe.css'), 'utf8')),
       __REPORT_URL__: '"https://github.com/example/repo/issues/new?url={url}&details={version}%20({platform})"',
-      __SAPU_VERSION__: JSON.stringify((JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version),
+      ...sharedDefines(),
     },
     plugins: [{
       name: 'rules',

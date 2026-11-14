@@ -139,9 +139,10 @@ describe('video stories (video.tribunnews.com)', () => {
     expect(video).toBe('https://www.youtube.com/embed/EXc3O86ckJo');
     const body = doc.createElement('div');
     body.innerHTML = '<p>Teks.</p>';
-    expect(prependMainVideo(body, video)).toBe(true);
+    prependMainVideo(body, video);
     expect(body.firstElementChild?.getAttribute('data-embed')).toBe('youtube');
-    expect(prependMainVideo(body, video)).toBe(false); // already there
+    prependMainVideo(body, video); // already there: not added twice
+    expect(body.querySelectorAll('figure[data-embed="youtube"]').length).toBe(1);
   });
 
   it("ignores a video named after another story (Tribun's house promo listed as the article's video)", async () => {
@@ -153,11 +154,11 @@ describe('video stories (video.tribunnews.com)', () => {
     expect(extractMetadata(doc).video).toBeUndefined();
   });
 
-  it('hides a description that repeats the opening behind an app-download line', async () => {
-    const { deckText } = await import('../src/render/overlay.ts');
-    const content = document.createElement('div');
-    content.innerHTML = '<p>TRIBUN-VIDEO.COM- Wakil Presiden Gibran Rakabuming Raka mengungkap cerita di balik keputusannya.</p>';
-    expect(deckText('Download aplikasi berita TribunX di Play Store atau App Store untuk dapatkan pengalaman baruTRIBUN-VIDEO.COM- Wakil Presiden Gibran Rakabuming Raka mengungkap cerita', content)).toBeUndefined();
+  it('drops a page description that is an app ad, by the same rules as the article text', async () => {
+    const { dropPatterns, isDroppedText } = await import('../src/clean/index.ts');
+    const rule = findRule(rules, new URL('https://video.tribunnews.com/news/974338/x'))!;
+    expect(isDroppedText('Download aplikasi berita TribunX di Play Store atau App Store untuk dapatkan pengalaman baruTRIBUN-VIDEO.COM- Wakil…', dropPatterns(rule, rules))).toBe(true);
+    expect(isDroppedText('Gibran mengungkap cerita di balik keputusannya menerima tawaran menjadi cawapres.', dropPatterns(rule, rules))).toBe(false);
   });
 });
 
@@ -174,11 +175,11 @@ describe('Liputan6 summary box ("Jadi Intinya")', () => {
 });
 
 describe('video story description that is an app ad (video.tribunnews.com)', () => {
-  it('is hidden even when the repeat of the opening is cut short, and a video card comes first', async () => {
+  it('hides a description that repeats the opening, even when a video card comes first', async () => {
     const { deckText } = await import('../src/render/overlay.ts');
     const content = document.createElement('div');
-    content.innerHTML = '<figure data-embed="youtube"><figcaption>YouTube</figcaption></figure><p>TRIBUN-VIDEO.COM - Gibran Rakabuming Raka menyambut ajakan main bareng.</p>';
-    expect(deckText('Download aplikasi berita TribunX di Play Store atau App Store untuk dapatkan pengalaman baruTRIBUN-VIDEO.COM - Gibran…', content)).toBeUndefined();
+    content.innerHTML = '<figure data-embed="youtube"><figcaption>YouTube</figcaption></figure><p>TRIBUN-VIDEO.COM - Gibran Rakabuming Raka menyambut ajakan main bareng, atau mabar, game Grand Theft Auto.</p>';
+    expect(deckText('TRIBUN-VIDEO.COM - Gibran Rakabuming Raka menyambut ajakan main bareng, atau mabar, game Grand Theft Auto…', content)).toBeUndefined();
   });
 
   it('keeps a real description', async () => {

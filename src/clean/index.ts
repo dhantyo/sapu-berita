@@ -25,7 +25,7 @@ export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet
   let swept = removeCustomElements(container);
   swept += removeSelectors(container, rules.common.remove.filter((s) => UNCOUNTED.has(s)), false);
   swept += removeSelectors(container, [...rules.common.remove.filter((s) => !UNCOUNTED.has(s)), ...rule.remove, ...adblock]);
-  swept += dropMatchingBlocks(container, rule.dropParagraphs.length ? rule.dropParagraphs : rules.common.dropParagraphs);
+  swept += dropMatchingBlocks(container, dropPatterns(rule, rules));
   normalizeSummaries(container, rules.common.summaryHeadings ?? []);
   joinDatelines(container);
   joinCaptions(container);
@@ -70,6 +70,16 @@ function removeSelectors(root: HTMLElement, selectors: string[], count = true): 
     }
   }
   return count ? n : 0;
+}
+
+/** The site's own drop patterns, else the shared ones (rules/common.json). */
+export function dropPatterns(rule: ResolvedRule, rules: RuleSet): string[] {
+  return rule.dropParagraphs.length ? rule.dropParagraphs : rules.common.dropParagraphs;
+}
+
+/** True if a line of text is one the rules drop ("Baca juga", "Download aplikasi …"). */
+export function isDroppedText(text: string, patterns: string[]): boolean {
+  return patterns.some((p) => new RegExp(p, 'i').test(text));
 }
 
 function dropMatchingBlocks(root: HTMLElement, patterns: string[]): number {

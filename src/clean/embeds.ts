@@ -8,6 +8,8 @@
 //     <a href="…" data-embed-link="instagram">instagram.com/reel/…</a>   ← label localized by the overlay
 //   </figure>
 
+import { isYoutubeEmbed, youtubeEmbedUrl, youtubeId, youtubeWatchUrl } from '../youtube.ts';
+
 export type Platform = 'x' | 'instagram' | 'tiktok' | 'youtube' | 'facebook';
 
 export const PLATFORM_NAMES: Record<Platform, string> = {
@@ -32,17 +34,15 @@ const MAX_TEXT = 320;
  * Put the story's own video (from the page data) at the top when the article text doesn't already carry it.
  * Runs after cleaning, so a site rule that removes inserted promo videos (Tribun) can't remove this one.
  */
-export function prependMainVideo(root: HTMLElement, embedUrl: string): boolean {
-  const id = /\/embed\/([\w-]{6,})/.exec(embedUrl)?.[1];
-  if (!id || root.innerHTML.includes(id)) return false;
+export function prependMainVideo(root: HTMLElement, embedUrl: string): void {
+  const id = youtubeId(embedUrl);
+  if (!id || root.querySelector(`[href*="${id}"], [src*="${id}"]`)) return;
   const holder = root.ownerDocument.createElement('div');
   const frame = root.ownerDocument.createElement('iframe');
-  frame.setAttribute('src', embedUrl);
+  frame.setAttribute('src', youtubeEmbedUrl(id));
   holder.append(frame);
   convertEmbeds(holder);
-  if (!holder.firstElementChild) return false;
-  root.prepend(holder.firstElementChild);
-  return true;
+  if (holder.firstElementChild) root.prepend(holder.firstElementChild);
 }
 
 /** Replace every recognised embed in `root` with a static card. Returns how many were converted. */
@@ -101,12 +101,11 @@ function fromIframe(el: Element): Embed | undefined {
   }
   const host = u.hostname.replace(/^www\./, '');
 
-  if (/(^|\.)youtube(-nocookie)?\.com$/.test(host) && u.pathname.startsWith('/embed/')) {
-    const videoId = u.pathname.split('/')[2];
-    if (!videoId || !/^[\w-]{6,}$/.test(videoId)) return undefined;
+  if (isYoutubeEmbed(u.href)) {
+    const videoId = youtubeId(u.href)!;
     const title = el.getAttribute('title') ?? undefined;
     return {
-      platform: 'youtube', url: `https://www.youtube.com/watch?v=${videoId}`, videoId,
+      platform: 'youtube', url: youtubeWatchUrl(videoId), videoId,
       title: title && !/^youtube( video player)?$/i.test(title.trim()) ? title.trim() : undefined,
     };
   }

@@ -7,7 +7,8 @@
  * scripts are caught by a `play` listener and a few repeat passes. The reader's own players live in its
  * shadow root, which document queries and these listeners never reach.
  */
-const YT = /^https:\/\/(www\.)?youtube(-nocookie)?\.com\/embed\//;
+import { isYoutubeEmbed } from '../youtube.ts';
+
 const REPEAT_MS = [400, 1200, 2500, 5000, 9000];
 
 export function quietPage(doc: Document): () => void {
@@ -21,7 +22,7 @@ export function quietPage(doc: Document): () => void {
     }
     for (const f of doc.querySelectorAll<HTMLIFrameElement>('iframe')) {
       const src = f.getAttribute('src') ?? '';
-      if (!YT.test(src)) continue;
+      if (!isYoutubeEmbed(src)) continue;
       try {
         if (/[?&]enablejsapi=1/.test(src)) {
           f.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');

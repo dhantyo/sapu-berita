@@ -1,4 +1,5 @@
 // Reader settings: one shape for every platform, stored through whatever the wrapper provides.
+import { hostMatches } from './rules/match.ts';
 
 export type Theme = 'auto' | 'light' | 'sepia' | 'dark';
 export type Font = 'serif' | 'sans' | 'legible';
@@ -91,7 +92,9 @@ export function outletStore(domain: string | undefined, doc: Document = document
       // 400 days is the longest browsers keep a cookie; Safari caps script-set cookies at 7 days,
       // so it is rewritten every time the reader opens.
       const secure = doc.location?.protocol === 'https:' ? '; Secure' : '';
-      doc.cookie = `${name}=${encodeURIComponent(JSON.stringify(settings))}; Domain=${domain}; Path=/; Max-Age=34560000; SameSite=Lax${secure}`;
+      // Only what differs from the defaults: the cookie travels with every request to the outlet.
+      const changed = Object.fromEntries(Object.entries(settings).filter(([k, v]) => DEFAULT_SETTINGS[k as keyof Settings] !== v));
+      doc.cookie = `${name}=${encodeURIComponent(JSON.stringify(changed))}; Domain=${domain}; Path=/; Max-Age=34560000; SameSite=Lax${secure}`;
     } catch {
       // Cookies blocked: the per-subdomain copy still works.
     }
@@ -112,9 +115,13 @@ export function outletStore(domain: string | undefined, doc: Document = document
 /** The outlet's main domain for a host, from the site rules (shortest listed domain the host belongs to). */
 export function outletDomain(host: string, siteDomains: string[]): string | undefined {
   return siteDomains
-    .filter((d) => host === d || host.endsWith(`.${d}`))
+    .filter((d) => hostMatches(host, d))
     .sort((a, b) => a.length - b.length)[0];
 }
+
+/** The reader's on/off switches. Each one's label and hint live in i18n under the same name and "<name>Hint". */
+export const SWITCHES = ['hero', 'autoOpen', 'sweepLine', 'updates', 'links', 'summaries', 'embeds'] as const;
+export type Switch = (typeof SWITCHES)[number];
 
 const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
   allowed.includes(value as T) ? (value as T) : fallback;
@@ -124,18 +131,13 @@ export function normalizeSettings(raw: Partial<Settings> | undefined): Settings 
   const d = DEFAULT_SETTINGS;
   const r = raw ?? {};
   const size = Number.isInteger(r.size) ? Math.min(SIZE_STEPS - 1, Math.max(0, r.size as number)) : d.size;
-  const bool = (v: unknown, fallback: boolean) => (typeof v === 'boolean' ? v : fallback);
-  return {
+  const out: Settings = {
+    ...d,
     size,
     font: pick(r.font, ['sans', 'serif', 'legible'] as const, d.font),
     theme: pick(r.theme, ['auto', 'light', 'sepia', 'dark'] as const, d.theme),
     lang: pick(r.lang, ['id', 'en'] as const, d.lang),
-    hero: bool(r.hero, d.hero),
-    autoOpen: bool(r.autoOpen, d.autoOpen),
-    sweepLine: bool(r.sweepLine, d.sweepLine),
-    updates: bool(r.updates, d.updates),
-    links: bool(r.links, d.links),
-    summaries: bool(r.summaries, d.summaries),
-    embeds: bool(r.embeds, d.embeds),
   };
+  for (const k of SWITCHES) if (typeof r[k] === 'boolean') out[k] = r[k] as boolean;
+  return out;
 }

@@ -13,7 +13,7 @@
     ".nativescrollingKLY",
     ".gateway__mobile-app"
   ],
-  "pagination": { "method": "inline" },
+  "pagination": { "method": "none" },
   "variants": [
     {
       "when": "^/bola/",

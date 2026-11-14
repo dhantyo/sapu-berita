@@ -4,6 +4,7 @@
  * these same embeds, so playing them here reveals nothing new to the platforms.
  */
 import type { Platform } from '../clean/embeds.ts';
+import { youtubeId } from '../youtube.ts';
 
 export interface Player {
   src: string;
@@ -22,10 +23,8 @@ export function playerFor(platform: Platform, href: string, dark: boolean): Play
   const path = url.pathname;
   switch (platform) {
     case 'youtube': {
-      const id =
-        url.searchParams.get('v') ??
-        (url.hostname.endsWith('youtu.be') ? path.slice(1).split('/')[0] : /\/(?:shorts|embed|live)\/([\w-]{6,})/.exec(path)?.[1]);
-      return id && /^[\w-]{6,}$/.test(id) ? { src: `https://www.youtube-nocookie.com/embed/${id}`, aspect: '16 / 9' } : undefined;
+      const id = youtubeId(href);
+      return id ? { src: `https://www.youtube-nocookie.com/embed/${id}`, aspect: '16 / 9' } : undefined;
     }
     case 'instagram': {
       const m = /\/(p|reel|tv)\/([\w-]+)/.exec(path);

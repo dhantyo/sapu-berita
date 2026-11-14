@@ -201,7 +201,7 @@
               "type": "string"
             }
           },
-          "description": "All pages are already in the DOM. Use with bodyAll."
+          "description": "Old name for none (all sections already shown on the page). Still accepted; use none."
         },
         {
           "type": "object",

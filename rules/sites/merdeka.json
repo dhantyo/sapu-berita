@@ -7,7 +7,7 @@
   "body": [".articles-content__body", ".article-content-body"],
   "bodyAll": true,
   "remove": ["div[data-url][data-title][data-id]", ".baca-juga-collections"],
-  "pagination": { "method": "inline" },
+  "pagination": { "method": "none" },
   "samples": ["https://www.merdeka.com/peristiwa/read/8332754/bagaimana-mekanisme-dan-aturan-hukum-pengunduran-diri-wakil-presiden"],
   "verified": "2026-11-11",
   "notes": "KLY platform (same group as Liputan6): Tailwind layout, Baca Juga cards carry data-url/data-title/data-id."

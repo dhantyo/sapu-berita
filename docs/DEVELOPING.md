@@ -54,13 +54,13 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 | MAJOR | The public launch (1.0.0), and later only for big breaking changes | 0.x → 1.0.0 |
 
 - While MAJOR is 0, the app is in beta; no `-beta` suffix is used.
-- Site-rule fixes alone don't need a release: `rules.json` reaches installed copies daily.
+- Site-rule fixes need no app update, but they still ship with a release: the release channel (and its `rules.json`) is published only from a version tag. Installed copies then pick the new rules up within a day.
 - Android's `versionCode` is derived from the version (`app/build.gradle.kts`) and must keep rising, so never reuse or lower a version.
 
 ## Releasing
 
-1. Bump `version` in `package.json` (the extension, the APK and the Shortcut all read it) and add a section to `CHANGELOG.md`.
-2. Commit, then tag and push: `git tag -a v0.2.3 -m "Sapu Berita 0.2.3" && git push origin v0.2.3` (push tags one at a time: GitHub starts no build when more than three tags are pushed together).
+1. While working, note each user-visible change under `## [Unreleased]` at the top of `CHANGELOG.md`.
+2. `npm run release -- 0.3.4` sets the version in `package.json` (the extension, the APK and the Shortcut all read it), dates the changelog section, builds, runs every check, commits, pushes, and pushes the one tag `v0.3.4` (tags go one at a time: GitHub starts no build when more than three tags are pushed together). `--dry-run` stops after the checks and changes nothing.
 3. CI builds and signs everything and publishes a GitHub Release with the APK, the extension zip and the Shortcut script. Versions with a `-` suffix are marked pre-release.
 4. CI also publishes the **release channel** to GitHub Pages: `update.json` (latest version and per-platform update links) and `rules.json` (site rules). Installed copies read both once a day: a newer version shows an "update available" bar in the reader; newer rules apply silently, so most site fixes need no app update. It also carries the Apple core (`sapu-berita.js`), which the Shortcut and the Safari bookmark download on every run, and the install page (`site/`).
 

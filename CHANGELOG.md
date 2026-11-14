@@ -4,6 +4,12 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
+## [Unreleased]
+
+- **Less data:** opening the photo viewer no longer downloads every photo in the article at full size, only the ones you look at.
+- The settings cookie that the bookmark shares across an outlet's sites now holds only what you changed (a few bytes instead of ~260 on every request to that outlet).
+- A page description that is itself junk (an app ad) is dropped by the same site rules that clean the article text.
+
 ## [0.3.3] - 2026-11-14
 
 - **Settings:** the bookmark and the Shortcut no longer show "Cek update": they always run the newest version, site fixes included. With "Buka otomatis" already gone there, the "Umum" group is hidden in that build.

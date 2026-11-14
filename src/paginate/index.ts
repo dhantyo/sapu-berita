@@ -1,3 +1,4 @@
+import { safeQuery, safeQueryAll } from '../dom.ts';
 import type { Context, ResolvedRule } from '../types.ts';
 
 export interface Paginated {
@@ -21,12 +22,9 @@ export async function paginate(
   const p = rule.pagination;
   try {
     switch (p.method) {
+      // "inline" (all pages already shown on the page, Liputan6/Merdeka) is kept for older rule files; it is the same.
       case 'none':
-        return { container, pages: 1 };
-
       case 'inline':
-        // Everything is already on the page. The site's "page" markers (Liputan6's data-page sections,
-        // Merdeka's empty placeholders) are shown together there, so nothing was merged: one page.
         return { container, pages: 1 };
 
       case 'param': {
@@ -113,18 +111,3 @@ function textLength(el: Element): number {
   return (el.textContent ?? '').replace(/\s+/g, ' ').trim().length;
 }
 
-function safeQuery(doc: ParentNode, selector: string): Element | null {
-  try {
-    return doc.querySelector(selector);
-  } catch {
-    return null;
-  }
-}
-
-function safeQueryAll<T extends Element>(doc: ParentNode, selector: string): T[] {
-  try {
-    return [...doc.querySelectorAll<T>(selector)];
-  } catch {
-    return [];
-  }
-}

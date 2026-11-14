@@ -1,13 +1,19 @@
 import type { ArticleMeta } from '../types.ts';
+import { collapse, textKey } from '../dom.ts';
+import { isYoutubeEmbed, youtubeEmbedUrl, youtubeId } from '../youtube.ts';
 
 type Json = Record<string, unknown>;
+
+/** JSON-LD allows one value or a list almost everywhere. */
+const list = (v: unknown): unknown[] => ([] as unknown[]).concat(v ?? []);
+const isType = (n: Json, type: RegExp) => type.test(list(n['@type']).join(','));
 
 /** Title/author/date/image from JSON-LD NewsArticle (SEO-critical, so stable), falling back to OpenGraph/meta. */
 export function extractMetadata(doc: Document): ArticleMeta {
   const nodes = jsonLdNodes(doc);
-  const ld = nodes.find((n) => /Article|Posting/i.test(([] as unknown[]).concat(n['@type']).join(',')));
+  const ld = nodes.find((n) => isType(n, /Article|Posting/i));
   // Some outlets (Merdeka) name their logo only on a separate Organization node, not on the article.
-  const org = nodes.find((n) => /Organization/i.test(([] as unknown[]).concat(n['@type']).join(',')) && n.logo);
+  const org = nodes.find((n) => isType(n, /Organization/i) && n.logo);
   const meta = (sel: string) => doc.querySelector<HTMLMetaElement>(sel)?.content?.trim() || undefined;
 
   const publisher = (ld?.publisher ?? undefined) as Json | undefined;
@@ -39,7 +45,7 @@ export function extractMetadata(doc: Document): ArticleMeta {
     siteName: str(publisher?.name) ?? meta('meta[property="og:site_name"]'),
     // Every supported outlet ships its official logo in NewsArticle.publisher.logo (verified 2026-11-11).
     logo: absolute(imageUrl(publisher?.logo)) ?? absolute(imageUrl(org?.logo)),
-    section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
+    section: str(list(ld?.articleSection)[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
     video:
       mainVideo(nodes, ld, str(ld?.headline) ?? meta('meta[property="og:title"]')) ??
@@ -48,31 +54,28 @@ export function extractMetadata(doc: Document): ArticleMeta {
 }
 
 /**
+ * A page whose main image is a YouTube video's thumbnail is that video's page (video.tribunnews.com/view/
+ * names no video in its data; its player is built by script from the same id).
+ */
+function videoFromThumbnail(image: string | undefined): string | undefined {
+  const id = youtubeId(image);
+  return id && /\/vi(?:_webp)?\//.test(image!) ? youtubeEmbedUrl(id) : undefined;
+}
+
+/**
  * The story's own video, when the page is a video story: a VideoObject (top-level or the article's `video`)
  * with a YouTube embed address, whose name is the article's headline (video.tribunnews.com keeps its player
  * outside the article text). Tribun also lists its house promo for another story as the article's video;
  * that one carries the other story's name, so it doesn't count.
  */
-/**
- * A page whose main image is a YouTube video's thumbnail is that video's page (video.tribunnews.com/view/
- * names no video in its data; its player is built by script from the same id).
- */
-function videoFromThumbnail(image: string | undefined): string | undefined {
-  const id = image && /^https?:\/\/(?:img\.youtube\.com|i\d?\.ytimg\.com)\/vi(?:_webp)?\/([\w-]{6,})\//.exec(image)?.[1];
-  return id ? `https://www.youtube.com/embed/${id}` : undefined;
-}
-
 function mainVideo(nodes: Json[], ld: Json | undefined, headline: string | undefined): string | undefined {
-  const key = (t: unknown) => (typeof t === 'string' ? t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().slice(0, 40) : '');
+  const key = (t: unknown) => textKey(str(t)).slice(0, 40);
   const want = key(headline);
   if (want.length < 15) return undefined;
-  const candidates = [
-    ...nodes.filter((n) => /VideoObject/i.test(([] as unknown[]).concat(n['@type']).join(','))),
-    ...([] as unknown[]).concat(ld?.video ?? []),
-  ] as Json[];
+  const candidates = [...nodes.filter((n) => isType(n, /VideoObject/i)), ...list(ld?.video)] as Json[];
   for (const v of candidates) {
     const url = str(v?.embedUrl);
-    if (url && key(v?.name) === want && /^https:\/\/(www\.)?youtube(-nocookie)?\.com\/embed\/[\w-]{6,}/.test(url)) return url;
+    if (url && key(v?.name) === want && isYoutubeEmbed(url)) return youtubeEmbedUrl(youtubeId(url)!);
   }
   return undefined;
 }
@@ -86,7 +89,7 @@ const TEXT_FIELDS = ['title', 'byline', 'editor', 'siteName', 'section', 'descri
  */
 function decodeText(m: ArticleMeta): ArticleMeta {
   // An editor who is also the author (Bisnis, iNews often) is shown once, as the author.
-  if (m.editor && m.byline && m.editor.trim().toLowerCase() === m.byline.trim().toLowerCase()) m.editor = undefined;
+  if (m.editor && textKey(m.editor) === textKey(m.byline)) m.editor = undefined;
   for (const k of TEXT_FIELDS) if (m[k]) m[k] = decodeEntities(m[k]!);
   if (m.title && /<(i|em)>/i.test(m.title)) {
     m.titleMarkup = m.title.replace(/<(?!\/?(?:i|em)>)[^>]*>/gi, '').replace(/<(\/?)em>/gi, '<$1i>');
@@ -148,26 +151,32 @@ function str(v: unknown): string | undefined {
  * Only an exact "Editor"/"Penyunting" label counts, and the first one on the page (the article's own;
  * later ones belong to stories loaded below it).
  */
+const EDITOR_WORD = /editor|penyunting/i;
 const EDITOR_LABEL = /^(editor|penyunting)\s*:?\s*$/i;
 const EDITOR_INLINE = /^(?:editor|penyunting)\s*:\s*(.+)$/i;
 export function pageEditor(doc: Document): string | undefined {
-  const clean = (s: string | null | undefined) => (s ?? '').replace(/\s+/g, ' ').trim();
+  const body = doc.body;
+  // Most pages never print the word: skip the walk.
+  if (!body || !EDITOR_WORD.test(body.textContent ?? '')) return undefined;
   const isName = (s: string) => s.length >= 3 && s.length <= 60 && /\p{L}/u.test(s) && !/[:|/]/.test(s) && s.split(' ').length <= 6;
-  for (const el of doc.body?.querySelectorAll('*') ?? []) {
-    if (el.closest('script, style, noscript, template')) continue;
-    const own = clean([...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' '));
-    if (!own) continue;
+  // Only text that contains the word is looked at, through its element.
+  const walker = doc.createTreeWalker(body, 0x4 /* text */);
+  let last: Element | null = null;
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const el = node.parentElement;
+    if (!el || el === last || !EDITOR_WORD.test(node.nodeValue ?? '') || el.closest('script, style, noscript, template')) continue;
+    last = el;
+    const own = collapse([...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' '));
     const inline = EDITOR_INLINE.exec(own)?.[1]?.trim();
     if (inline && isName(inline)) return inline;
     if (!EDITOR_LABEL.test(own)) continue;
     // "Editor : <a>name</a>" (name inside), "Editor :" then the name in the next element, or the name
     // elsewhere in the label's own row.
-    const inside = clean(el.textContent).replace(/^(editor|penyunting)\s*:?\s*/i, '');
+    const inside = collapse(el.textContent).replace(/^(editor|penyunting)\s*:?\s*/i, '');
     if (inside && isName(inside)) return inside;
-    const next = clean(el.nextElementSibling?.textContent);
+    const next = collapse(el.nextElementSibling?.textContent);
     if (next && isName(next)) return next;
-    const row = el.parentElement;
-    const rowText = clean(row?.textContent);
+    const rowText = collapse(el.parentElement?.textContent);
     const rest = rowText.slice(0, rowText.toLowerCase().lastIndexOf(own.toLowerCase())).trim();
     if (rest && isName(rest)) return rest;
   }
@@ -175,8 +184,7 @@ export function pageEditor(doc: Document): string | undefined {
 }
 
 function authorNames(v: unknown): string | undefined {
-  const names = ([] as unknown[])
-    .concat(v ?? [])
+  const names = list(v)
     .map((a) => (typeof a === 'string' ? a : str((a as Json)?.name)))
     // A name needs letters: detikHot writes "-" and foto.bisnis.com "" when the author is elsewhere.
     .filter((n): n is string => !!n && /\p{L}/u.test(n));
