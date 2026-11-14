@@ -255,7 +255,7 @@ svg { flex: none; }
 }
 .seg button:hover { background: var(--chip); }
 .seg button[aria-checked="true"] { background: var(--chip); border-color: var(--accent); font-weight: 600; }
-.swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--rule-strong); }
+.swatch { flex: none; box-sizing: border-box; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--rule-strong); background-clip: padding-box; }
 .size { display: flex; align-items: center; gap: 10px; }
 .size .icon-btn { border: 1px solid var(--rule); border-radius: 10px; width: 44px; height: 38px; color: var(--ink); font-family: var(--sans); font-weight: 650; letter-spacing: -0.02em; }
 .size .icon-btn:disabled { opacity: 0.35; cursor: default; }

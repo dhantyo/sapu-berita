@@ -40,6 +40,11 @@ export interface OverlayOptions {
    * request to open, so the setting would do nothing there.
    */
   autoOpenSetting?: boolean;
+  /**
+   * Offer the "check for updates" switch. Off for the bookmark and the Shortcut: they download the newest
+   * version, site fixes included, every time they run.
+   */
+  updatesSetting?: boolean;
   /** Link target for "read on the original site". */
   originalUrl?: string;
   /** Builds the "report a problem" link for the current article; no link when unset. */
@@ -317,7 +322,8 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
     // Theme: swatch of each ground
     const grounds: Record<Theme, string> = {
-      auto: 'linear-gradient(135deg, rgb(255 255 255) 50%, rgb(18 18 18) 50%)',
+      // Half light, half dark, split straight down (a diagonal split renders with jagged edges at this size).
+      auto: 'linear-gradient(90deg, rgb(255 255 255) 50%, rgb(18 18 18) 50%)',
       light: 'rgb(255 255 255)', sepia: 'rgb(247 241 228)', dark: 'rgb(18 18 18)',
     };
     panel.append(group(t.theme, segmented<Theme>(t.theme, settings.theme, [
@@ -338,11 +344,16 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     const toggle = (key: 'hero' | 'autoOpen' | 'sweepLine' | 'links' | 'summaries' | 'embeds' | 'updates', label: string, hint?: string) =>
       switchRow(label, hint, settings[key], (v) => change({ [key]: v }, `[data-switch="${key}"]`), key);
     const rows = (...items: HTMLElement[]) => h(doc, 'div', {}, ...items);
-    panel.append(
-      group(t.general, rows(
+    // "General" only lists what this build can change (the bookmark has neither switch).
+    const general = () => {
+      const items = [
         ...(opts.autoOpenSetting === false ? [] : [toggle('autoOpen', t.autoOpen, t.autoOpenHint)]),
-        toggle('updates', t.updates, t.updatesHint),
-      )),
+        ...(opts.updatesSetting === false ? [] : [toggle('updates', t.updates, t.updatesHint)]),
+      ];
+      return items.length ? [group(t.general, rows(...items))] : [];
+    };
+    panel.append(
+      ...general(),
       group(t.inArticle, rows(
         toggle('hero', t.hero, t.heroHint),
         toggle('summaries', t.summaries, t.summariesHint),

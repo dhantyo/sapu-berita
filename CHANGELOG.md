@@ -4,6 +4,11 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
+## [Unreleased]
+
+- **Settings:** the bookmark and the Shortcut no longer show "Cek update": they always run the newest version, site fixes included. With "Buka otomatis" already gone there, the "Umum" group is hidden in that build.
+- The "Otomatis" theme swatch is split straight down the middle, with clean edges.
+
 ## [0.3.2] - 2026-11-14
 
 - **Liputan6:** the "Jadi Intinya" summary shows as a summary box (and follows the "Kotak ringkasan" switch).
