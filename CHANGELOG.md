@@ -4,7 +4,7 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
-## [Unreleased]
+## [0.3.3] - 2026-11-14
 
 - **Settings:** the bookmark and the Shortcut no longer show "Cek update": they always run the newest version, site fixes included. With "Buka otomatis" already gone there, the "Umum" group is hidden in that build.
 - The "Otomatis" theme swatch is split at 45° again, now with clean edges (no dark fringe on the light half).
