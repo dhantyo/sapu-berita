@@ -4,7 +4,7 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
-## [Unreleased]
+## [0.4.0] - 2026-11-14
 
 - **Tandai: hide what doesn't belong.** In Aa, tap **Tandai**, then tap the part of the article that shouldn't be there (a promo, a leftover "Baca juga"). Widen or narrow the pick, then **Sembunyikan**: it's hidden straight away and on other articles from that site too. Aa shows how many parts are hidden on the site, with **Tampilkan lagi** to bring them back. After hiding, one tap sends a report with that part's text filled in, so the site rule can be fixed for everyone.
 - **Add what's missing, from the original page.** In Aa, tap **Pilih di halaman asli**: the original page shows with a bar at the bottom. Tap the part the clean view left out (a credit box, a photo gallery, a paragraph), widen or narrow the pick, then **Tambahkan**. It appears in the clean view at its place in the article, and parts like it are added on other articles from that site too (Aa shows how many, with **Hapus** to undo). A one-tap report sends its text and where it sits on the page, so the site rule can be fixed for everyone.
