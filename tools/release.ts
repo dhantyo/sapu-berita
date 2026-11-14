@@ -7,7 +7,7 @@
 // 4. Commits "Release 0.3.4", pushes master, then creates and pushes the one tag v0.3.4 (CI builds,
 //    signs and publishes from the tag; tags go one at a time, see docs/DEVELOPING.md).
 //
-// Add --dry-run to stop after step 3 and undo the version/changelog edits.
+// Add --dry-run to stop after step 3 and put every file back as it was.
 import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -38,6 +38,10 @@ const unreleased = /^## \[Unreleased\]\s*\n([\s\S]*?)(?=^## \[)/m.exec(log);
 if (!unreleased) fail('CHANGELOG.md has no "## [Unreleased]" section');
 if (!unreleased![1]!.trim()) fail('the "## [Unreleased]" section is empty');
 
+// The tree was clean when we started, so every tracked change from here on is ours (the version edits, and
+// the build's copy of the version in apps/extension/manifest.json): put them all back on a failure or dry run.
+const restore = () => sh('git checkout -- .');
+
 const today = new Date().toISOString().slice(0, 10);
 const setVersion = (path: string, count: number) => {
   const text = readFileSync(path, 'utf8');
@@ -54,12 +58,12 @@ try {
   sh('npm run build');
   sh('npm run check');
 } catch {
-  sh('git checkout -- package.json package-lock.json CHANGELOG.md');
+  restore();
   fail('build or checks failed; version and changelog restored');
 }
 
 if (dryRun) {
-  sh('git checkout -- package.json package-lock.json CHANGELOG.md');
+  restore();
   console.log('dry run: all checks passed; nothing committed');
   process.exit(0);
 }
