@@ -1,0 +1,14 @@
+{
+  "$schema": "../schema.json",
+  "id": "tribratanews",
+  "name": "Tribrata News",
+  "domains": ["tribratanews.polri.go.id"],
+  "articleUrl": "^/article/[a-z0-9-]+",
+  "body": [".article-body-content"],
+  "pagination": { "method": "none" },
+  "samples": [
+    "https://tribratanews.polri.go.id/article/polisi-gagalkan-16-kg-emas-diduga-ilegal-dua-wna-china-ditangkap-105488"
+  ],
+  "verified": "2026-11-14",
+  "notes": "Polri's news portal. Body is .article-body-content; JSON-LD NewsArticle carries the metadata. No RSS feed (404), so the canary uses the sample."
+}

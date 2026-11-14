@@ -14,7 +14,7 @@ Menu names are shown as they appear on a phone set to English, with the Indonesi
    1. Make sure **Open supported links** (*Buka link yang didukung*) is on.
    2. Tap **Add link** (*Tambahkan link*).
    3. Tick all 17 boxes (scroll down), then tap **Add** (*Tambahkan*).
-   4. Press back. Sapu Berita checks for itself and says **"Active on all 16 news sites"**, or tells you which ones are still missing.
+   4. Press back. Sapu Berita checks for itself and says **"Active on all 17 news sites"**, or tells you which ones are still missing.
 
 **Android 11 or older:** Sapu Berita opens a news link for you instead, and your phone asks which app to use: pick **Sapu Berita**, then **Always** (*Selalu*). If a browser was already set to "Always", Sapu Berita says so and opens that browser's settings, where you tap **Clear defaults**.
 

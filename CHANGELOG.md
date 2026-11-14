@@ -6,6 +6,7 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 
 ## [Unreleased]
 
+- **New site: Tribrata News** (tribratanews.polri.go.id), Polri's news portal. On Android, open the Sapu Berita app once after updating: it asks you to switch on the new site under "Open by default".
 - **Less data:** opening the photo viewer no longer downloads every photo in the article at full size, only the ones you look at.
 - The settings cookie that the bookmark shares across an outlet's sites now holds only what you changed (a few bytes instead of ~260 on every request to that outlet).
 - A page description that is itself junk (an app ad) is dropped by the same site rules that clean the article text.

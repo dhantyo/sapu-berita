@@ -25,7 +25,7 @@ Written 2026-11-11, at version 0.1.0 (then called 0.1.0-beta.1), before the firs
 **Journey today**
 1. Her son sends the APK link. 🟡 She opens GitHub Releases on her phone, which is confusing (lots of files). ❓ Whether Play Protect or Google's developer verification **blocks the install outright** in Indonesia. Today it probably does, until we register (see State, below).
 2. Allow "Instal aplikasi tidak dikenal" for Chrome or WhatsApp. 🟡 A scary system warning; this is where most people quit.
-3. Opens Sapu Berita → "Atur link berita" → "Tambahkan link" → ticks 16 sites. 🟡 On Samsung (One UI) the screen is worded differently from Pixel; the guide's labels may not match.
+3. Opens Sapu Berita → "Atur link berita" → "Tambahkan link" → ticks 17 sites. 🟡 On Samsung (One UI) the screen is worded differently from Pixel; the guide's labels may not match.
 4. Taps a Detik link in WhatsApp. 🟡 Should open clean. ❓ Depends on WhatsApp handing the link to Android (good) rather than its own in-app browser (bad).
 5. Taps **Aa**, makes text bigger. ✅ Remembered for every site.
 

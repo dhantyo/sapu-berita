@@ -60,6 +60,8 @@
                 <data android:host="*.suara.com" />
                 <data android:host="tirto.id" />
                 <data android:host="*.tirto.id" />
+                <data android:host="tribratanews.polri.go.id" />
+                <data android:host="*.tribratanews.polri.go.id" />
                 <data android:host="*.tribunnews.com" />
                 <data android:host="*.viva.co.id" />
                 <!-- sapu:hosts:end -->

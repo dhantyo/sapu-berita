@@ -228,3 +228,10 @@ describe('editor printed on the page, when the page data has none', () => {
     expect((await editorOf(ld('A B') + "<h3>Editor's Pick</h3><p>Pilihan editor: berita hari ini adalah yang terbaik dari semua</p>")).editor).toBeUndefined();
   });
 });
+
+describe('Tribrata News (tribratanews.polri.go.id)', () => {
+  it('opens its articles, not its other pages', () => {
+    expect(findRule(rules, new URL('https://tribratanews.polri.go.id/article/polisi-gagalkan-16-kg-emas-diduga-ilegal-dua-wna-china-ditangkap-105488'))?.id).toBe('tribratanews');
+    expect(findRule(rules, new URL('https://tribratanews.polri.go.id/category/nasional'))).toBeNull();
+  });
+});
