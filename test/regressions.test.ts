@@ -160,3 +160,15 @@ describe('video stories (video.tribunnews.com)', () => {
     expect(deckText('Download aplikasi berita TribunX di Play Store atau App Store untuk dapatkan pengalaman baruTRIBUN-VIDEO.COM- Wakil Presiden Gibran Rakabuming Raka mengungkap cerita', content)).toBeUndefined();
   });
 });
+
+describe('Liputan6 summary box ("Jadi Intinya")', () => {
+  it('becomes a summary box', async () => {
+    const { normalizeSummaries } = await import('../src/clean/summary.ts');
+    const root = document.createElement('div');
+    root.innerHTML = '<div><h2>Jadi Intinya</h2><ul><li>Prabowo hadiri Milad Muhammadiyah.</li><li>Prabowo puji Kapolri baru.</li></ul></div><p>Liputan6.com, Jakarta - Isi.</p>';
+    normalizeSummaries(root, rules.common.summaryHeadings ?? []);
+    const box = root.querySelector('blockquote[data-summary]');
+    expect(box?.querySelector('b')?.textContent).toBe('Jadi Intinya');
+    expect(box?.querySelectorAll('li').length).toBe(2);
+  });
+});

@@ -20,7 +20,7 @@
     "^ikuti (kami|berita) (di|on)\\b"
   ],
   "summaryHeadings": [
-    "^(ringkasan berita|ringkasan|poin penting|intisari berita|rangkuman berita|baca 10 detik|executive brief)\\s*:?"
+    "^(ringkasan berita|ringkasan|poin penting|intisari berita|rangkuman berita|baca 10 detik|executive brief|jadi intinya)\\s*:?"
   ],
   "remove": [
     "script",
