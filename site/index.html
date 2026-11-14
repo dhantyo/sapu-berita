@@ -78,6 +78,56 @@ ol.steps.option-b { padding-top: 28px; }
 .panel h3.sub { margin-top: 18px; }
 .toast { min-height: 1.6em; font-size: 15px; color: var(--accent); margin: 8px 0 0; }
 
+/* What it is: text beside a drawn before/after (no real news page shown). */
+.about-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.about .big { font: 500 clamp(1.25rem, 2.4vw, 1.55rem)/1.4 var(--sans); letter-spacing: -0.02em; margin: 0 0 18px; max-width: 32ch; text-wrap: pretty; }
+.about .body { color: var(--muted); margin: 0; max-width: 58ch; text-wrap: pretty; }
+.compare { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 14px; margin: 0; max-width: 470px; justify-self: center; width: 100%; }
+.side { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0; }
+.side-label { font: 600 13px/1.2 var(--sans); color: var(--muted); text-align: center; }
+.side-label.ours { color: var(--ink); }
+.mock { position: relative; width: 100%; max-width: 200px; aspect-ratio: 9 / 17; overflow: hidden; display: flex; flex-direction: column; gap: 7px;
+  padding: 16px 12px; border: 1px solid var(--rule-strong); border-radius: 22px; background: var(--bg);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 16px 32px -16px rgb(0 0 0 / 0.3); }
+.mock .ln { flex: none; height: 5px; border-radius: 3px; background: var(--rule-strong); }
+.mock .ln.ttl { height: 9px; background: var(--ink); opacity: 0.85; }
+.mock .w5 { width: 50%; } .mock .w7 { width: 70%; } .mock .w8 { width: 82%; } .mock .w9 { width: 92%; }
+.mock .ad { flex: none; display: grid; place-items: center; height: 40px; border-radius: 6px; border: 1px dashed var(--rule-strong);
+  background: repeating-linear-gradient(135deg, var(--chip) 0 6px, transparent 6px 12px);
+  font: 700 9px/1 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.mock .bj { flex: none; display: flex; flex-direction: column; gap: 5px; padding: 7px 8px; border-radius: 6px; background: var(--chip); }
+.mock .bj b { font: 700 9px/1 var(--sans); color: var(--muted); }
+.mock .bj .ln { height: 4px; background: var(--accent); opacity: 0.55; }
+.mock .pg { flex: none; display: flex; justify-content: center; gap: 4px; margin-top: auto; }
+.mock .pg span { display: grid; place-items: center; width: 17px; height: 17px; border-radius: 5px; border: 1px solid var(--rule-strong); font: 600 8px/1 var(--sans); color: var(--muted); }
+.mock .pop { position: absolute; left: 14px; right: 14px; top: 41%; display: grid; place-items: center; height: 74px; border-radius: 10px;
+  border: 1px solid var(--rule-strong); background: var(--bg); box-shadow: 0 10px 28px -6px rgb(0 0 0 / 0.35);
+  font: 700 9px/1 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.mock .pop::before { content: ""; position: absolute; inset: 6px; border-radius: 6px; background: repeating-linear-gradient(135deg, var(--chip) 0 6px, transparent 6px 12px); }
+.mock .pop span { position: relative; }
+.mock .pop i { position: absolute; top: -8px; right: -8px; width: 18px; height: 18px; border-radius: 9px; background: var(--ink); }
+.mock .pop i::before, .mock .pop i::after { content: ""; position: absolute; left: 5px; right: 5px; top: 8.5px; height: 1.5px; background: var(--bg); transform: rotate(45deg); }
+.mock .pop i::after { transform: rotate(-45deg); }
+.mock .bar { flex: none; display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; margin-bottom: 2px; border-bottom: 1.5px solid var(--accent); }
+.mock .bar .ln { width: 38%; height: 7px; background: var(--ink); opacity: 0.85; }
+.mock .bar span { width: 22px; height: 12px; border-radius: 6px; border: 1px solid var(--rule-strong); }
+.mock .ph { flex: none; aspect-ratio: 16 / 9; border-radius: 6px; background: var(--chip); border: 1px solid var(--rule); }
+.mock .merged { flex: none; display: flex; align-items: center; gap: 6px; margin: 2px 0; font: 600 8.5px/1 var(--sans); color: var(--accent); white-space: nowrap; }
+.mock .merged::before, .mock .merged::after { content: ""; flex: 1; border-top: 1px dashed var(--accent); }
+.sweep { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 20px; background: var(--accent); color: var(--on-accent); }
+.about h3 { font: 700 clamp(1.3rem, 2.6vw, 1.65rem)/1.2 var(--sans); letter-spacing: -0.03em; margin: 72px 0 26px; }
+ol.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; counter-reset: f; }
+ol.flow li { position: relative; counter-increment: f; padding-top: 46px; }
+ol.flow li::before { content: counter(f); position: absolute; top: 0; left: 0; width: 30px; height: 30px; border-radius: 15px; background: var(--accent); color: var(--on-accent); font: 700 14px/30px var(--sans); text-align: center; }
+ol.flow li:not(:last-child)::after { content: ""; position: absolute; top: 15px; left: 44px; right: -18px; border-top: 1px solid var(--rule-strong); }
+ol.flow h4 { font: 650 18px/1.3 var(--sans); letter-spacing: -0.02em; margin: 0 0 6px; }
+ol.flow p { margin: 0; color: var(--muted); text-wrap: pretty; }
+.local { margin: 32px 0 0; max-width: 62ch; }
+.modes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; margin: 0; }
+.modes div { padding: 14px 0; border-top: 1px solid var(--rule); }
+.modes dt { font-weight: 650; }
+.modes dd { margin: 2px 0 0; color: var(--muted); }
+
 .swept { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; margin: 0; }
 .swept div { padding: 14px 0; border-bottom: 1px solid var(--rule); }
 .swept dt { font-weight: 650; }
@@ -94,6 +144,15 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
   .shots img:last-child { top: 40px; }
   .panel { grid-template-columns: 1fr; gap: 8px; }
   .swept { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .mock .x { display: none; }
+  .compare { gap: 10px; }
+  .sweep { width: 34px; height: 34px; }
+  .about h3 { margin-top: 56px; }
+  ol.flow { grid-template-columns: 1fr; gap: 22px; }
+  ol.flow li { padding: 3px 0 0 46px; }
+  ol.flow li:not(:last-child)::after { top: 38px; bottom: -18px; left: 15px; right: auto; border-top: 0; border-left: 1px solid var(--rule-strong); }
+  .modes { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .cta { transition: none; } }
 </style>
@@ -123,6 +182,64 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     </div>
   </div>
 </div>
+
+<section class="about" id="apa">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <h2 data-t="aboutTitle">Apa itu Sapu Berita?</h2>
+        <p class="big" data-t="aboutLead">Mode baca untuk situs berita Indonesia. Kamu tetap membuka artikel dari situs aslinya, Sapu Berita yang merapikannya.</p>
+        <p class="body" data-t="aboutBody">Situs berita sekarang penuh iklan, pop-up, dan link "Baca Juga" yang memotong cerita, dan banyak artikel dipecah jadi beberapa halaman supaya kamu klik terus. Sapu Berita mengambil isi beritanya saja (teks, foto, keterangan foto, video dan postingan yang dikutip), lalu menampilkannya bersih di atas halaman itu.</p>
+      </div>
+      <figure class="compare">
+        <div class="side">
+          <div class="mock" aria-hidden="true">
+            <div class="ad" data-t="mockAd">Iklan</div>
+            <div class="ln ttl w9"></div><div class="ln ttl w5"></div>
+            <div class="ln w9"></div><div class="ln w8"></div>
+            <div class="bj"><b data-t="mockBj">Baca juga</b><div class="ln w9"></div><div class="ln w7"></div></div>
+            <div class="ln w9"></div><div class="ln w7"></div>
+            <div class="ad" data-t="mockAd2">Iklan</div>
+            <div class="ln w8"></div>
+            <div class="ln w9 x"></div><div class="ln w7 x"></div><div class="ln w9 x"></div>
+            <div class="pg"><span>1</span><span>2</span><span>3</span><span>›</span></div>
+            <div class="pop"><span data-t="mockPop">Iklan</span><i></i></div>
+          </div>
+          <figcaption class="side-label" data-t="mockBefore">Halaman asli</figcaption>
+        </div>
+        <div class="sweep"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4 13 11M11.2 9.2l3.6 3.6M11.2 9.2C8 10 5.4 12.6 4 19c6.4-1.4 9-4 9.8-7.2M6.8 16.4 9.6 13.6M9 17.6l2.2-2.2"/></svg></div>
+        <div class="side">
+          <div class="mock" aria-hidden="true">
+            <div class="bar"><div class="ln"></div><span></span></div>
+            <div class="ln ttl w9"></div><div class="ln ttl w5"></div>
+            <div class="ph"></div>
+            <div class="ln w9"></div><div class="ln w8"></div><div class="ln w9"></div><div class="ln w7"></div>
+            <div class="merged" data-t="mockMerged">hal. 2</div>
+            <div class="ln w9"></div><div class="ln w8"></div><div class="ln w9"></div><div class="ln w5"></div>
+            <div class="merged x" data-t="mockMerged3">hal. 3</div>
+            <div class="ln w9 x"></div><div class="ln w8 x"></div><div class="ln w7 x"></div>
+          </div>
+          <figcaption class="side-label ours" data-t="mockAfter">Dengan Sapu Berita</figcaption>
+        </div>
+      </figure>
+    </div>
+
+    <h3 data-t="howTitle">Cara kerjanya</h3>
+    <ol class="flow">
+      <li><h4 data-t="how1t">Kamu buka artikel</h4><p data-t="how1d">Dari WhatsApp, Google, atau langsung dari situsnya, seperti biasa.</p></li>
+      <li><h4 data-t="how2t">Sapu Berita merapikannya</h4><p data-t="how2d">Ia mencari teks artikelnya, membuang iklan dan link sisipan, lalu mengambil halaman 2, 3, dan seterusnya dari situs yang sama.</p></li>
+      <li><h4 data-t="how3t">Kamu baca versi bersihnya</h4><p data-t="how3d">Atur ukuran huruf, jenis huruf, dan tema gelap sesukamu. Ketuk foto untuk memperbesar. Tombol <b>Asli</b> membawamu kembali ke halaman aslinya.</p></li>
+    </ol>
+    <p class="local" data-t="howLocal">Tidak ada server di tengah: halamannya tetap dimuat dari situs berita itu sendiri, dan semua perapian terjadi di HP atau komputermu.</p>
+
+    <h3 data-t="modesTitle">Cara membukanya</h3>
+    <dl class="modes">
+      <div><dt data-t="m1t">Aplikasi Android</dt><dd data-t="m1d">Link berita dari WhatsApp dan aplikasi lain langsung terbuka bersih.</dd></div>
+      <div><dt data-t="m2t">Ekstensi browser</dt><dd data-t="m2d">Otomatis di Chrome, Brave, dan Edge di komputer.</dd></div>
+      <div><dt data-t="m3t">Bookmark</dt><dd data-t="m3d">Untuk iPhone, iPad, Mac, dan browser lain: ketuk bookmark Sapu Berita saat artikel terbuka.</dd></div>
+    </dl>
+  </div>
+</section>
 
 <section id="pasang">
   <div class="wrap">
@@ -267,8 +384,8 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
       <div><dt data-t="s2t">"Baca Juga" di tengah artikel</dt><dd data-t="s2d">Daftar link yang memotong paragraf hilang.</dd></div>
       <div><dt data-t="s3t">Halaman 2, 3, 4…</dt><dd data-t="s3d">Digabung jadi satu halaman utuh.</dd></div>
       <div><dt data-t="s4t">Tombol share dan ajakan</dt><dd data-t="s4d">Google News, newsletter, aplikasi, dan sejenisnya.</dd></div>
-      <div><dt data-t="s5t">Foto dan keterangannya</dt><dd data-t="s5d">Tetap ada, ukurannya pas.</dd></div>
-      <div><dt data-t="s6t">Posting media sosial yang dikutip</dt><dd data-t="s6d">Tetap ada, sebagai kartu link ke X, Instagram, TikTok, atau YouTube.</dd></div>
+      <div><dt data-t="s5t">Foto dan keterangannya</dt><dd data-t="s5d">Tetap ada, ukurannya pas. Ketuk foto untuk melihatnya layar penuh dan memperbesar.</dd></div>
+      <div><dt data-t="s6t">Posting media sosial yang dikutip</dt><dd data-t="s6d">Tetap ada dan bisa diputar langsung: YouTube, Instagram, TikTok, X, dan Facebook.</dd></div>
     </dl>
     <p class="sites"><span data-t="sitesLabel">Situs yang didukung:</span> Detik, Kompas, Tribunnews, CNN Indonesia, CNBC Indonesia, Liputan6, Merdeka, Suara, Okezone, Viva, iNews, JPNN, ANTARA, Republika, Bisnis.com, Tirto.</p>
   </div>
@@ -298,6 +415,19 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
   var EN = {
     h1: 'Read the news.<br>Sweep the rest.',
     lead: 'News from Detik, Kompas, Tribun and 13 other sites, without ads, without "Baca Juga" link lists, and with every page merged into one.',
+    aboutTitle: 'What is Sapu Berita?',
+    aboutLead: 'A reading mode for Indonesian news sites. You still open articles on the original site; Sapu Berita tidies them up.',
+    aboutBody: 'News sites are full of ads, pop-ups and "Baca Juga" links that cut the story apart, and many articles are split over several pages to keep you clicking. Sapu Berita takes just the story (text, photos, captions, and the videos and posts it quotes) and shows it cleanly on top of that page.',
+    mockAd: 'Ad', mockAd2: 'Ad', mockPop: 'Ad', mockBj: 'Baca juga', mockMerged: 'p. 2', mockMerged3: 'p. 3', mockBefore: 'The original page', mockAfter: 'With Sapu Berita',
+    howTitle: 'How it works',
+    how1t: 'You open an article', how1d: 'From WhatsApp, Google, or straight from the site, as usual.',
+    how2t: 'Sapu Berita tidies it up', how2d: 'It finds the article text, drops ads and inserted links, and fetches pages 2, 3 and on from the same site.',
+    how3t: 'You read the clean version', how3d: 'Set the text size, font and dark theme the way you like. Tap a photo to zoom. The <b>Asli</b> button takes you back to the original page.',
+    howLocal: 'There\u2019s no server in between: the page still loads from the news site itself, and all the tidying happens on your phone or computer.',
+    modesTitle: 'How you open it',
+    m1t: 'Android app', m1d: 'News links from WhatsApp and other apps open clean straight away.',
+    m2t: 'Browser extension', m2d: 'Automatic in Chrome, Brave and Edge on a computer.',
+    m3t: 'Bookmark', m3d: 'For iPhone, iPad, Mac and other browsers: tap the Sapu Berita bookmark with the article open.',
     cta: 'Install for free', install: 'Install on your device', desktopTab: 'Windows & others',
     optA: 'Option 1', optB: 'Option 2',
     abmTitle: 'A bookmark in Chrome (nothing to install)',
@@ -358,8 +488,8 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--rule); color: var(--m
     s2t: '"Baca Juga" in the middle of the story', s2d: 'Link lists that cut paragraphs in half are gone.',
     s3t: 'Pages 2, 3, 4…', s3d: 'Merged into one whole page.',
     s4t: 'Share buttons and prompts', s4d: 'Google News, newsletters, apps and the like.',
-    s5t: 'Photos and captions', s5d: 'Kept, at a sensible size.',
-    s6t: 'Social posts the story quotes', s6d: 'Kept, as link cards to X, Instagram, TikTok or YouTube.',
+    s5t: 'Photos and captions', s5d: 'Kept, at a sensible size. Tap a photo to see it full screen and zoom in.',
+    s6t: 'Social posts the story quotes', s6d: 'Kept, and they play right in the article: YouTube, Instagram, TikTok, X and Facebook.',
     sitesLabel: 'Supported sites:', privTitle: 'Privacy',
     privText: 'Everything runs on your device. Sapu Berita has no server, no analytics, and doesn\'t know what you read. Once a day it downloads the latest version number and site rules from GitHub; nothing about you is sent.',
     aiNote: 'Built with AI (Anthropic\'s Claude); tested and released by its maintainer.',
