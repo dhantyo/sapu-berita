@@ -99,9 +99,9 @@ function parse(v: string): { core: number[]; pre: string[] } | null {
   return m ? { core: [Number(m[1]), Number(m[2]), Number(m[3])], pre: m[4] ? m[4].split('.') : [] } : null;
 }
 
-/** Fill a report link template. Placeholders: {url} {title} {site} {version} {platform}. */
-export function reportLink(template: string, fields: Record<'url' | 'title' | 'site' | 'version' | 'platform', string>): string {
-  return template.replace(/\{(url|title|site|version|platform)\}/g, (_, k: keyof typeof fields) => encodeURIComponent(fields[k]));
+/** Fill a report link template. Placeholders: {url} {title} {site} {version} {platform} {note}. */
+export function reportLink(template: string, fields: Record<'url' | 'title' | 'site' | 'version' | 'platform', string> & { note?: string }): string {
+  return template.replace(/\{(url|title|site|version|platform|note)\}/g, (_, k: keyof typeof fields) => encodeURIComponent(fields[k] ?? ''));
 }
 
 const SNOOZE_KEY = 'sapuberita:update-snoozed';

@@ -236,6 +236,26 @@ svg { flex: none; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
 .panel .report { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .panel .report .text { font: 14px/1.3 var(--sans); }
+.panel .hidden-row { padding: 0 0 12px; }
+.panel .hidden-row .text { color: var(--muted); }
+/* Tandai: blocks the reader hid, the pick outline, and the bar at the bottom while picking. */
+.content [data-user-hidden] { display: none !important; }
+.root[data-picking] .content, .root[data-picking] .content * { cursor: crosshair; }
+.root[data-picking]::after { content: ""; display: block; height: 170px; }
+.content [data-picked] { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.pickbar { position: fixed; z-index: 5; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 10px;
+  padding: 14px max(16px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background: var(--panel); border-top: 1px solid var(--rule); box-shadow: 0 -10px 28px -14px var(--shadow); }
+.pickbar .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 0 auto; width: 100%; max-width: 680px; }
+.pickbar p { margin: 0; padding-top: 7px; font: 14px/1.45 var(--sans); color: var(--muted); }
+.pickbar .head .btn { flex: none; margin-right: -8px; }
+.pickbar .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 auto; width: 100%; max-width: 680px; }
+.pickbar .btn { color: var(--ink); }
+.pickbar .btn:disabled { opacity: 0.4; cursor: default; }
+.pickbar .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.pickbar .btn.quiet { border-color: transparent; color: var(--muted); }
+.pickbar.done p { color: var(--ink); }
+a.btn.primary { text-decoration: none; }
 .update { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 0 0 28px; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 10px; background: var(--chip); font: 14px/1.4 var(--sans); }
 .update .actions { display: flex; align-items: center; gap: 8px; }
 .update .later { border: 0; background: none; padding: 6px 4px; color: var(--muted); font: inherit; cursor: pointer; }

@@ -27,7 +27,7 @@ const [OWNER = '', NAME = ''] = REPO.split('/');
 const CHANNEL_URL = process.env.SAPU_CHANNEL_URL ?? (REPO ? `https://${OWNER.toLowerCase()}.github.io/${NAME}/` : '');
 // "Report a problem": a prefilled "Artikel rusak" issue form. update.json can swap in a form that needs no account.
 const REPORT_URL = process.env.SAPU_REPORT_URL || (REPO
-  ? `https://github.com/${REPO}/issues/new?template=broken-article.yml&url={url}&details=${encodeURIComponent('Sapu Berita ')}{version}%20(%7Bplatform%7D)`.replace('%7Bplatform%7D', '{platform}')
+  ? `https://github.com/${REPO}/issues/new?template=broken-article.yml&url={url}&details={note}%0A%0A${encodeURIComponent('Sapu Berita ')}{version}%20(%7Bplatform%7D)`.replace('%7Bplatform%7D', '{platform}')
   : '');
 
 const rules = buildRules();

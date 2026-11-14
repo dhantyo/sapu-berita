@@ -9,6 +9,7 @@ import type { UpdateOffer } from '../update.ts';
 import { heightFromMessage, playerFor } from './players.ts';
 import { quietPage } from './quiet.ts';
 import { textKey } from '../dom.ts';
+import { applyHidden, describe, fingerprint, startPicking } from './picker.ts';
 
 declare const __SAPU_VERSION__: string | undefined;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
@@ -48,8 +49,9 @@ export interface OverlayOptions {
   updatesSetting?: boolean;
   /** Link target for "read on the original site". */
   originalUrl?: string;
-  /** Builds the "report a problem" link for the current article; no link when unset. */
-  reportUrl?: (article: Article) => string | undefined;
+  /** Builds the "report a problem" link for the current article (no link when unset); `note` describes
+   *  what the reader marked with Tandai. */
+  reportUrl?: (article: Article, note?: string) => string | undefined;
   /** The reader chose "not now" on the update bar. */
   onSnoozeUpdate?: (version: string) => void;
   /** Load the faces this font setting needs (see render/fonts.ts). Called on every render; must be cheap. */
@@ -109,6 +111,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     reopen.replaceChildren(broom(16), doc.createTextNode(t.reopen));
     reopen.title = t.reopenLong;
     reopen.setAttribute('aria-label', t.reopenLong);
+    applyHidden(article.content, hiddenHere());
     root.scrollTop = top;
     progressBar = progress;
     updateProgress();
@@ -356,6 +359,19 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       ...general(),
       group(t.inArticle, rows('hero', 'summaries', 'links', 'embeds', 'sweepLine')),
     );
+    const pick = h(doc, 'button', { type: 'button', class: 'btn' }, t.pickAction);
+    pick.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setPanel(false);
+      startPick();
+    });
+    panel.append(h(doc, 'div', { class: 'group report' }, h(doc, 'span', { class: 'text' }, t.pickPrompt), pick));
+    const hiddenCount = hiddenHere().size;
+    if (hiddenCount) {
+      const show = h(doc, 'button', { type: 'button', class: 'btn' }, t.hiddenShow);
+      show.addEventListener('click', () => change({ hidden: settings.hidden.filter((k) => !k.startsWith(sitePrefix())) }));
+      panel.append(h(doc, 'div', { class: 'report hidden-row' }, h(doc, 'span', { class: 'text' }, t.hiddenCount(hiddenCount)), show));
+    }
     const report = opts.reportUrl?.(article);
     if (report) {
       panel.append(h(doc, 'div', { class: 'group report' },
@@ -402,6 +418,35 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     render();
     if (refocus) (root.querySelector(`.panel ${refocus}`) as HTMLElement | null)?.focus();
     opts.onSettingsChange?.(settings);
+  };
+
+  // ── Tandai: pick a block that doesn't belong, hide it here and on this site, offer to report it ──
+  const sitePrefix = () => `${article.ruleId ?? doc.location?.hostname ?? ''}:`;
+  const hiddenHere = () =>
+    new Set(settings.hidden.filter((k) => k.startsWith(sitePrefix())).map((k) => k.slice(sitePrefix().length)));
+  let stopPicking: (() => void) | undefined;
+  const startPick = () => {
+    stopPicking?.();
+    stopPicking = startPicking(root, article.content, strings(settings.lang), hideBlock, () => (stopPicking = undefined));
+  };
+  const hideBlock = (el: Element) => {
+    const t = strings(settings.lang);
+    const note = t.pickNote(describe(el));
+    const key = fingerprint(el);
+    if (key) {
+      const full = sitePrefix() + key;
+      change({ hidden: [...settings.hidden.filter((k) => k !== full), full] });
+    } else {
+      el.setAttribute('data-user-hidden', ''); // nothing to remember it by: hidden on this article only
+    }
+    // A short note at the bottom: it's hidden, and a one-tap report so the rule gets fixed for everyone.
+    const close = h(doc, 'button', { type: 'button', class: 'btn quiet' }, t.close);
+    const done = h(doc, 'div', { class: 'pickbar done', role: 'status' }, h(doc, 'div', { class: 'head' }, h(doc, 'p', {}, t.pickDone), close));
+    close.addEventListener('click', () => done.remove());
+    const report = opts.reportUrl?.(article, note);
+    if (report) done.append(h(doc, 'div', { class: 'row' }, h(doc, 'a', { class: 'btn primary', href: report, target: '_blank', rel: 'noopener' }, t.pickReport)));
+    root.append(done);
+    setTimeout(() => done.remove(), 20_000);
   };
 
   const setPanel = (open: boolean) => {
@@ -453,6 +498,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     }
   };
   const hide = () => {
+    stopPicking?.();
     unquiet?.();
     unquiet = undefined;
     if (panelOpen) setPanel(false);

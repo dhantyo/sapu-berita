@@ -25,6 +25,8 @@ export interface Settings {
   summaries: boolean;
   /** Quoted social posts play in the article (official embeds); off = a card with a link. */
   embeds: boolean;
+  /** Blocks the reader hid with "Tandai", as "<site rule>:<fingerprint>" (render/picker.ts). */
+  hidden: string[];
 }
 
 export const SIZE_STEPS = 5;
@@ -41,6 +43,7 @@ export const DEFAULT_SETTINGS: Settings = {
   links: true,
   summaries: true,
   embeds: true,
+  hidden: [],
 };
 
 /** Storage adapter. Wrappers pick the most durable one they have (extension storage, else localStorage). */
@@ -93,7 +96,10 @@ export function outletStore(domain: string | undefined, doc: Document = document
       // so it is rewritten every time the reader opens.
       const secure = doc.location?.protocol === 'https:' ? '; Secure' : '';
       // Only what differs from the defaults: the cookie travels with every request to the outlet.
-      const changed = Object.fromEntries(Object.entries(settings).filter(([k, v]) => DEFAULT_SETTINGS[k as keyof Settings] !== v));
+      // Hidden blocks stay out of it (they can be many); they live in the per-subdomain copy.
+      const changed = Object.fromEntries(
+        Object.entries(settings).filter(([k, v]) => k !== 'hidden' && DEFAULT_SETTINGS[k as keyof Settings] !== v),
+      );
       doc.cookie = `${name}=${encodeURIComponent(JSON.stringify(changed))}; Domain=${domain}; Path=/; Max-Age=34560000; SameSite=Lax${secure}`;
     } catch {
       // Cookies blocked: the per-subdomain copy still works.
@@ -101,7 +107,9 @@ export function outletStore(domain: string | undefined, doc: Document = document
   };
   return {
     async load() {
-      const settings = (domain && readCookie()) || (await localStorageStore.load());
+      const local = await localStorageStore.load();
+      const shared = domain ? readCookie() : undefined;
+      const settings = shared ? { ...shared, hidden: local?.hidden } : local;
       if (settings) writeCookie(settings); // renew, and share settings saved before this existed
       return settings;
     },
@@ -123,6 +131,8 @@ export function outletDomain(host: string, siteDomains: string[]): string | unde
 export const SWITCHES = ['hero', 'autoOpen', 'sweepLine', 'updates', 'links', 'summaries', 'embeds'] as const;
 export type Switch = (typeof SWITCHES)[number];
 
+const MAX_HIDDEN = 100;
+
 const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
   allowed.includes(value as T) ? (value as T) : fallback;
 
@@ -139,5 +149,7 @@ export function normalizeSettings(raw: Partial<Settings> | undefined): Settings 
     lang: pick(r.lang, ['id', 'en'] as const, d.lang),
   };
   for (const k of SWITCHES) if (typeof r[k] === 'boolean') out[k] = r[k] as boolean;
+  // Newest last; a bounded list of short keys.
+  if (Array.isArray(r.hidden)) out.hidden = r.hidden.filter((k): k is string => typeof k === 'string' && k.length <= 200).slice(-MAX_HIDDEN);
   return out;
 }

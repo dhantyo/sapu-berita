@@ -3,6 +3,7 @@ import { normalizeSummaries } from './summary.ts';
 import { convertEmbeds } from './embeds.ts';
 import { joinDatelines } from './dateline.ts';
 import { joinCaptions } from './captions.ts';
+import { splitBreaks } from './breaks.ts';
 
 const BLOCKS = 'p, div, li, h2, h3, h4, h5, table, blockquote, section, aside, span, strong';
 const LAZY_SRC_ATTRS = ['data-src', 'data-original', 'data-lazy-src', 'data-srcset'];
@@ -25,6 +26,7 @@ export function clean(container: HTMLElement, rule: ResolvedRule, rules: RuleSet
   let swept = removeCustomElements(container);
   swept += removeSelectors(container, rules.common.remove.filter((s) => UNCOUNTED.has(s)), false);
   swept += removeSelectors(container, [...rules.common.remove.filter((s) => !UNCOUNTED.has(s)), ...rule.remove, ...adblock]);
+  splitBreaks(container); // before the drop patterns, so they see each line on its own
   swept += dropMatchingBlocks(container, dropPatterns(rule, rules));
   normalizeSummaries(container, rules.common.summaryHeadings ?? []);
   joinDatelines(container);

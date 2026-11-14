@@ -89,10 +89,10 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
               onSettingsChange: (s) => void store.save(s),
               onSnoozeUpdate: snoozeOffer,
               loadFonts: (f) => ensureFonts(document, f, __GEIST__, CHANNEL && new URL('fonts/', CHANNEL).href),
-              reportUrl: (a) => {
+              reportUrl: (a, note) => {
                 const template = cachedManifest()?.report || __REPORT_URL__;
                 return template ? reportLink(template, {
-                  url: url.href, title: a.meta.title, site: url.hostname, version: VERSION, platform,
+                  url: url.href, title: a.meta.title, site: url.hostname, version: VERSION, platform, note: note ?? '',
                 }) : undefined;
               },
             });

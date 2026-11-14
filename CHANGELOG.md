@@ -6,6 +6,8 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 
 ## [Unreleased]
 
+- **Tandai: hide what doesn't belong.** In Aa, tap **Tandai**, then tap the part of the article that shouldn't be there (a promo, a leftover "Baca juga"). Widen or narrow the pick, then **Sembunyikan**: it's hidden straight away and on other articles from that site too. Aa shows how many parts are hidden on the site, with **Tampilkan lagi** to bring them back. After hiding, one tap sends a report with that part's text filled in, so the site rule can be fixed for everyone.
+- Paragraphs that a site writes as one block with blank lines between them (Tribrata News) become real paragraphs.
 - **Reports without a GitHub account:** the Laporkan button and the install page can point at a simple form instead of GitHub (one repository setting, `SAPU_REPORT_URL`; see docs/DEVELOPING.md). Until it's set, reports still go to GitHub.
 - **New site: Tribrata News** (tribratanews.polri.go.id), Polri's news portal. On Android, open the Sapu Berita app once after updating: it asks you to switch on the new site under "Open by default".
 - **Less data:** opening the photo viewer no longer downloads every photo in the article at full size, only the ones you look at.
