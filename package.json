@@ -1,6 +1,6 @@
 {
   "name": "sapu-berita",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Clean reading overlay for Indonesian news sites. One core script, wrapped for an Apple Shortcut, an Android app and a browser extension.",
   "license": "GPL-3.0-only",

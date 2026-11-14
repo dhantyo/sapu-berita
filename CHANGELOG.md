@@ -4,7 +4,7 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
-## [Unreleased]
+## [0.3.1] - 2026-11-14
 
 - **"Sapu" button:** on the original page, the button that brings the clean view back is now called "Sapu" and sits top right, exactly where "Asli" is in the reader, with a border so it stands out on any site.
 - **Photo viewer:** buttons redrawn in the reader's style; Back (Android's back button, the browser's) closes the viewer instead of leaving the article; the photo no longer shows twice while the viewer closes.
