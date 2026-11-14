@@ -7,7 +7,9 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 ## [Unreleased]
 
 - **Settings:** the bookmark and the Shortcut no longer show "Cek update": they always run the newest version, site fixes included. With "Buka otomatis" already gone there, the "Umum" group is hidden in that build.
-- The "Otomatis" theme swatch is split straight down the middle, with clean edges.
+- The "Otomatis" theme swatch is split at 45° again, now with clean edges (no dark fringe on the light half).
+- **Editors printed on the page** are shown when the page data leaves them out: Liputan6 and Merdeka's "Tim Redaksi" card, Bisnis and iNews "Editor :" lines. An editor who is also the author is shown once.
+- **Page count:** Liputan6 and Merdeka articles no longer say "merged from 2 (or 5) pages": their sections are all on one page already.
 
 ## [0.3.2] - 2026-11-14
 

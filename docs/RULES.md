@@ -36,7 +36,7 @@ A site rule is one JSON file in `rules/sites/`. It tells the core where the arti
 | `method` | Use when | Example |
 |---|---|---|
 | `none` | articles are never split | — |
-| `inline` | all pages are already in the HTML | Liputan6 news (with `bodyAll: true`) |
+| `inline` | all pages are already in the HTML, shown together | Liputan6 news (with `bodyAll: true`); counts as one page |
 | `param` | the site has a "show all" URL | Kompas/Tribun `page=all`, Detik `single=1` |
 | `fetch` | no working "show all"; download each page and stitch | Liputan6 bola, CNN Indonesia |
 

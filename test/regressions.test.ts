@@ -199,3 +199,31 @@ describe('video pages that only show the video as their main image (video.tribun
     expect(extractMetadata(doc).video).toBe('https://www.youtube.com/embed/UVKBT1S8Jtw');
   });
 });
+
+describe('editor printed on the page, when the page data has none', () => {
+  const editorOf = async (html: string) => {
+    const { extractMetadata } = await import('../src/extract/metadata.ts');
+    return extractMetadata(documentFromHtml(html, 'https://www.example.com/read/1/x'));
+  };
+  const ld = (author: string) => `<script type="application/ld+json">{"@type":"NewsArticle","headline":"Judul berita yang cukup panjang","author":{"@type":"Person","name":"${author}"}}</script>`;
+
+  it('Liputan6 / Merdeka "Tim Redaksi" card (name beside a role label)', async () => {
+    const m = await editorOf(ld('Devira Prastiwi') +
+      '<div class="editorial-articles__list"><a class="editorial-articles__item"><div class="editorial-articles__meta"><span>Devira Prastiwi</span><span class="editorial-articles__role">Reporter</span></div></a>' +
+      '<a class="editorial-articles__item"><div class="editorial-articles__meta"><span>Jonathan Pandapotan Purba</span><span class="editorial-articles__role">Editor</span></div></a></div>');
+    expect(m.editor).toBe('Jonathan Pandapotan Purba');
+  });
+
+  it('Bisnis "Editor :" with the name in the next element, iNews "Editor : name" inline', async () => {
+    expect((await editorOf(ld('Media Digital') + '<div class="detailsAuthorItem">Editor : <a>Annisa Nurul Amara</a></div>')).editor).toBe('Annisa Nurul Amara');
+    expect((await editorOf(ld('Aditya Pratama') + '<div class="editor">Editor : Rizky Agustian</div>')).editor).toBe('Rizky Agustian');
+  });
+
+  it('shows an editor who is also the author only once', async () => {
+    expect((await editorOf(ld('Aditya Pratama') + '<div class="editor">Editor : Aditya Pratama</div>')).editor).toBeUndefined();
+  });
+
+  it("ignores words like Editor's Pick", async () => {
+    expect((await editorOf(ld('A B') + "<h3>Editor's Pick</h3><p>Pilihan editor: berita hari ini adalah yang terbaik dari semua</p>")).editor).toBeUndefined();
+  });
+});

@@ -24,11 +24,10 @@ export async function paginate(
       case 'none':
         return { container, pages: 1 };
 
-      case 'inline': {
-        const pageIds = new Set([...container.querySelectorAll('[data-page]')].map((e) => e.getAttribute('data-page')));
-        const fromDoc = new Set([...ctx.doc.querySelectorAll('[data-page]')].map((e) => e.getAttribute('data-page')));
-        return { container, pages: Math.max(pageIds.size, fromDoc.size, 1) };
-      }
+      case 'inline':
+        // Everything is already on the page. The site's "page" markers (Liputan6's data-page sections,
+        // Merdeka's empty placeholders) are shown together there, so nothing was merged: one page.
+        return { container, pages: 1 };
 
       case 'param': {
         if (p.onlyIf && !safeQuery(ctx.doc, p.onlyIf)) return { container, pages: 1 };

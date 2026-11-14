@@ -26,7 +26,7 @@ export function extractMetadata(doc: Document): ArticleMeta {
       meta('meta[property="og:title"]') ??
       doc.title.trim(),
     byline: authorNames(ld?.author) ?? meta('meta[name="author"]'),
-    editor: authorNames(ld?.editor),
+    editor: authorNames(ld?.editor) ?? pageEditor(doc),
     published:
       str(ld?.datePublished) ??
       meta('meta[property="article:published_time"]') ??
@@ -85,6 +85,8 @@ const TEXT_FIELDS = ['title', 'byline', 'editor', 'siteName', 'section', 'descri
  * italics survive separately in titleMarkup.
  */
 function decodeText(m: ArticleMeta): ArticleMeta {
+  // An editor who is also the author (Bisnis, iNews often) is shown once, as the author.
+  if (m.editor && m.byline && m.editor.trim().toLowerCase() === m.byline.trim().toLowerCase()) m.editor = undefined;
   for (const k of TEXT_FIELDS) if (m[k]) m[k] = decodeEntities(m[k]!);
   if (m.title && /<(i|em)>/i.test(m.title)) {
     m.titleMarkup = m.title.replace(/<(?!\/?(?:i|em)>)[^>]*>/gi, '').replace(/<(\/?)em>/gi, '<$1i>');
@@ -136,6 +138,40 @@ function jsonLdNodes(doc: Document): Json[] {
 
 function str(v: unknown): string | undefined {
   return typeof v === 'string' && v.trim() ? v.trim() : undefined;
+}
+
+/**
+ * The editor as the page prints it, for outlets whose page data leaves it out:
+ *   Liputan6, Merdeka:  <a class="editorial-articles__item"> … Muhamad Agil Aliansyah <span>Editor</span>
+ *   Bisnis:             <div>Editor : <a>Media Digital</a></div>
+ *   iNews:              <div class="editor">Editor : Aditya Pratama</div>
+ * Only an exact "Editor"/"Penyunting" label counts, and the first one on the page (the article's own;
+ * later ones belong to stories loaded below it).
+ */
+const EDITOR_LABEL = /^(editor|penyunting)\s*:?\s*$/i;
+const EDITOR_INLINE = /^(?:editor|penyunting)\s*:\s*(.+)$/i;
+export function pageEditor(doc: Document): string | undefined {
+  const clean = (s: string | null | undefined) => (s ?? '').replace(/\s+/g, ' ').trim();
+  const isName = (s: string) => s.length >= 3 && s.length <= 60 && /\p{L}/u.test(s) && !/[:|/]/.test(s) && s.split(' ').length <= 6;
+  for (const el of doc.body?.querySelectorAll('*') ?? []) {
+    if (el.closest('script, style, noscript, template')) continue;
+    const own = clean([...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' '));
+    if (!own) continue;
+    const inline = EDITOR_INLINE.exec(own)?.[1]?.trim();
+    if (inline && isName(inline)) return inline;
+    if (!EDITOR_LABEL.test(own)) continue;
+    // "Editor : <a>name</a>" (name inside), "Editor :" then the name in the next element, or the name
+    // elsewhere in the label's own row.
+    const inside = clean(el.textContent).replace(/^(editor|penyunting)\s*:?\s*/i, '');
+    if (inside && isName(inside)) return inside;
+    const next = clean(el.nextElementSibling?.textContent);
+    if (next && isName(next)) return next;
+    const row = el.parentElement;
+    const rowText = clean(row?.textContent);
+    const rest = rowText.slice(0, rowText.toLowerCase().lastIndexOf(own.toLowerCase())).trim();
+    if (rest && isName(rest)) return rest;
+  }
+  return undefined;
 }
 
 function authorNames(v: unknown): string | undefined {

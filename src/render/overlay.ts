@@ -321,16 +321,17 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     ], (v) => change({ font: v }, `[data-value="${v}"]`), (btn, v) => (btn.style.fontFamily = faces[v]))));
 
     // Theme: swatch of each ground
-    const grounds: Record<Theme, string> = {
-      // Half light, half dark, split straight down (a diagonal split renders with jagged edges at this size).
-      auto: 'linear-gradient(90deg, rgb(255 255 255) 50%, rgb(18 18 18) 50%)',
+    const grounds: Record<Exclude<Theme, 'auto'>, string> = {
       light: 'rgb(255 255 255)', sepia: 'rgb(247 241 228)', dark: 'rgb(18 18 18)',
     };
     panel.append(group(t.theme, segmented<Theme>(t.theme, settings.theme, [
       ['auto', t.themeAuto], ['light', t.themeLight], ['sepia', t.themeSepia], ['dark', t.themeDark],
     ], (v) => change({ theme: v }, `[data-value="${v}"]`), (btn, v) => {
       const sw = h(doc, 'span', { class: 'swatch', 'aria-hidden': 'true' });
-      sw.style.background = grounds[v];
+      if (v === 'auto') {
+        sw.classList.add('split');
+        sw.append(splitSwatch());
+      } else sw.style.background = grounds[v];
       btn.prepend(sw);
     })));
 
@@ -622,6 +623,26 @@ function h(doc: Document, tag: string, attrs: Record<string, string> = {}, ...ch
 }
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/**
+ * The "automatic" theme swatch: light top-left, dark bottom-right, split at 45°. Drawn as two halves that
+ * meet on the diagonal (not one colour painted over the other, whose edge would leave a dark fringe on the
+ * light side), with the same 1px ring as the other swatches on top of both.
+ */
+function splitSwatch(): SVGSVGElement {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  for (const [k, v] of Object.entries({ width: '18', height: '18', viewBox: '0 0 18 18', 'aria-hidden': 'true' })) svg.setAttribute(k, v);
+  const shape = (tag: string, attrs: Record<string, string>) => {
+    const el = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    svg.append(el);
+  };
+  // Circle of radius 8.5 around (9, 9); the diagonal runs from bottom-left (2.99, 15.01) to top-right (15.01, 2.99).
+  shape('path', { d: 'M2.99 15.01A8.5 8.5 0 0 1 15.01 2.99Z', fill: 'rgb(255 255 255)' });
+  shape('path', { d: 'M15.01 2.99A8.5 8.5 0 0 1 2.99 15.01Z', fill: 'rgb(18 18 18)' });
+  shape('circle', { cx: '9', cy: '9', r: '8.5', fill: 'none', class: 'ring' });
+  return svg;
+}
 function icon(size: number, paths: string[]): SVGSVGElement {
   const svg = document.createElementNS(SVG_NS, 'svg');
   for (const [k, v] of Object.entries({
