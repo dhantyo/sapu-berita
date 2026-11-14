@@ -10,6 +10,7 @@ import { heightFromMessage, playerFor } from './players.ts';
 import { quietPage } from './quiet.ts';
 import { textKey } from '../dom.ts';
 import { applyHidden, describe, fingerprint, startPicking } from './picker.ts';
+import { applyAdded, insertFromPage, stableSelector, startPagePicking } from './pagepicker.ts';
 
 declare const __SAPU_VERSION__: string | undefined;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
@@ -83,7 +84,10 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
   const root = h(doc, 'div', { class: 'root', role: 'dialog', 'aria-modal': 'true' });
   const reopen = h(doc, 'button', { type: 'button', class: 'reopen' });
-  shadow.append(style, root, reopen);
+  // Pick mode on the original page draws its outline and bar here, in the reader's theme.
+  const pageLayer = h(doc, 'div', { class: 'pagepick tokens' });
+  pageLayer.hidden = true;
+  shadow.append(style, root, reopen, pageLayer);
   doc.documentElement.append(host);
 
   // ── Rendering ───────────────────────────────────────────────────────────
@@ -93,6 +97,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     const t = strings(settings.lang);
     const top = root.scrollTop;
     root.dataset.theme = settings.theme;
+    pageLayer.dataset.theme = settings.theme;
     root.dataset.font = settings.font;
     root.dataset.links = settings.links ? 'on' : 'off';
     root.dataset.summaries = settings.summaries ? 'on' : 'off';
@@ -111,7 +116,8 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     reopen.replaceChildren(broom(16), doc.createTextNode(t.reopen));
     reopen.title = t.reopenLong;
     reopen.setAttribute('aria-label', t.reopenLong);
-    applyHidden(article.content, hiddenHere());
+    applyAdded(article.content, keysHere('added'), doc);
+    applyHidden(article.content, keysHere('hidden'));
     root.scrollTop = top;
     progressBar = progress;
     updateProgress();
@@ -366,11 +372,24 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       startPick();
     });
     panel.append(h(doc, 'div', { class: 'group report' }, h(doc, 'span', { class: 'text' }, t.pickPrompt), pick));
-    const hiddenCount = hiddenHere().size;
+    const hiddenCount = keysHere('hidden').size;
     if (hiddenCount) {
       const show = h(doc, 'button', { type: 'button', class: 'btn' }, t.hiddenShow);
       show.addEventListener('click', () => change({ hidden: settings.hidden.filter((k) => !k.startsWith(sitePrefix())) }));
       panel.append(h(doc, 'div', { class: 'report hidden-row' }, h(doc, 'span', { class: 'text' }, t.hiddenCount(hiddenCount)), show));
+    }
+    const fromPage = h(doc, 'button', { type: 'button', class: 'btn' }, t.addPick);
+    fromPage.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setPanel(false);
+      startPagePick();
+    });
+    panel.append(h(doc, 'div', { class: 'group report' }, h(doc, 'span', { class: 'text' }, t.addPrompt), fromPage));
+    const addedCount = keysHere('added').size;
+    if (addedCount) {
+      const remove = h(doc, 'button', { type: 'button', class: 'btn' }, t.addedRemove);
+      remove.addEventListener('click', () => change({ added: settings.added.filter((k) => !k.startsWith(sitePrefix())) }));
+      panel.append(h(doc, 'div', { class: 'report hidden-row' }, h(doc, 'span', { class: 'text' }, t.addedCount(addedCount)), remove));
     }
     const report = opts.reportUrl?.(article);
     if (report) {
@@ -422,8 +441,9 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
 
   // ── Tandai: pick a block that doesn't belong, hide it here and on this site, offer to report it ──
   const sitePrefix = () => `${article.ruleId ?? doc.location?.hostname ?? ''}:`;
-  const hiddenHere = () =>
-    new Set(settings.hidden.filter((k) => k.startsWith(sitePrefix())).map((k) => k.slice(sitePrefix().length)));
+  /** This outlet's remembered hidden fingerprints or added selectors. */
+  const keysHere = (list: 'hidden' | 'added') =>
+    new Set(settings[list].filter((k) => k.startsWith(sitePrefix())).map((k) => k.slice(sitePrefix().length)));
   let stopPicking: (() => void) | undefined;
   const startPick = () => {
     stopPicking?.();
@@ -439,9 +459,40 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     } else {
       el.setAttribute('data-user-hidden', ''); // nothing to remember it by: hidden on this article only
     }
-    // A short note at the bottom: it's hidden, and a one-tap report so the rule gets fixed for everyone.
+    doneNote(t.pickDone, note);
+  };
+
+  // ── Pilih di halaman asli: pick a missing part on the original page, add it here and on this site ──
+  let stopPagePicking: (() => void) | undefined;
+  const startPagePick = () => {
+    stopPicking?.();
+    hide();
+    reopen.style.display = 'none';
+    stopPagePicking = startPagePicking(pageLayer, host, strings(settings.lang), addFromPage, () => {
+      stopPagePicking = undefined;
+      show();
+    });
+  };
+  const addFromPage = (el: Element) => {
+    const t = strings(settings.lang);
+    const selector = stableSelector(el);
+    const note = t.addNote(describe(el), selector);
+    if (selector) {
+      const full = sitePrefix() + selector;
+      change({ added: [...settings.added.filter((k) => k !== full), full] });
+    } else {
+      insertFromPage(el, article.content); // nothing stable to find it by again: this article only
+    }
+    root.querySelector('[data-user-added]')?.scrollIntoView({ block: 'center' });
+    doneNote(selector ? t.addDone : t.addDoneOnce, note);
+  };
+
+  /** A short note at the bottom after Tandai or Tambahkan, with a one-tap report so the rule gets fixed for everyone. */
+  const doneNote = (message: string, note: string) => {
+    const t = strings(settings.lang);
+    root.querySelector('.pickbar.done')?.remove();
     const close = h(doc, 'button', { type: 'button', class: 'btn quiet' }, t.close);
-    const done = h(doc, 'div', { class: 'pickbar done', role: 'status' }, h(doc, 'div', { class: 'head' }, h(doc, 'p', {}, t.pickDone), close));
+    const done = h(doc, 'div', { class: 'pickbar done', role: 'status' }, h(doc, 'div', { class: 'head' }, h(doc, 'p', {}, message), close));
     close.addEventListener('click', () => done.remove());
     const report = opts.reportUrl?.(article, note);
     if (report) done.append(h(doc, 'div', { class: 'row' }, h(doc, 'a', { class: 'btn primary', href: report, target: '_blank', rel: 'noopener' }, t.pickReport)));

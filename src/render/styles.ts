@@ -51,6 +51,16 @@ export const OVERLAY_CSS = `
 .root[data-theme="sepia"] { ${SEPIA} }
 .root[data-theme="dark"] { ${DARK} }
 @media (prefers-color-scheme: dark) { .root[data-theme="auto"] { ${DARK} } }
+/* The pick layer over the original page (render/pagepicker.ts): same colours and face as the reader. */
+.tokens { ${LIGHT} --sans: "Sapu Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; --ease: cubic-bezier(0.2, 0.8, 0.2, 1); font: 15px/1.5 var(--sans); color: var(--ink); }
+.tokens[data-theme="sepia"] { ${SEPIA} }
+.tokens[data-theme="dark"] { ${DARK} }
+@media (prefers-color-scheme: dark) { .tokens[data-theme="auto"] { ${DARK} } }
+.pagepick[hidden] { display: none; }
+.pick-outline { position: fixed; z-index: 2147483646; pointer-events: none; border: 2px solid var(--accent); border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent); box-shadow: 0 0 0 9999px rgb(0 0 0 / 0.18); transition: all 120ms ease-out; }
+.pick-outline[hidden] { display: none; }
+.pagepick .pickbar { z-index: 2147483647; }
 .root[data-font="serif"] { --body: var(--serif); --head: var(--serif); --text-k: 0.92; --lead: 1.68; --head-lead: 1.16; --head-track: -0.008em; --sub-track: 0em; }
 .root[data-font="legible"] { --body: var(--legible); --head: var(--legible); --text-k: 1; --lead: 1.7; --head-lead: 1.14; --head-track: -0.01em; --sub-track: 0em; }
 @media (max-width: 600px) { .root { --narrow: 1.5px; } }

@@ -27,6 +27,8 @@ export interface Settings {
   embeds: boolean;
   /** Blocks the reader hid with "Tandai", as "<site rule>:<fingerprint>" (render/picker.ts). */
   hidden: string[];
+  /** Parts of the original page the reader added to the clean view, as "<site rule>:<selector>" (render/pagepicker.ts). */
+  added: string[];
 }
 
 export const SIZE_STEPS = 5;
@@ -44,6 +46,7 @@ export const DEFAULT_SETTINGS: Settings = {
   summaries: true,
   embeds: true,
   hidden: [],
+  added: [],
 };
 
 /** Storage adapter. Wrappers pick the most durable one they have (extension storage, else localStorage). */
@@ -96,9 +99,9 @@ export function outletStore(domain: string | undefined, doc: Document = document
       // so it is rewritten every time the reader opens.
       const secure = doc.location?.protocol === 'https:' ? '; Secure' : '';
       // Only what differs from the defaults: the cookie travels with every request to the outlet.
-      // Hidden blocks stay out of it (they can be many); they live in the per-subdomain copy.
+      // Hidden and added blocks stay out of it (they can be many); they live in the per-subdomain copy.
       const changed = Object.fromEntries(
-        Object.entries(settings).filter(([k, v]) => k !== 'hidden' && DEFAULT_SETTINGS[k as keyof Settings] !== v),
+        Object.entries(settings).filter(([k, v]) => k !== 'hidden' && k !== 'added' && DEFAULT_SETTINGS[k as keyof Settings] !== v),
       );
       doc.cookie = `${name}=${encodeURIComponent(JSON.stringify(changed))}; Domain=${domain}; Path=/; Max-Age=34560000; SameSite=Lax${secure}`;
     } catch {
@@ -109,7 +112,7 @@ export function outletStore(domain: string | undefined, doc: Document = document
     async load() {
       const local = await localStorageStore.load();
       const shared = domain ? readCookie() : undefined;
-      const settings = shared ? { ...shared, hidden: local?.hidden } : local;
+      const settings = shared ? { ...shared, hidden: local?.hidden, added: local?.added } : local;
       if (settings) writeCookie(settings); // renew, and share settings saved before this existed
       return settings;
     },
@@ -150,6 +153,8 @@ export function normalizeSettings(raw: Partial<Settings> | undefined): Settings 
   };
   for (const k of SWITCHES) if (typeof r[k] === 'boolean') out[k] = r[k] as boolean;
   // Newest last; a bounded list of short keys.
-  if (Array.isArray(r.hidden)) out.hidden = r.hidden.filter((k): k is string => typeof k === 'string' && k.length <= 200).slice(-MAX_HIDDEN);
+  const keys = (v: unknown) => (Array.isArray(v) ? v.filter((k): k is string => typeof k === 'string' && k.length <= 200).slice(-MAX_HIDDEN) : []);
+  out.hidden = keys(r.hidden);
+  out.added = keys(r.added);
   return out;
 }
