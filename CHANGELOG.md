@@ -4,7 +4,7 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
-## [0.3.0] - 2026-11-13
+## [0.3.0] - 2026-11-14
 
 - **Videos and posts play in the article:** YouTube, Instagram, TikTok, X and Facebook posts a story quotes now play inside the reader, using each platform's own player. Turn off "Putar media di artikel" in settings to get the old link card back.
 - **Photo viewer:** tap a photo to see it full screen with its caption; swipe between the article's photos, pinch or double-tap to zoom, swipe down or tap ✕ to close. Built on [PhotoSwipe](https://photoswipe.com) (MIT).
