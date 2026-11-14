@@ -30,14 +30,18 @@ const MAX_TEXT = 320;
 
 /**
  * Put the story's own video (from the page data) at the top when the article text doesn't already carry it.
- * It goes in as the page's iframe would, so the usual embed handling turns it into a card and a player.
+ * Runs after cleaning, so a site rule that removes inserted promo videos (Tribun) can't remove this one.
  */
 export function prependMainVideo(root: HTMLElement, embedUrl: string): boolean {
   const id = /\/embed\/([\w-]{6,})/.exec(embedUrl)?.[1];
   if (!id || root.innerHTML.includes(id)) return false;
+  const holder = root.ownerDocument.createElement('div');
   const frame = root.ownerDocument.createElement('iframe');
   frame.setAttribute('src', embedUrl);
-  root.prepend(frame);
+  holder.append(frame);
+  convertEmbeds(holder);
+  if (!holder.firstElementChild) return false;
+  root.prepend(holder.firstElementChild);
   return true;
 }
 

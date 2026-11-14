@@ -56,7 +56,6 @@ describe.skipIf(!savedPagesPresent())('real articles keep their quoted posts', (
   const cases: Array<[string, string, RegExp]> = [
     ['kompas/3-kali-batal-manggung-dongker-bersyukur-bisa-bawakan-nirimaj', 'instagram', /instagram\.com\/reel\//],
     ['cnnindonesia/patung-sexy-robot-konser-the-weeknd-tuai-polemik-di-malaysia', 'facebook', /facebook\.com\/drzulkiflihasan\/posts\//],
-    ['tribun/pernyataan-lengkap-gibran-usai-sampaikan-niat-mundur-sebagai', 'youtube', /youtube\.com\/watch\?v=/],
   ];
   it.each(cases)('%s → %s card', async (fixture, platform, href) => {
     const dir = join(import.meta.dirname, 'fixtures', fixture);
@@ -69,5 +68,14 @@ describe.skipIf(!savedPagesPresent())('real articles keep their quoted posts', (
     const card = result.article.content.querySelector(`figure[data-embed="${platform}"]`);
     expect(card, `no ${platform} card`).not.toBeNull();
     expect(card?.querySelector('a[data-embed-link]')?.getAttribute('href')).toMatch(href);
+  });
+
+  it("drops Tribun's inserted promo video for another story (also named as the article's video in its data)", async () => {
+    const dir = join(import.meta.dirname, 'fixtures', 'tribun/pernyataan-lengkap-gibran-usai-sampaikan-niat-mundur-sebagai');
+    const fx = JSON.parse(readFileSync(join(dir, 'fixture.json'), 'utf8'));
+    const pages = Object.fromEntries(Object.entries(fx.pages as Record<string, string>).map(([u, f]) => [u, join(dir, f)]));
+    const result = await run(nodeContext(documentFromHtml(readFileSync(join(dir, 'page.html'), 'utf8'), fx.url), fx.url, rules, pages));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.article.content.querySelector('figure[data-embed="youtube"]')).toBeNull();
   });
 });

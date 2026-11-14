@@ -9,6 +9,7 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 - **"Sapu" button:** on the original page, the button that brings the clean view back is now called "Sapu" and sits top right, exactly where "Asli" is in the reader, with a border so it stands out on any site.
 - **Photo viewer:** buttons redrawn in the reader's style; Back (Android's back button, the browser's) closes the viewer instead of leaving the article; the photo no longer shows twice while the viewer closes.
 - **Video stories** (video.tribunnews.com and other pages whose data names their video) show their video at the top of the article. The "Download aplikasi …" line is dropped.
+- **Tribun:** the "Tribunnews Update" videos inserted into articles (clips about other stories) are gone.
 - **Install page:** a new section explains what Sapu Berita is and how it works.
 
 ## [0.3.0] - 2026-11-14

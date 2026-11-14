@@ -86,8 +86,8 @@ function finishArticle(
   source: Article['source'],
   ctx: Context,
 ): RunResult {
-  if (meta.video) prependMainVideo(container, meta.video);
   const swept = clean(container, rule, ctx.rules, adblockSelectors(ctx.rules, ctx.url.hostname), ctx.url);
+  if (meta.video) prependMainVideo(container, meta.video);
   const content = sanitize(container);
   const quality = assessQuality(content, ctx.rules.common.quality);
   if (!quality.ok) return { ok: false, reason: 'low-quality', detail: JSON.stringify(quality) };

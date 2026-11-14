@@ -41,22 +41,27 @@ export function extractMetadata(doc: Document): ArticleMeta {
     logo: absolute(imageUrl(publisher?.logo)) ?? absolute(imageUrl(org?.logo)),
     section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
-    video: mainVideo(nodes, ld),
+    video: mainVideo(nodes, ld, str(ld?.headline) ?? meta('meta[property="og:title"]')),
   });
 }
 
 /**
- * The story's own video, when the page says it is a video story: a VideoObject node, or the article's
- * `video`, with a YouTube embed address (video.tribunnews.com keeps its player outside the article text).
+ * The story's own video, when the page is a video story: a VideoObject (top-level or the article's `video`)
+ * with a YouTube embed address, whose name is the article's headline (video.tribunnews.com keeps its player
+ * outside the article text). Tribun also lists its house promo for another story as the article's video;
+ * that one carries the other story's name, so it doesn't count.
  */
-function mainVideo(nodes: Json[], ld: Json | undefined): string | undefined {
+function mainVideo(nodes: Json[], ld: Json | undefined, headline: string | undefined): string | undefined {
+  const key = (t: unknown) => (typeof t === 'string' ? t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().slice(0, 40) : '');
+  const want = key(headline);
+  if (want.length < 15) return undefined;
   const candidates = [
     ...nodes.filter((n) => /VideoObject/i.test(([] as unknown[]).concat(n['@type']).join(','))),
     ...([] as unknown[]).concat(ld?.video ?? []),
   ] as Json[];
   for (const v of candidates) {
     const url = str(v?.embedUrl);
-    if (url && /^https:\/\/(www\.)?youtube(-nocookie)?\.com\/embed\/[\w-]{6,}/.test(url)) return url;
+    if (url && key(v?.name) === want && /^https:\/\/(www\.)?youtube(-nocookie)?\.com\/embed\/[\w-]{6,}/.test(url)) return url;
   }
   return undefined;
 }

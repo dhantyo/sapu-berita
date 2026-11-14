@@ -132,7 +132,7 @@ describe('video stories (video.tribunnews.com)', () => {
     const { extractMetadata } = await import('../src/extract/metadata.ts');
     const { prependMainVideo } = await import('../src/clean/embeds.ts');
     const doc = documentFromHtml(
-      '<script type="application/ld+json">{"@type":"VideoObject","name":"x","embedUrl":"https://www.youtube.com/embed/EXc3O86ckJo"}</script><p>Teks.</p>',
+      '<script type="application/ld+json">{"@type":"NewsArticle","headline":"Gibran Ungkap Awal Mula Diminta jadi Cawapres","video":{"@type":"VideoObject","name":"Gibran Ungkap Awal Mula Diminta jadi Cawapres","embedUrl":"https://www.youtube.com/embed/EXc3O86ckJo"}}</script><p>Teks.</p>',
       'https://video.tribunnews.com/news/974338/x',
     );
     const video = extractMetadata(doc).video!;
@@ -140,8 +140,17 @@ describe('video stories (video.tribunnews.com)', () => {
     const body = doc.createElement('div');
     body.innerHTML = '<p>Teks.</p>';
     expect(prependMainVideo(body, video)).toBe(true);
-    expect(body.firstElementChild?.tagName).toBe('IFRAME');
+    expect(body.firstElementChild?.getAttribute('data-embed')).toBe('youtube');
     expect(prependMainVideo(body, video)).toBe(false); // already there
+  });
+
+  it("ignores a video named after another story (Tribun's house promo listed as the article's video)", async () => {
+    const { extractMetadata } = await import('../src/extract/metadata.ts');
+    const doc = documentFromHtml(
+      '<script type="application/ld+json">{"@type":"NewsArticle","headline":"Golkar Sebut 8 Nama Calon Wapres Pengganti Gibran","video":{"@type":"VideoObject","name":"Rumah Gibran di Solo Direnovasi","embedUrl":"https://www.youtube.com/embed/PaFdGBPv47s"}}</script>',
+      'https://www.tribunnews.com/nasional/7911459/x',
+    );
+    expect(extractMetadata(doc).video).toBeUndefined();
   });
 
   it('hides a description that repeats the opening behind an app-download line', async () => {
