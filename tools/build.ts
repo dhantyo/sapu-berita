@@ -26,7 +26,7 @@ const [OWNER = '', NAME = ''] = REPO.split('/');
 // Note: GitHub Pages URLs don't redirect after a repository rename; installed copies keep asking the old URL.
 const CHANNEL_URL = process.env.SAPU_CHANNEL_URL ?? (REPO ? `https://${OWNER.toLowerCase()}.github.io/${NAME}/` : '');
 // "Report a problem": a prefilled "Artikel rusak" issue form. update.json can swap in a form that needs no account.
-const REPORT_URL = process.env.SAPU_REPORT_URL ?? (REPO
+const REPORT_URL = process.env.SAPU_REPORT_URL || (REPO
   ? `https://github.com/${REPO}/issues/new?template=broken-article.yml&url={url}&details=${encodeURIComponent('Sapu Berita ')}{version}%20(%7Bplatform%7D)`.replace('%7Bplatform%7D', '{platform}')
   : '');
 

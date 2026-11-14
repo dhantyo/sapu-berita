@@ -66,7 +66,15 @@ Android APK: `cd apps/android && ./gradlew assembleDebug`.
 
 One-time setup: Settings → Pages → Source: **GitHub Actions** (needs a public repository on the free plan). Pages URLs don't follow repository renames, so rename before the first release.
 
-`update.json` may also carry `"report": "<url template>"` to point the in-app **Laporkan** button somewhere other than GitHub issues (for example a form that needs no account); placeholders `{url} {title} {site} {version} {platform}`.
+### Reports without a GitHub account
+
+By default **Laporkan** (in the reader) and **Laporkan masalah** (install page footer) open the GitHub "Broken article" form, which needs a GitHub account. To let anyone report, point them at a free form instead (Tally works well: no sign-in for the reporter, screenshot uploads included):
+
+1. Create the form with these questions: *Apa yang salah?* (checkboxes: Sapu Berita tidak muncul · Teks artikel terpotong · Masih ada iklan / "Baca Juga" · Halaman 2, 3 tidak digabung · Foto atau video hilang · Tampilannya rusak), *Ceritakan sedikit* (long text, optional), *Screenshot* (file upload, optional). Add **hidden fields** named `url`, `site`, `version` and `platform`.
+2. Take the form's share link and add the placeholders, e.g. `https://tally.so/r/AbC123?url={url}&site={site}&version={version}&platform={platform}`. Placeholders available: `{url} {title} {site} {version} {platform}`.
+3. Save it as the repository variable `SAPU_REPORT_URL` (Settings → Secrets and variables → Actions → Variables, or `gh variable set SAPU_REPORT_URL --body '<link>'`).
+
+The next release builds it in and writes it into `update.json` as `"report"`, so installed copies switch to the form within a day and the bookmark on its next run. Changing the form later is the same: update the variable, release. Unset, everything falls back to GitHub. The GitHub forms stay for people who have an account (CONTRIBUTING.md).
 
 The APK signing key is only in the repository's Actions secrets (`SAPU_KEYSTORE_B64`, `SAPU_KEYSTORE_PASSWORD`, `SAPU_KEY_ALIAS`, `SAPU_KEY_PASSWORD`). Keep a backup of the keystore: if it is lost, existing users cannot update and must reinstall.
 

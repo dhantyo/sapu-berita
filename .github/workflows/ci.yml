@@ -18,7 +18,12 @@ jobs:
       - run: npm run import:adblock
       - run: npm run typecheck
       - run: npm test
+      # Where the reader's "Laporkan" button and the install page send reports. A repository variable
+      # (Settings → Secrets and variables → Actions → Variables), so it can point at a form that needs no
+      # GitHub account; unset = the GitHub "Broken article" form. See docs/DEVELOPING.md.
       - run: npm run build
+        env:
+          SAPU_REPORT_URL: ${{ vars.SAPU_REPORT_URL }}
       - uses: actions/upload-artifact@v7
         with:
           name: builds
@@ -88,6 +93,8 @@ jobs:
           name: sapu-berita-android-apk
           path: apk/
       - name: Package
+        env:
+          SAPU_REPORT_URL: ${{ vars.SAPU_REPORT_URL }}
         run: |
           V="${GITHUB_REF_NAME#v}"
           test "$V" = "$(node -p "require('./package.json').version")" || { echo "::error::Tag $GITHUB_REF_NAME does not match package.json"; exit 1; }
@@ -117,6 +124,10 @@ jobs:
             "apple": "$REPO_URL/blob/master/docs/install-apple.md"
           }
           JSON
+          # Installed copies read the report link from here too, so changing the form needs no app update.
+          if [ -n "$SAPU_REPORT_URL" ]; then
+            node -e "const fs=require('fs'),f='channel/update.json',m=JSON.parse(fs.readFileSync(f,'utf8'));m.report=process.env.SAPU_REPORT_URL;fs.writeFileSync(f,JSON.stringify(m,null,2)+'\n')"
+          fi
           node -e "JSON.parse(require('fs').readFileSync('channel/update.json','utf8'))"
           # Release notes: this version's section of CHANGELOG.md.
           awk -v h="## [$V]" 'index($0, h) == 1 {on=1; next} on && index($0, "## [") == 1 {exit} on' CHANGELOG.md > notes.md
