@@ -4,7 +4,7 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
-## [Unreleased]
+## [0.3.2] - 2026-11-14
 
 - **Liputan6:** the "Jadi Intinya" summary shows as a summary box (and follows the "Kotak ringkasan" switch).
 
