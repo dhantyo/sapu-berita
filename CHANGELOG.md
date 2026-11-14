@@ -13,6 +13,7 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 - **The outlet logo opens the outlet's homepage** (the regional site for regional articles). "Asli" still opens the original article.
 - **Bookmark settings follow you across an outlet:** a change made on news.detik.com now also applies on hot.detik.com, detikJabar and the rest of Detik (likewise for every Tribun regional site). Before, each subdomain started from the defaults. Different outlets still keep separate settings: browsers keep each site's storage apart.
 - **Desktop Detik photo stories** (detikHot) open in the reader with all their photos and captions; before, the desktop layout was refused as too short.
+- **Install page works again:** since 0.2.3 a typo in the English text stopped the page's script, so its tabs and buttons did nothing.
 - **detik Rekomendit** (rekomendit.detik.com) product guides open in the reader, without the shopping cards.
 - **Detik's newer layout** (wolipop.detik.com and other sections moving to it): the article is read from its own text block again, so the author credit no longer shows as the first paragraph.
 
