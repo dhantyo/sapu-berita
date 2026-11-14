@@ -172,3 +172,19 @@ describe('Liputan6 summary box ("Jadi Intinya")', () => {
     expect(box?.querySelectorAll('li').length).toBe(2);
   });
 });
+
+describe('video story description that is an app ad (video.tribunnews.com)', () => {
+  it('is hidden even when the repeat of the opening is cut short, and a video card comes first', async () => {
+    const { deckText } = await import('../src/render/overlay.ts');
+    const content = document.createElement('div');
+    content.innerHTML = '<figure data-embed="youtube"><figcaption>YouTube</figcaption></figure><p>TRIBUN-VIDEO.COM - Gibran Rakabuming Raka menyambut ajakan main bareng.</p>';
+    expect(deckText('Download aplikasi berita TribunX di Play Store atau App Store untuk dapatkan pengalaman baruTRIBUN-VIDEO.COM - Gibran…', content)).toBeUndefined();
+  });
+
+  it('keeps a real description', async () => {
+    const { deckText } = await import('../src/render/overlay.ts');
+    const content = document.createElement('div');
+    content.innerHTML = '<p>JAKARTA, KOMPAS.com - Presiden menghadiri acara di Palu pada Sabtu.</p>';
+    expect(deckText('Presiden memuji Kapolri baru dan bercerita soal cara memilihnya di depan kader Muhammadiyah.', content)).toBeDefined();
+  });
+});

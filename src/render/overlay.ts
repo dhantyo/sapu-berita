@@ -7,6 +7,7 @@ import { OVERLAY_CSS } from './styles.ts';
 import { attachGallery, GALLERY_CSS } from './gallery.ts';
 import type { UpdateOffer } from '../update.ts';
 import { heightFromMessage, playerFor } from './players.ts';
+import { quietPage } from './quiet.ts';
 
 declare const __SAPU_VERSION__: string | undefined;
 const VERSION = typeof __SAPU_VERSION__ === 'string' ? __SAPU_VERSION__ : 'dev';
@@ -429,7 +430,9 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
   // ── Visibility ──────────────────────────────────────────────────────────
   const prevOverflow = doc.documentElement.style.overflow;
   const popover = host as HTMLElement & { showPopover?: () => void; hidePopover?: () => void };
+  let unquiet: (() => void) | undefined;
   const show = () => {
+    unquiet ??= quietPage(doc);
     root.style.display = '';
     reopen.style.display = 'none';
     doc.documentElement.style.overflow = 'hidden';
@@ -442,6 +445,8 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     }
   };
   const hide = () => {
+    unquiet?.();
+    unquiet = undefined;
     if (panelOpen) setPanel(false);
     root.style.display = 'none';
     reopen.style.display = '';
@@ -542,10 +547,13 @@ export function deckText(description: string | undefined, content: Element): str
   if (!description || description.length < 40) return undefined;
   const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   const d = norm(description).slice(0, 60);
-  const opening = norm((content.textContent ?? '').slice(0, 600));
+  // The opening paragraphs, not a video card or photo caption that may come first.
+  const paragraphs = [...content.querySelectorAll('p')].filter((p) => !p.closest('figure, blockquote'));
+  const opening = norm(paragraphs.map((p) => p.textContent ?? '').join(' ').slice(0, 600) || (content.textContent ?? '').slice(0, 600));
   // Also when junk sits in front of the repeat ("Download aplikasi … TRIBUN-VIDEO.COM - Wakil…").
-  const start = opening.slice(0, 40);
-  return opening.includes(d) || (start.length >= 30 && norm(description).includes(start)) ? undefined : description;
+  // The repeat can be cut short ("…baruTRIBUN-VIDEO.COM - Gibran…"): the article's first 20 characters are enough.
+  const start = opening.slice(0, 20);
+  return opening.includes(d) || (start.length >= 20 && norm(description).includes(start)) ? undefined : description;
 }
 
 /**

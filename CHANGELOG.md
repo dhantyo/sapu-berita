@@ -8,6 +8,9 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 
 - **Liputan6:** the "Jadi Intinya" summary shows as a summary box (and follows the "Kotak ringkasan" switch).
 
+- **The original page goes quiet:** videos the news page plays by itself (video.tribunnews.com's player, autoplaying clips) are paused while the clean view is open, including ones that start later.
+- **Video stories:** the "Download aplikasi …" text no longer shows under the title.
+
 ## [0.3.1] - 2026-11-14
 
 - **"Sapu" button:** on the original page, the button that brings the clean view back is now called "Sapu" and sits top right, exactly where "Asli" is in the reader, with a border so it stands out on any site.
