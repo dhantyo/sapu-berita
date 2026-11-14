@@ -10,7 +10,7 @@ The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 
 - **Photo viewer:** buttons redrawn in the reader's style; Back (Android's back button, the browser's) closes the viewer instead of leaving the article; the photo no longer shows twice while the viewer closes.
 - **Video stories** (video.tribunnews.com and other pages whose data names their video) show their video at the top of the article. The "Download aplikasi …" line is dropped.
 - **Tribun:** the "Tribunnews Update" videos inserted into articles (clips about other stories) are gone.
-- **Settings, reordered:** "Umum" (open automatically, check for updates), then "Di artikel" in the order things appear on the page: main photo, summary box, links, media, and the end note. "Ringkasan sapuan" is now "Catatan di akhir artikel", with a hint saying what it shows.
+- **Settings, reordered:** "Umum" (open automatically, check for updates), then "Di artikel" in the order things appear on the page: main photo, summary box, links, media, and the end note. "Ringkasan sapuan" is now "Catatan di akhir artikel", with a hint saying what it shows. The bookmark and the Shortcut no longer show "Buka otomatis": running them already opens the clean view, so it did nothing there.
 - **Install page:** a new section explains what Sapu Berita is and how it works.
 
 ## [0.3.0] - 2026-11-14

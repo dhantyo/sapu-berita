@@ -34,6 +34,11 @@ export interface OverlayOptions {
   loadingMore?: boolean;
   /** Start with only the floating button visible (settings.autoOpen off). */
   startHidden?: boolean;
+  /**
+   * Offer the "open automatically" switch. Off for the bookmark and the Shortcut: running them is the
+   * request to open, so the setting would do nothing there.
+   */
+  autoOpenSetting?: boolean;
   /** Link target for "read on the original site". */
   originalUrl?: string;
   /** Builds the "report a problem" link for the current article; no link when unset. */
@@ -334,7 +339,7 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
     const rows = (...items: HTMLElement[]) => h(doc, 'div', {}, ...items);
     panel.append(
       group(t.general, rows(
-        toggle('autoOpen', t.autoOpen, t.autoOpenHint),
+        ...(opts.autoOpenSetting === false ? [] : [toggle('autoOpen', t.autoOpen, t.autoOpenHint)]),
         toggle('updates', t.updates, t.updatesHint),
       )),
       group(t.inArticle, rows(

@@ -83,6 +83,7 @@ export async function boot(options: BootOptions = {}): Promise<BootResult> {
               settings,
               loadingMore,
               startHidden: !settings.autoOpen && !options.forceOpen,
+              autoOpenSetting: !options.forceOpen,
               originalUrl: url.href,
               onSettingsChange: (s) => void store.save(s),
               onSnoozeUpdate: snoozeOffer,
