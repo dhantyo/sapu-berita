@@ -327,18 +327,24 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       ['id', 'Indonesia'], ['en', 'English'],
     ], (v) => change({ lang: v }, `[data-value="${v}"]`))));
 
-    // Toggles
-    const toggles = h(doc, 'div', { class: 'group' });
-    toggles.append(
-      switchRow(t.hero, undefined, settings.hero, (v) => change({ hero: v }, '[data-switch="hero"]'), 'hero'),
-      switchRow(t.autoOpen, t.autoOpenHint, settings.autoOpen, (v) => change({ autoOpen: v }, '[data-switch="autoOpen"]'), 'autoOpen'),
-      switchRow(t.sweepLine, undefined, settings.sweepLine, (v) => change({ sweepLine: v }, '[data-switch="sweepLine"]'), 'sweepLine'),
-      switchRow(t.links, t.linksHint, settings.links, (v) => change({ links: v }, '[data-switch="links"]'), 'links'),
-      switchRow(t.summaries, t.summariesHint, settings.summaries, (v) => change({ summaries: v }, '[data-switch="summaries"]'), 'summaries'),
-      switchRow(t.embeds, t.embedsHint, settings.embeds, (v) => change({ embeds: v }, '[data-switch="embeds"]'), 'embeds'),
-      switchRow(t.updates, t.updatesHint, settings.updates, (v) => change({ updates: v }, '[data-switch="updates"]'), 'updates'),
+    // Switches. How Sapu Berita behaves first; then what shows in the article, in the order it appears
+    // on the page (photo under the headline, summary box, links and media in the text, the end note).
+    const toggle = (key: 'hero' | 'autoOpen' | 'sweepLine' | 'links' | 'summaries' | 'embeds' | 'updates', label: string, hint?: string) =>
+      switchRow(label, hint, settings[key], (v) => change({ [key]: v }, `[data-switch="${key}"]`), key);
+    const rows = (...items: HTMLElement[]) => h(doc, 'div', {}, ...items);
+    panel.append(
+      group(t.general, rows(
+        toggle('autoOpen', t.autoOpen, t.autoOpenHint),
+        toggle('updates', t.updates, t.updatesHint),
+      )),
+      group(t.inArticle, rows(
+        toggle('hero', t.hero, t.heroHint),
+        toggle('summaries', t.summaries, t.summariesHint),
+        toggle('links', t.links, t.linksHint),
+        toggle('embeds', t.embeds, t.embedsHint),
+        toggle('sweepLine', t.sweepLine, t.sweepLineHint),
+      )),
     );
-    panel.append(toggles);
     const report = opts.reportUrl?.(article);
     if (report) {
       panel.append(h(doc, 'div', { class: 'group report' },
