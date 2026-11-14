@@ -41,7 +41,24 @@ export function extractMetadata(doc: Document): ArticleMeta {
     logo: absolute(imageUrl(publisher?.logo)) ?? absolute(imageUrl(org?.logo)),
     section: str(([] as unknown[]).concat(ld?.articleSection ?? [])[0]),
     description: str(ld?.description) ?? meta('meta[property="og:description"]') ?? meta('meta[name="description"]'),
+    video: mainVideo(nodes, ld),
   });
+}
+
+/**
+ * The story's own video, when the page says it is a video story: a VideoObject node, or the article's
+ * `video`, with a YouTube embed address (video.tribunnews.com keeps its player outside the article text).
+ */
+function mainVideo(nodes: Json[], ld: Json | undefined): string | undefined {
+  const candidates = [
+    ...nodes.filter((n) => /VideoObject/i.test(([] as unknown[]).concat(n['@type']).join(','))),
+    ...([] as unknown[]).concat(ld?.video ?? []),
+  ] as Json[];
+  for (const v of candidates) {
+    const url = str(v?.embedUrl);
+    if (url && /^https:\/\/(www\.)?youtube(-nocookie)?\.com\/embed\/[\w-]{6,}/.test(url)) return url;
+  }
+  return undefined;
 }
 
 const TEXT_FIELDS = ['title', 'byline', 'editor', 'siteName', 'section', 'description'] as const;

@@ -94,6 +94,8 @@ export interface ArticleMeta {
    * forbids reading its pixels (no CORS), before falling back to a plate. Merdeka: footer logo is readable.
    */
   logoFallbacks?: string[];
+  /** The story's own video (YouTube embed address) when the page is a video story. */
+  video?: string;
   /** The editor, when the outlet names one (Tribun's NewsArticle.editor). */
   editor?: string;
   /** The title with its italics kept (`<i>…</i>` only), when the outlet marks words in italic. */

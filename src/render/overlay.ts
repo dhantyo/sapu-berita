@@ -94,7 +94,9 @@ export function renderOverlay(doc: Document, initial: Article, opts: OverlayOpti
       articleView(t),
       settingsPanel(t),
     );
-    reopen.replaceChildren(broom(18), doc.createTextNode(t.reopen));
+    reopen.replaceChildren(broom(16), doc.createTextNode(t.reopen));
+    reopen.title = t.reopenLong;
+    reopen.setAttribute('aria-label', t.reopenLong);
     root.scrollTop = top;
     progressBar = progress;
     updateProgress();
@@ -530,7 +532,9 @@ export function deckText(description: string | undefined, content: Element): str
   const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   const d = norm(description).slice(0, 60);
   const opening = norm((content.textContent ?? '').slice(0, 600));
-  return opening.includes(d) ? undefined : description;
+  // Also when junk sits in front of the repeat ("Download aplikasi … TRIBUN-VIDEO.COM - Wakil…").
+  const start = opening.slice(0, 40);
+  return opening.includes(d) || (start.length >= 30 && norm(description).includes(start)) ? undefined : description;
 }
 
 /**

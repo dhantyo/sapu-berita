@@ -4,6 +4,13 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. While the versi
 
 The first four releases were published as 0.1.0-beta.1 to beta.4 and renamed on 2026-11-13 to the scheme below; the app files inside those releases still report their original beta names.
 
+## [Unreleased]
+
+- **"Sapu" button:** on the original page, the button that brings the clean view back is now called "Sapu" and sits top right, exactly where "Asli" is in the reader, with a border so it stands out on any site.
+- **Photo viewer:** buttons redrawn in the reader's style; Back (Android's back button, the browser's) closes the viewer instead of leaving the article; the photo no longer shows twice while the viewer closes.
+- **Video stories** (video.tribunnews.com and other pages whose data names their video) show their video at the top of the article. The "Download aplikasi …" line is dropped.
+- **Install page:** a new section explains what Sapu Berita is and how it works.
+
 ## [0.3.0] - 2026-11-14
 
 - **Videos and posts play in the article:** YouTube, Instagram, TikTok, X and Facebook posts a story quotes now play inside the reader, using each platform's own player. Turn off "Putar media di artikel" in settings to get the old link card back.

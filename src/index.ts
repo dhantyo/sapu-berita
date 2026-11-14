@@ -8,6 +8,7 @@ import { assessQuality } from './extract/quality.ts';
 import { needsNetwork, paginate, type Extractor } from './paginate/index.ts';
 import { clean } from './clean/index.ts';
 import { sanitize } from './clean/sanitize.ts';
+import { prependMainVideo } from './clean/embeds.ts';
 
 export type { Article, Context, RunResult, RuleSet } from './types.ts';
 export { renderOverlay, type OverlayHandle } from './render/overlay.ts';
@@ -85,6 +86,7 @@ function finishArticle(
   source: Article['source'],
   ctx: Context,
 ): RunResult {
+  if (meta.video) prependMainVideo(container, meta.video);
   const swept = clean(container, rule, ctx.rules, adblockSelectors(ctx.rules, ctx.url.hostname), ctx.url);
   const content = sanitize(container);
   const quality = assessQuality(content, ctx.rules.common.quality);

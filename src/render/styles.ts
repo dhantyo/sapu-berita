@@ -128,7 +128,26 @@ h1 {
 .content figure[data-embed] img { cursor: pointer; }
 .root[data-links="off"] .content a img { pointer-events: auto; }
 .pswp { --pswp-bg: rgb(12 12 12); --pswp-icon-color: rgb(245 245 245); --pswp-icon-color-secondary: rgb(30 30 30); font-family: var(--sans); }
-.pswp__counter { font: 500 14px/1 var(--sans); opacity: 0.9; margin-top: 18px; }
+/* Viewer controls: the reader's pill buttons, on a dark glass so they read over any photo. */
+.pswp__top-bar { height: auto; align-items: center; gap: 8px; padding: max(12px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) 0 max(14px, env(safe-area-inset-left)); }
+.pswp .pswp__button, .pswp .pswp__button:hover, .pswp .pswp__button:focus, .pswp .pswp__button:active {
+  width: 40px; height: 40px; margin: 0; padding: 0; display: grid; place-items: center; overflow: visible;
+  border: 1px solid rgb(255 255 255 / 0.22); border-radius: 20px; background: rgb(22 22 22 / 0.62); color: rgb(245 245 245);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 4px 14px -6px rgb(0 0 0 / 0.5); opacity: 1;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+.pswp .pswp__button:hover { background: rgb(52 52 52 / 0.78); border-color: rgb(255 255 255 / 0.36); }
+.pswp .pswp__button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pswp .pswp__button--zoom { display: none; }
+.pswp--zoom-allowed .pswp__button--zoom { display: grid; }
+.pswp .pswp__icn { position: static; width: 20px; height: 20px; margin: 0; fill: none; color: inherit; transform: none; overflow: visible; }
+.pswp .pswp__button--arrow { position: absolute; top: 50%; margin-top: -22px; width: 44px; height: 44px; border-radius: 22px; }
+.pswp .pswp__button--arrow--prev { left: max(16px, env(safe-area-inset-left)); }
+.pswp .pswp__button--arrow--next { right: max(16px, env(safe-area-inset-right)); left: auto; }
+.pswp .pswp__button--arrow .pswp__icn { width: 22px; height: 22px; }
+.pswp__counter { order: -1; margin: 0 auto 0 0; height: 32px; padding: 0 12px; border-radius: 16px; border: 1px solid rgb(255 255 255 / 0.22);
+  background: rgb(22 22 22 / 0.62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font: 600 13px/30px var(--sans); font-variant-numeric: tabular-nums; color: rgb(245 245 245); text-shadow: none; opacity: 1; }
 .pswp__caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 20px max(18px, env(safe-area-inset-bottom)); margin: 0 auto; max-width: 720px;
   font: 400 14px/1.5 var(--sans); color: rgb(235 235 235); background: linear-gradient(transparent, rgb(0 0 0 / 0.72) 40%); pointer-events: none; }
 .pswp__caption[hidden] { display: none; }
@@ -250,17 +269,25 @@ svg { flex: none; }
 .switch[aria-checked="true"]::after { transform: translateX(16px); }
 
 /* ── Floating button while the original page is showing ── */
+/* Same spot as "Asli" in the reader's bar, so the two read as one toggle. Ochre border plus a white ring:
+   it stands out on light and dark news sites alike. */
 .reopen {
-  position: fixed; z-index: 2147483647; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom));
-  display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px 0 14px; border: 0; border-radius: 22px; cursor: pointer;
-  font: 600 14px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  color: rgb(255 255 255); background: rgb(18 18 18); box-shadow: 0 6px 20px -4px rgb(0 0 0 / 0.4);
+  position: fixed; z-index: 2147483647; top: calc(11px + env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right));
+  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px 0 11px; cursor: pointer;
+  border: 1.5px solid rgb(222 172 70); border-radius: 17px;
+  font: 650 14px/1 "Sapu Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: -0.01em;
+  color: rgb(255 255 255); background: rgb(18 18 18);
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.9), 0 8px 22px -6px rgb(0 0 0 / 0.5);
+  animation: reopen-in 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reopen svg { color: rgb(222 172 70); }
-.reopen:focus-visible { outline: 2px solid rgb(222 172 70); outline-offset: 2px; }
+.reopen:hover { background: rgb(36 36 36); }
+.reopen:focus-visible { outline: 2px solid rgb(222 172 70); outline-offset: 4px; }
+@keyframes reopen-in { from { opacity: 0; transform: translateY(-6px) scale(0.96); } }
 
 @media (prefers-reduced-motion: reduce) {
   .panel, .panel[data-open="true"], .btn, .seg button, .switch, .switch::after { transition: none; }
+  .reopen { animation: none; }
   .spinner { animation-duration: 2.4s; }
 }
 `;

@@ -58,6 +58,17 @@ export function attachGallery(root: HTMLElement, strings: () => Strings): void {
   });
 }
 
+/** Icons in the reader's own line style (24-unit grid, 1.6 stroke), sized by CSS. */
+const svg = (paths: string, extra = '') =>
+  `<svg class="pswp__icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}${extra}</svg>`;
+const ICONS = {
+  close: svg('<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>'),
+  // "+" becomes "−" when zoomed in: PhotoSwipe hides .pswp__zoom-icn-bar-v then.
+  zoom: svg('<circle cx="10.5" cy="10.5" r="6.25"/><path d="M15.2 15.2 20 20M7.9 10.5h5.2"/>', '<path class="pswp__zoom-icn-bar-v" d="M10.5 7.9v5.2"/>'),
+  prev: svg('<path d="M14.5 6 8.5 12l6 6"/>'),
+  next: svg('<path d="M9.5 6l6 6-6 6"/>'),
+};
+
 function show(root: HTMLElement, photos: HTMLImageElement[], index: number, t: Strings): PhotoSwipe {
   const reduceMotion = !!root.ownerDocument.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const slides: SlideData[] = photos.map((img) => ({
@@ -86,6 +97,10 @@ function show(root: HTMLElement, photos: HTMLImageElement[], index: number, t: S
     arrowNextTitle: t.galleryNext,
     errorMsg: t.galleryError,
     indexIndicatorSep: ' / ',
+    closeSVG: ICONS.close,
+    zoomSVG: ICONS.zoom,
+    arrowPrevSVG: ICONS.prev,
+    arrowNextSVG: ICONS.next,
     paddingFn: (viewport) => (viewport.x < 700 ? { top: 0, bottom: 0, left: 0, right: 0 } : { top: 40, bottom: 40, left: 60, right: 60 }),
   });
 
@@ -118,7 +133,41 @@ function show(root: HTMLElement, photos: HTMLImageElement[], index: number, t: S
     probe.src = slide.src!;
   });
 
+  // The photo being viewed is hidden in the article, so it isn't seen twice while the viewer opens and
+  // closes (the enlarged copy flies back onto it).
+  let hidden: HTMLImageElement | undefined;
+  const hide = (img: HTMLImageElement | undefined) => {
+    if (hidden) hidden.style.visibility = '';
+    hidden = img;
+    if (img) img.style.visibility = 'hidden';
+  };
+  pswp.on('change', () => hide(photos[pswp.currIndex]));
+  pswp.on('destroy', () => hide(undefined));
+
+  // Back (Android's back button, the browser's) closes the viewer, not the page: opening adds a history entry.
+  const win = root.ownerDocument.defaultView;
+  let entry = false;
+  try {
+    win?.history.pushState({ ...(win.history.state ?? {}), sapuPhoto: true }, '');
+    entry = true;
+  } catch {
+    // Sandboxed or blocked history: Back simply leaves the page, as before.
+  }
+  const onBack = () => {
+    entry = false;
+    pswp.close();
+  };
+  win?.addEventListener('popstate', onBack);
+  pswp.on('close', () => {
+    win?.removeEventListener('popstate', onBack);
+    if (entry) {
+      entry = false;
+      win?.history.back(); // closed with ✕, a swipe or Esc: drop the entry we added
+    }
+  });
+
   pswp.init();
+  hide(photos[index]);
   (pswp.element as HTMLElement | undefined)?.focus({ preventScroll: true });
   return pswp;
 }

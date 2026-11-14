@@ -5,6 +5,7 @@
     "^(baca|simak|lihat|tonton) (juga|selengkapnya|video)\\b",
     "^baca\\s*:",
     "^artikel terkait\\b",
+    "^download aplikasi\\b",
     "^berita terkait\\b",
     "^(berita|artikel) (lainnya|terkait|populer|pilihan|terbaru|rekomendasi)$",
     "^(baca|ikuti|dapatkan|simak)\\b.{0,120}\\bgoogle news\\b",

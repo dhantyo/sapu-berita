@@ -126,3 +126,28 @@ describe('bookmark settings shared across an outlet (news.detik.com ↔ hot.deti
     expect(outletDomain('example.org', domains)).toBeUndefined();
   });
 });
+
+describe('video stories (video.tribunnews.com)', () => {
+  it('reads the main video from the page data and puts it first, once', async () => {
+    const { extractMetadata } = await import('../src/extract/metadata.ts');
+    const { prependMainVideo } = await import('../src/clean/embeds.ts');
+    const doc = documentFromHtml(
+      '<script type="application/ld+json">{"@type":"VideoObject","name":"x","embedUrl":"https://www.youtube.com/embed/EXc3O86ckJo"}</script><p>Teks.</p>',
+      'https://video.tribunnews.com/news/974338/x',
+    );
+    const video = extractMetadata(doc).video!;
+    expect(video).toBe('https://www.youtube.com/embed/EXc3O86ckJo');
+    const body = doc.createElement('div');
+    body.innerHTML = '<p>Teks.</p>';
+    expect(prependMainVideo(body, video)).toBe(true);
+    expect(body.firstElementChild?.tagName).toBe('IFRAME');
+    expect(prependMainVideo(body, video)).toBe(false); // already there
+  });
+
+  it('hides a description that repeats the opening behind an app-download line', async () => {
+    const { deckText } = await import('../src/render/overlay.ts');
+    const content = document.createElement('div');
+    content.innerHTML = '<p>TRIBUN-VIDEO.COM- Wakil Presiden Gibran Rakabuming Raka mengungkap cerita di balik keputusannya.</p>';
+    expect(deckText('Download aplikasi berita TribunX di Play Store atau App Store untuk dapatkan pengalaman baruTRIBUN-VIDEO.COM- Wakil Presiden Gibran Rakabuming Raka mengungkap cerita', content)).toBeUndefined();
+  });
+});

@@ -28,6 +28,19 @@ interface Embed {
 const BOILERPLATE = /view this (post|profile) on (instagram|facebook)|a post shared by|lihat (postingan|kiriman) ini|watch on youtube|^@\S+$|^\s*$/i;
 const MAX_TEXT = 320;
 
+/**
+ * Put the story's own video (from the page data) at the top when the article text doesn't already carry it.
+ * It goes in as the page's iframe would, so the usual embed handling turns it into a card and a player.
+ */
+export function prependMainVideo(root: HTMLElement, embedUrl: string): boolean {
+  const id = /\/embed\/([\w-]{6,})/.exec(embedUrl)?.[1];
+  if (!id || root.innerHTML.includes(id)) return false;
+  const frame = root.ownerDocument.createElement('iframe');
+  frame.setAttribute('src', embedUrl);
+  root.prepend(frame);
+  return true;
+}
+
 /** Replace every recognised embed in `root` with a static card. Returns how many were converted. */
 export function convertEmbeds(root: HTMLElement): number {
   let n = 0;
