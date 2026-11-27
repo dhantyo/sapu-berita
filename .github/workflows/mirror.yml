@@ -1,0 +1,46 @@
+name: Mirror
+
+# Copies the release channel of dhantyo/berita-rapih to this repo's Pages (the old address).
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v7
+      - name: Copy the channel
+        run: bash mirror.sh
+      - name: Changed since the last deploy?
+        id: diff
+        run: |
+          live=$(curl -fsS https://dhantyo.github.io/sapu-berita/mirror-hash.txt || true)
+          if [ "$live" = "$(cat out/mirror-hash.txt)" ] && [ "${{ github.event_name }}" = schedule ]; then echo "same=true" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.diff.outputs.same != 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: out/
+      - if: steps.diff.outputs.same != 'true'
+        uses: actions/deploy-pages@v5
+      # GitHub pauses scheduled workflows after 60 days without commits; commit once a month.
+      - name: Keep the schedule alive
+        run: |
+          if [ $(( $(date +%s) - $(git log -1 --format=%ct) )) -gt 2592000 ]; then
+            date -u +%FT%TZ > keepalive.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add keepalive.txt && git commit -m "Keep the hourly mirror running" && git push
+          fi
