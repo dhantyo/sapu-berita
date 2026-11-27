@@ -6,7 +6,7 @@ rm -rf out && mkdir out
 if curl -fsS "${SRC}files.txt" -o files.txt && grep -qx update.json files.txt; then :; else
   # Before the first release with files.txt, or the list came back empty.
   echo "using the built-in file list"
-  printf '%s\n' update.json rules.json sapu-berita.js apple-loader.js bookmarklet.txt \
+  printf '%s\n' update.json rules.json berita-rapih.js sapu-berita.js apple-loader.js bookmarklet.txt \
     fonts/geist.woff2 fonts/fira-sans-400.woff2 fonts/fira-sans-400-italic.woff2 fonts/fira-sans-700.woff2 \
     fonts/merriweather-400.woff2 fonts/merriweather-400-italic.woff2 fonts/merriweather-700.woff2 \
     fonts/OFL-FiraSans.txt fonts/OFL-Geist.txt fonts/OFL-Merriweather.txt > files.txt
@@ -15,7 +15,7 @@ while IFS= read -r f; do
   [ -z "$f" ] && continue
   case "$f" in *.html|img/*) continue ;; esac   # pages are redirects here; images belong to the install page
   mkdir -p "out/$(dirname "$f")"
-  curl -fsS "$SRC$f" -o "out/$f" || echo "::warning::could not copy $f"
+  curl -fsS "$SRC$f" -o "out/$f" || { rm -f "out/$f"; echo "could not copy $f"; }
 done < files.txt
 echo "files: $(wc -l < files.txt) listed, $(find out -type f | wc -l) copied"
 # Must be there and valid, or keep the last good copy (fail the run before deploying).
