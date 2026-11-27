@@ -3,8 +3,9 @@
 set -euo pipefail
 SRC=https://dhantyo.github.io/berita-rapih/
 rm -rf out && mkdir out
-if curl -fsS "${SRC}files.txt" -o files.txt; then :; else
-  # Before the first release with files.txt.
+if curl -fsS "${SRC}files.txt" -o files.txt && grep -qx update.json files.txt; then :; else
+  # Before the first release with files.txt, or the list came back empty.
+  echo "using the built-in file list"
   printf '%s\n' update.json rules.json sapu-berita.js apple-loader.js bookmarklet.txt \
     fonts/geist.woff2 fonts/fira-sans-400.woff2 fonts/fira-sans-400-italic.woff2 fonts/fira-sans-700.woff2 \
     fonts/merriweather-400.woff2 fonts/merriweather-400-italic.woff2 fonts/merriweather-700.woff2 \
@@ -16,6 +17,7 @@ while IFS= read -r f; do
   mkdir -p "out/$(dirname "$f")"
   curl -fsS "$SRC$f" -o "out/$f" || echo "::warning::could not copy $f"
 done < files.txt
+echo "files: $(wc -l < files.txt) listed, $(find out -type f | wc -l) copied"
 # Must be there and valid, or keep the last good copy (fail the run before deploying).
 for f in update.json rules.json; do node -e "JSON.parse(require('fs').readFileSync('out/$f','utf8'))"; done
 # The Apple Shortcut and bookmark from before the rename download sapu-berita.js.
